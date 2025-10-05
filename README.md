@@ -1,12 +1,12 @@
-### ---CPPX
+### ->CPPX
 
 CPPX is currently a Linux-only C++ shared library that implements utility functions complementing the STL for GNU toolchains.
 
-### ---Requirements
+### ->Requirements
 
 - Linux with a GNU-compatible toolchain, CMake, git, C/C++ compiler.
 
-### ---Install dependencies
+### ->Install dependencies
 
 - Ubuntu/Debian
 ```bash
@@ -24,7 +24,7 @@ sudo dnf install cmake
 sudo pacman -S cmake
 ```
 
-### ---Use precompiled .so & .h
+### ->Use precompiled .so & .h
 
 If a distribution folder contains lib-cppx.so and cppx.h, the project can be used without building from source.
 ```
@@ -36,7 +36,7 @@ CPPX/
     └── cppx.h
 ```
 
-### ---Build from source .so & .h
+### ->Build from source .so & .h
 
 1) Clone the repository and enter the project root.
 ```bash
@@ -65,7 +65,7 @@ CPPX/
     └── cppx.h
 ```
 
-### ---Using the library
+### ->Using the library
 
 1) Compile your C++ source file
 ```bash
@@ -81,11 +81,11 @@ g++ -std=c++17 yourFile.cpp \
 ./yourFile
 ```
 
-### ---Functions available
+### ->Functions available
 
 The authoritative list of implemented functions is declared in include/cppx.h; review this header to know exactly what the library exposes in each release.
 
-### ---Notes
+### ->Notes
 
 - The library currently targets Linux-only environments with GNU toolchain assumptions for compilation and linking behavior.
 
