@@ -1,8 +1,14 @@
-cmake_minimum_required(VERSION 3.10)
-project(your_cpp_library)
+cmake_minimum_required(VERSION 3.15)
+project(MyLibrary)
 
-add_library(your_lib src/hello.cpp)
-target_include_directories(your_lib PRIVATE include)
+# Create shared library
+add_library(mylib SHARED src/mylib.cpp)
 
-add_executable(example examples/example.cpp)
-target_link_libraries(example your_lib)
+# Include directory
+target_include_directories(mylib PUBLIC include)
+
+# Set output directory
+set_target_properties(mylib PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+    OUTPUT_NAME "-cppx"
+)
