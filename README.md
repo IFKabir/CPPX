@@ -16,12 +16,12 @@ sudo apt install build-essential cmake git
 
 - Fedora/RHEL
 ```bash
-sudo dnf install cmake
+sudo dnf install cmake git
 ```
 
 - Arch Linux
 ```bash
-sudo pacman -S cmake
+sudo pacman -S cmake git
 ```
 
 ### ->Use precompiled .so & .h
