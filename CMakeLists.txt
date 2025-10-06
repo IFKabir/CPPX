@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 project(CPPX)
 
 # Create shared library
-add_library(mylib SHARED src/trim.cpp)
+add_library(mylib SHARED src/binaryTree.cpp)
 
 # Include directory
 target_include_directories(mylib PUBLIC include)
