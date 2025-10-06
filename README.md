@@ -101,4 +101,4 @@ g++ -std=c++17 yourFile.cpp \
 
 ## Usage
 
-- See the text file in the include directory for a list of available functions and usage examples.
+- See the markdown file in the include directory for a list of available functions and usage examples.
