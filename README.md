@@ -67,18 +67,22 @@ CPPX/
 
 ### ->Run
 
-To compile and link with the shared library `lib-cppx.so` located in the current directory, run:
+1) To compile and link with the shared library `lib-cppx.so` located in the current directory, run:
+Make sure that `lib-cppx.so` is in the same directory as the executable when you run it.
 ```bash
-g++ -std=c++17 main.cpp \
+g++ -std=c++17 yourFile.cpp \
     ./lib-cppx.so \
     -Wl,-rpath=. \
-    -o main
+    -o app
 ```
-Make sure that `lib-cppx.so` is in the same directory as the executable when you run it.
+2) Run the generated executable
+```bash
+./app
+```
 
 ### ->Functions available
 
-The authoritative list of implemented functions is declared in include/cppx.h; review this header to know exactly what the library exposes in each release.
+- The authoritative list of implemented functions is declared in include/cppx.h; review this header to know exactly what the library exposes in each release.
 
 ### ->Notes
 
