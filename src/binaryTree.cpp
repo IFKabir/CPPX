@@ -1,83 +1,112 @@
 #include "header.h"
+
 namespace stl_ext
 {
+    // constructors are defined in header file
 
-    Node::Node(int &val) : data(val), left(nullptr), right(nullptr) {}
+    template <typename T>
+    void BinaryTree<T>::preorder(Node<T> *node)
+    {
+        if (node == nullptr)
+            return;
+        std::cout << node->data << " ";
+        preorder(node->left);
+        preorder(node->right);
+    }
 
-    void BinaryTree::preorder(Node *node)
+    template <typename T>
+    void BinaryTree<T>::inorder(Node<T> *node)
     {
         if (node == nullptr)
             return;
+        inorder(node->left);
         std::cout << node->data << " ";
-        preorder(node->left);
-        preorder(node->right);
+        inorder(node->right);
     }
-    void BinaryTree::postorder(Node *node)
+
+    template <typename T>
+    void BinaryTree<T>::postorder(Node<T> *node)
     {
         if (node == nullptr)
             return;
-        preorder(node->left);
-        preorder(node->right);
+        postorder(node->left);
+        postorder(node->right);
         std::cout << node->data << " ";
     }
-    void BinaryTree::inorder(Node *node)
+
+    template <typename T>
+    void BinaryTree<T>::levelorder(Node<T> *node)
     {
         if (node == nullptr)
             return;
-        preorder(node->left);
-        std::cout << node->data << " ";
-        preorder(node->right);
-    }
-    void BinaryTree::levelorder(Node *node)
-    {
-        std::queue<Node *> q;
+        std::queue<Node<T> *> q;
         q.push(node);
         while (!q.empty())
         {
-            std::cout << q.front()->data << " ";
-            if (q.front()->left != nullptr)
-                q.push(q.front()->left);
-            if (q.front()->right != nullptr)
-                q.push(q.front()->right);
+            Node<T> *cur = q.front();
             q.pop();
+            if (cur == nullptr)
+                continue;
+            std::cout << cur->data << " ";
+            if (cur->left != nullptr)
+                q.push(cur->left);
+            if (cur->right != nullptr)
+                q.push(cur->right);
         }
     }
 
-    BinaryTree::BinaryTree(Node *node) : head(node) {}
-    void BinaryTree::setLeft(Node *parent, Node *leftChild)
+    template <typename T>
+    void BinaryTree<T>::setLeft(Node<T> *parent, Node<T> *leftChild)
     {
         if (parent == nullptr)
             return;
         parent->left = leftChild;
     }
-    void BinaryTree::setRight(Node *parent, Node *leftChild)
+
+    template <typename T>
+    void BinaryTree<T>::setRight(Node<T> *parent, Node<T> *rightChild)
     {
         if (parent == nullptr)
             return;
-        parent->right = leftChild;
+        parent->right = rightChild;
     }
-    Node *BinaryTree::getRoot() const
+
+    template <typename T>
+    Node<T> *BinaryTree<T>::getRoot() const
     {
         return head;
     }
-    void BinaryTree::printPreorder(Node *node)
+
+    template <typename T>
+    void BinaryTree<T>::printPreorder(Node<T> *node)
     {
         preorder(node);
         std::cout << std::endl;
     }
-    void BinaryTree::printPostorder(Node *node)
-    {
-        postorder(node);
-        std::cout << std::endl;
-    }
-    void BinaryTree::printInorder(Node *node)
+
+    template <typename T>
+    void BinaryTree<T>::printInorder(Node<T> *node)
     {
         inorder(node);
         std::cout << std::endl;
     }
-    void BinaryTree::printLevelorder(Node *node)
+
+    template <typename T>
+    void BinaryTree<T>::printPostorder(Node<T> *node)
+    {
+        postorder(node);
+        std::cout << std::endl;
+    }
+
+    template <typename T>
+    void BinaryTree<T>::printLevelorder(Node<T> *node)
     {
         levelorder(node);
         std::cout << std::endl;
     }
-}
+
+} // namespace stl_ext
+
+template class stl_ext::BinaryTree<int>;
+template class stl_ext::BinaryTree<char>;
+template class stl_ext::BinaryTree<std::string>;
