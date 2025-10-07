@@ -4,36 +4,37 @@
 
 namespace stl_ext
 {
+  template <typename T>
   class Node
   {
   public:
-    int data;
-    Node *left;
-    Node *right;
+    T data;
+    Node<T> *left;
+    Node<T> *right;
 
-    explicit Node(int &val);
+    Node(const T &val) : data(val), left(nullptr), right(nullptr) {};
   };
 
+  template <typename T>
   class BinaryTree
   {
   private:
-    Node *head;
+    Node<T> *head;
 
-    void preorder(Node *node);
-    void inorder(Node *node);
-    void postorder(Node *node);
-    void levelorder(Node *node);
+    void preorder(Node<T> *node);
+    void inorder(Node<T> *node);
+    void postorder(Node<T> *node);
+    void levelorder(Node<T> *node);
 
   public:
-    BinaryTree();
-    BinaryTree(Node *root);
+    explicit BinaryTree(Node<T> *root) : head(root) {};
 
-    void setLeft(Node *parent, Node *leftChild);
-    void setRight(Node *parent, Node *rightChild);
-    Node *getRoot() const;
-    void printPreorder(Node *node);
-    void printInorder(Node *node);
-    void printPostorder(Node *node);
-    void printLevelorder(Node *node);
+    void setLeft(Node<T> *parent, Node<T> *leftChild);
+    void setRight(Node<T> *parent, Node<T> *rightChild);
+    Node<T> *getRoot() const;
+    void printPreorder(Node<T> *node);
+    void printInorder(Node<T> *node);
+    void printPostorder(Node<T> *node);
+    void printLevelorder(Node<T> *node);
   };
 }
