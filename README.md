@@ -44,7 +44,7 @@ CPPX/
 ├── include/
     └── cppx.h
 ```
-### Option B (You are own your own now)
+### Option B (You are on your own now)
 #### Build from source .so & .h
 
 1. Clone the repository and enter the project root.
