@@ -21,10 +21,10 @@ namespace stl_ext
   private:
     Node<T> *head;
 
-    void preorder(Node<T> *node);
-    void inorder(Node<T> *node);
-    void postorder(Node<T> *node);
-    void levelorder(Node<T> *node);
+    void preorder(Node<T> *node) const;
+    void inorder(Node<T> *node) const;
+    void postorder(Node<T> *node) const;
+    void levelorder(Node<T> *node) const;
 
   public:
     explicit BinaryTree(Node<T> *root) : head(root) {};
@@ -37,5 +37,6 @@ namespace stl_ext
     void printPostorder(Node<T> *node) const;
     void printLevelorder(Node<T> *node) const;
     bool isEmpty(Node<T> *node) const;
+    int getSize(Node<T> *node);
   };
 }

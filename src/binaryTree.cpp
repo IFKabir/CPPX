@@ -2,10 +2,10 @@
 
 namespace stl_ext
 {
-    // constructors are defined in header file
+    // constructors defined in header file
 
     template <typename T>
-    void BinaryTree<T>::preorder(Node<T> *node)
+    void BinaryTree<T>::preorder(Node<T> *node) const
     {
         if (node == nullptr)
             return;
@@ -15,7 +15,7 @@ namespace stl_ext
     }
 
     template <typename T>
-    void BinaryTree<T>::inorder(Node<T> *node)
+    void BinaryTree<T>::inorder(Node<T> *node) const
     {
         if (node == nullptr)
             return;
@@ -25,7 +25,7 @@ namespace stl_ext
     }
 
     template <typename T>
-    void BinaryTree<T>::postorder(Node<T> *node)
+    void BinaryTree<T>::postorder(Node<T> *node) const
     {
         if (node == nullptr)
             return;
@@ -35,7 +35,7 @@ namespace stl_ext
     }
 
     template <typename T>
-    void BinaryTree<T>::levelorder(Node<T> *node)
+    void BinaryTree<T>::levelorder(Node<T> *node) const
     {
         if (node == nullptr)
             return;
@@ -61,7 +61,6 @@ namespace stl_ext
         if (parent == nullptr)
             return;
         parent->left = leftChild;
-        parent->size += leftChild->size;
     }
 
     template <typename T>
@@ -70,7 +69,6 @@ namespace stl_ext
         if (parent == nullptr)
             return;
         parent->right = rightChild;
-        parent->size += rightChild->size;
     }
 
     template <typename T>
@@ -116,7 +114,15 @@ namespace stl_ext
             return false;
     }
 
-    
+    template <typename T>
+    int BinaryTree<T>::getSize(Node<T> *node)
+    {
+        if (node == nullptr)
+        {
+            return 0;
+        }
+        return 1 + getSize(node->left) + getSize(node->right);
+    }
 
 } // namespace stl_ext
 
