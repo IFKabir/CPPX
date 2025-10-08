@@ -21,20 +21,22 @@ namespace stl_ext
   private:
     Node<T> *head;
 
-    void preorder(Node<T> *node);
-    void inorder(Node<T> *node);
-    void postorder(Node<T> *node);
-    void levelorder(Node<T> *node);
+    void preorder(Node<T> *node) const;
+    void inorder(Node<T> *node) const;
+    void postorder(Node<T> *node) const;
+    void levelorder(Node<T> *node) const;
 
   public:
     explicit BinaryTree(Node<T> *root) : head(root) {};
 
-    void setLeft(Node<T> *parent, Node<T> *leftChild);
-    void setRight(Node<T> *parent, Node<T> *rightChild);
+    void setLeft(Node<T> *parent, Node<T> *leftChild) const;
+    void setRight(Node<T> *parent, Node<T> *rightChild) const;
     Node<T> *getRoot() const;
-    void printPreorder(Node<T> *node);
-    void printInorder(Node<T> *node);
-    void printPostorder(Node<T> *node);
-    void printLevelorder(Node<T> *node);
+    void printPreorder(Node<T> *node) const;
+    void printInorder(Node<T> *node) const;
+    void printPostorder(Node<T> *node) const;
+    void printLevelorder(Node<T> *node) const;
+    bool isEmpty(Node<T> *node) const;
+    int getSize(Node<T> *node);
   };
 }
