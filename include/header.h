@@ -29,14 +29,29 @@ namespace stl_ext
   public:
     explicit BinaryTree(Node<T> *root) : head(root) {};
 
+    // Setting Values
     void setLeft(Node<T> *parent, Node<T> *leftChild) const;
     void setRight(Node<T> *parent, Node<T> *rightChild) const;
+
+    // Getting Root
     Node<T> *getRoot() const;
+
+    // Traversals
     void printPreorder(Node<T> *node) const;
     void printInorder(Node<T> *node) const;
     void printPostorder(Node<T> *node) const;
     void printLevelorder(Node<T> *node) const;
+
+    // Size & Empty
     bool isEmpty(Node<T> *node) const;
     int getSize(Node<T> *node);
+  };
+
+  template <typename T>
+  class BinarySearchTree : public BinaryTree<T>
+  {
+  public:
+    BinarySearchTree() : BinaryTree<T>(nullptr) {}
+    explicit BinarySearchTree(Node<T> *root) : BinaryTree<T>(root) {}
   };
 }
