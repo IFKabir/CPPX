@@ -53,5 +53,8 @@ namespace stl_ext
   public:
     BinarySearchTree() : BinaryTree<T>(nullptr) {}
     explicit BinarySearchTree(Node<T> *root) : BinaryTree<T>(root) {}
+
+    void setLeft(Node<T> *parent, Node<T> *leftChild) const;
+    void setRight(Node<T> *parent, Node<T> *rightChild) const;
   };
 }
