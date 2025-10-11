@@ -41,7 +41,7 @@ CPPX/
 ├── build/
 │   └── bin/
 │       └── lib-cppx.so
-├── include/
+└── include/
     └── cppx.h
 ```
 ### Option B (You are on your own now)
@@ -74,7 +74,7 @@ CPPX/
 ├── build/
 │   └── bin/
 │       └── lib-cppx.so
-├── include/
+└── include/
     └── cppx.h
 ```
 
