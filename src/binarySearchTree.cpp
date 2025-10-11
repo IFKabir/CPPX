@@ -27,6 +27,18 @@ namespace stl_ext
             std::cout << "Value of rightChild is not more then value of parent node" << std::endl;
         }
     }
+
+    template <typename T>
+    Node<T> *BinarySearchTree<T>::search(Node<T> *root, T val)
+    {
+        if (root == nullptr || root->data == val)
+            return root;
+        if (root->data < val)
+            return search(root->right, val);
+        else
+            return search(root->right, val);
+    }
+
 } // namespace stl_ext
 
 template class stl_ext::BinarySearchTree<int>;
