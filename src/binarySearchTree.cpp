@@ -11,7 +11,7 @@ namespace stl_ext
         }
         else
         {
-            std::cout << "Value of leftChild is not less then value of parent node" << std::endl;
+            std::cout << "Value of leftChild is not less than value of parent node" << std::endl;
         }
     }
 
@@ -24,7 +24,7 @@ namespace stl_ext
         }
         else
         {
-            std::cout << "Value of rightChild is not more then value of parent node" << std::endl;
+            std::cout << "Value of rightChild is not greater than value of parent node" << std::endl;
         }
     }
 
@@ -36,57 +36,70 @@ namespace stl_ext
         if (root->data < val)
             return search(root->right, val);
         else
-            return search(root->right, val);
+            return search(root->left, val);
     }
 
     template <typename T>
-    void BinarySearchTree<T>::insert(Node<T> *root, T val)
+    Node<T> *BinarySearchTree<T>::insert(Node<T> *root, T val)
     {
-        if (root->data < val) // right
-        {
-            if (root->right == nullptr)
-            {
-                auto newNode = new Node<T>(val);
-                root->right = newNode;
-                return;
-            }
-            insert(root->right, val);
-        }
-        else // left
-        {
-            if (root->left == nullptr)
-            {
-                auto newNode = new Node<T>(val);
-                root->left = newNode;
-                return;
-            }
-            insert(root->left, val);
-        }
+        if (root == nullptr)
+            return new Node<T>(val);
+
+        if (val < root->data)
+            root->left = insert(root->left, val);
+        else if (val > root->data)
+            root->right = insert(root->right, val);
+
+        return root;
     }
 
     template <typename T>
-    void BinarySearchTree<T>::remove(Node<T> *root, T val)
+    Node<T> *BinarySearchTree<T>::remove(Node<T> *root, T val)
     {
-        if (root->left->data == val)
+        if (root == nullptr)
+            return root;
+
+        if (val < root->data)
         {
-            delete (root->left);
-            root->left = nullptr;
-            return;
+            root->left = remove(root->left, val);
         }
-        else if (root->right->data == val)
+        else if (val > root->data)
         {
-            delete (root->right);
-            root->right = nullptr;
-            return;
-        }
-        if (root->data > val)
-        {
-            remove(root->left, val);
+            root->right = remove(root->right, val);
         }
         else
         {
-            remove(root->right, val);
+            if (root->left == nullptr && root->right == nullptr)
+            {
+                delete root;
+                return nullptr;
+            }
+            else if (root->left == nullptr)
+            {
+                Node<T> *temp = root->right;
+                delete root;
+                return temp;
+            }
+            else if (root->right == nullptr)
+            {
+                Node<T> *temp = root->left;
+                delete root;
+                return temp;
+            }
+            else
+            {
+                Node<T> *successor = root->right;
+                while (successor->left != nullptr)
+                {
+                    successor = successor->left;
+                }
+
+                root->data = successor->data;
+
+                root->right = remove(root->right, successor->data);
+            }
         }
+        return root;
     }
 
 } // namespace stl_ext

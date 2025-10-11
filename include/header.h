@@ -58,7 +58,7 @@ namespace stl_ext
     void setRight(Node<T> *parent, Node<T> *rightChild) const;
 
     Node<T> *search(Node<T> *root, T val) const;
-    void insert(Node<T> *root, T val);
-    void remove(Node<T> *root, T val);
+    Node<T> *insert(Node<T> *root, T val);
+    Node<T> *remove(Node<T> *root, T val);
   };
 }
