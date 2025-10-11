@@ -64,6 +64,31 @@ namespace stl_ext
         }
     }
 
+    template <typename T>
+    void BinarySearchTree<T>::remove(Node<T> *root, T val)
+    {
+        if (root->left->data == val)
+        {
+            delete (root->left);
+            root->left = nullptr;
+            return;
+        }
+        else if (root->right->data == val)
+        {
+            delete (root->right);
+            root->right = nullptr;
+            return;
+        }
+        if (root->data > val)
+        {
+            remove(root->left, val);
+        }
+        else
+        {
+            remove(root->right, val);
+        }
+    }
+
 } // namespace stl_ext
 
 template class stl_ext::BinarySearchTree<int>;

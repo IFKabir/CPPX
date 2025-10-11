@@ -59,6 +59,6 @@ namespace stl_ext
 
     Node<T> *search(Node<T> *root, T val) const;
     void insert(Node<T> *root, T val);
-    // void remove(Node<T> *root);
+    void remove(Node<T> *root, T val);
   };
 }
