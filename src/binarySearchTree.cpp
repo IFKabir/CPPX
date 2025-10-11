@@ -29,7 +29,7 @@ namespace stl_ext
     }
 
     template <typename T>
-    Node<T> *BinarySearchTree<T>::search(Node<T> *root, T val)
+    Node<T> *BinarySearchTree<T>::search(Node<T> *root, T val) const
     {
         if (root == nullptr || root->data == val)
             return root;
@@ -37,6 +37,31 @@ namespace stl_ext
             return search(root->right, val);
         else
             return search(root->right, val);
+    }
+
+    template <typename T>
+    void BinarySearchTree<T>::insert(Node<T> *root, T val)
+    {
+        if (root->data < val) // right
+        {
+            if (root->right == nullptr)
+            {
+                auto newNode = new Node<T>(val);
+                root->right = newNode;
+                return;
+            }
+            insert(root->right, val);
+        }
+        else // left
+        {
+            if (root->left == nullptr)
+            {
+                auto newNode = new Node<T>(val);
+                root->left = newNode;
+                return;
+            }
+            insert(root->left, val);
+        }
     }
 
 } // namespace stl_ext
