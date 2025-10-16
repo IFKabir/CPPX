@@ -53,7 +53,7 @@ namespace stl_ext
     Node &operator=(Node &&other) noexcept = default;
 
     // Accessors
-    T get_data() const;
+    const T& get_data() const;
     void set_data(const T &val);
     Node *get_left() const;
     void set_left(std::unique_ptr<Node<T>> node);

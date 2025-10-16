@@ -4,7 +4,7 @@ namespace stl_ext
 {
 
     template <typename T>
-    T Node<T>::get_data() const
+    const T& Node<T>::get_data() const
     {
         return m_data;
     }
