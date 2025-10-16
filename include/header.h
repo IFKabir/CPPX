@@ -53,7 +53,7 @@ namespace stl_ext
     Node &operator=(Node &&other) noexcept = default;
 
     // Accessors
-    const T& get_data() const;
+    const T &get_data() const;
     void set_data(const T &val);
     Node *get_left() const;
     void set_left(std::unique_ptr<Node<T>> node);
@@ -66,10 +66,12 @@ namespace stl_ext
   {
   private:
     std::unique_ptr<Node<T>> p_head;
+
     void preorder(const Node<T> *node) const;
     void inorder(const Node<T> *node) const;
     void postorder(const Node<T> *node) const;
     void levelorder(const Node<T> *node) const;
+    int compute_size(const Node<T> *node) const;
 
   public:
     explicit BinaryTree() : p_head(nullptr) {}
@@ -102,17 +104,23 @@ namespace stl_ext
     // Move Assignment Operator
     BinaryTree &operator=(BinaryTree &&other) noexcept = default;
 
-    void set_left(Node<T> *parent, std::unique_ptr<Node<T>> left_child) const;
-    void set_right(Node<T> *parent, std::unique_ptr<Node<T>> right_child) const;
+    // Tree manipulation
+    void set_left(Node<T> *parent, std::unique_ptr<Node<T>> left_child);
+    void set_right(Node<T> *parent, std::unique_ptr<Node<T>> right_child);
     Node<T> *get_root() const;
     void set_root(std::unique_ptr<Node<T>> root);
-    void print_preorder(Node<T> *node = nullptr) const;
-    void print_inorder(Node<T> *node = nullptr) const;
-    void print_postorder(Node<T> *node = nullptr) const;
-    void print_levelorder(Node<T> *node = nullptr) const;
-    bool is_empty() const;
-    int get_size(Node<T> *node = nullptr) const;
 
+    // Public traversal methods
+    void print_preorder() const;
+    void print_inorder() const;
+    void print_postorder() const;
+    void print_levelorder() const;
+
+    // Tree properties
+    bool is_empty() const;
+    int size() const;
+
+    // Static factory methods
     static std::unique_ptr<Node<T>> make_node(const T &val);
     static std::unique_ptr<Node<T>> make_node(const T &val, std::unique_ptr<Node<T>> left, std::unique_ptr<Node<T>> right);
   };

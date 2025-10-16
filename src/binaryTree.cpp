@@ -55,7 +55,15 @@ namespace stl_ext
     }
 
     template <typename T>
-    void BinaryTree<T>::set_left(Node<T> *parent, std::unique_ptr<Node<T>> left_child) const
+    int BinaryTree<T>::compute_size(const Node<T> *node) const
+    {
+        if (node == nullptr)
+            return 0;
+        return 1 + compute_size(node->get_left()) + compute_size(node->get_right());
+    }
+
+    template <typename T>
+    void BinaryTree<T>::set_left(Node<T> *parent, std::unique_ptr<Node<T>> left_child)
     {
         if (parent == nullptr)
             return;
@@ -63,7 +71,7 @@ namespace stl_ext
     }
 
     template <typename T>
-    void BinaryTree<T>::set_right(Node<T> *parent, std::unique_ptr<Node<T>> right_child) const
+    void BinaryTree<T>::set_right(Node<T> *parent, std::unique_ptr<Node<T>> right_child)
     {
         if (parent == nullptr)
             return;
@@ -77,30 +85,30 @@ namespace stl_ext
     }
 
     template <typename T>
-    void BinaryTree<T>::print_preorder(Node<T> *node) const
+    void BinaryTree<T>::print_preorder() const
     {
-        preorder(node);
+        preorder(p_head.get());
         std::cout << std::endl;
     }
 
     template <typename T>
-    void BinaryTree<T>::print_inorder(Node<T> *node) const
+    void BinaryTree<T>::print_inorder() const
     {
-        inorder(node);
+        inorder(p_head.get());
         std::cout << std::endl;
     }
 
     template <typename T>
-    void BinaryTree<T>::print_postorder(Node<T> *node) const
+    void BinaryTree<T>::print_postorder() const
     {
-        postorder(node);
+        postorder(p_head.get());
         std::cout << std::endl;
     }
 
     template <typename T>
-    void BinaryTree<T>::print_levelorder(Node<T> *node) const
+    void BinaryTree<T>::print_levelorder() const
     {
-        levelorder(node);
+        levelorder(p_head.get());
         std::cout << std::endl;
     }
 
@@ -114,13 +122,9 @@ namespace stl_ext
     }
 
     template <typename T>
-    int BinaryTree<T>::get_size(Node<T> *node) const
+    int BinaryTree<T>::size() const
     {
-        if (node == nullptr)
-        {
-            return 0;
-        }
-        return 1 + get_size(node->get_left()) + get_size(node->get_right());
+        return compute_size(p_head.get());
     }
 
     template <typename T>
