@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 project(CPPX)
 
 # Create shared library
-add_library(mylib SHARED src/binaryTree.cpp)
+add_library(mylib SHARED src/binaryTree.cpp src/node.cpp)
 
 # Include directory
 target_include_directories(mylib PUBLIC include)
