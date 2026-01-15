@@ -129,6 +129,8 @@ namespace stl_ext
   class BST : public BinaryTree<T>
   {
   public:
+    void insert(const T &val);
+
   private:
     Node<T> *insertRec(const T &val, Node<T> *node);
   };

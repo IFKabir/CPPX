@@ -3,7 +3,20 @@
 namespace stl_ext
 {
     template <typename T>
-    Node<T> BST<T>::*insertRec(const T &val, Node<T> *node)
+    void BST<T>::insert(const T &val)
+    {
+        if (this->is_empty())
+        {
+            this->set_root(BinaryTree<T>::make_node(val));
+        }
+        else
+        {
+            insertRec(val, this->get_root());
+        }
+    }
+
+    template <typename T>
+    Node<T> *BST<T>::insertRec(const T &val, Node<T> *node)
     {
         if (node == nullptr)
         {
