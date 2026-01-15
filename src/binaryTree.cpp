@@ -2,7 +2,6 @@
 
 namespace stl_ext
 {
-
     template <typename T>
     void BinaryTree<T>::preorder(const Node<T> *node) const
     {

@@ -125,4 +125,12 @@ namespace stl_ext
     static std::unique_ptr<Node<T>> make_node(const T &val, std::unique_ptr<Node<T>> left, std::unique_ptr<Node<T>> right);
   };
 
+  template <typename T>
+  class BST : public BinaryTree<T>
+  {
+  public:
+  private:
+    Node<T> *insertRec(const T &val, Node<T> *node);
+  };
+
 } // namespace stl_ext
