@@ -10,5 +10,5 @@ target_include_directories(mylib PUBLIC include)
 # Set output directory
 set_target_properties(mylib PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
-    OUTPUT_NAME "-cppx"
+    OUTPUT_NAME "cppx"
 )

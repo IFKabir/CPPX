@@ -5,32 +5,25 @@ namespace stl_ext
     template <typename T>
     void BST<T>::insert(const T &val)
     {
-        if (this->is_empty())
-        {
-            this->set_root(BinaryTree<T>::make_node(val));
-        }
-        else
-        {
-            insertRec(val, this->get_root());
-        }
+        insertRec(this->p_head, val);
     }
 
     template <typename T>
-    Node<T> *BST<T>::insertRec(const T &val, Node<T> *node)
+    void BST<T>::insertRec(std::unique_ptr<Node<T>> &node_ptr, const T &val)
     {
-        if (node == nullptr)
+        if (!node_ptr)
         {
-            return new Node(val);
-        }
-        if (val < node->m_data)
-        {
-            node->set_left(std::move(insertRec(node->p_left, val)));
-        }
-        else if (val > node->m_data)
-        {
-            node->set_right(std::move(insertRec(node->p_right, val)));
+            node_ptr = std::make_unique<Node<T>>(val);
+            return;
         }
 
-        return node;
+        if (val < node_ptr->get_data())
+        {
+            insertRec(node_ptr->p_left, val);
+        }
+        else if (val > node_ptr->get_data())
+        {
+            insertRec(node_ptr->p_right, val);
+        }
     }
 }

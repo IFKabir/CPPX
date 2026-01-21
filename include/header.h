@@ -56,7 +56,7 @@ namespace stl_ext
     explicit BinaryTree() : p_head(nullptr) {}
     explicit BinaryTree(std::unique_ptr<Node<T>> root) : p_head(std::move(root)) {}
 
-    ~BinaryTree() = default;
+    virtual ~BinaryTree() = default;
 
     BinaryTree(const BinaryTree &other);
 
@@ -91,12 +91,12 @@ namespace stl_ext
     bool contains(const T &val) const;
     void remove(const T &val);
     T get_min() const;
-    T get_max();
+    T get_max() const;
     T get_successor(const T &val) const;
     T get_predecessor(const T &val) const;
 
   private:
-    Node<T> *insertRec(const T &val, Node<T> *node);
+    void insertRec(std::unique_ptr<Node<T>> &node_ptr, const T &val);
   };
 
 } // namespace stl_ext
