@@ -64,9 +64,10 @@ namespace stl_ext
   template <typename T>
   class BinaryTree
   {
-  private:
+  protected:
     std::unique_ptr<Node<T>> p_head;
 
+  private:
     void preorder(const Node<T> *node) const;
     void inorder(const Node<T> *node) const;
     void postorder(const Node<T> *node) const;
