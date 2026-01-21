@@ -62,6 +62,24 @@ namespace stl_ext
     }
 
     template <typename T>
+    BinaryTree<T>::BinaryTree(const BinaryTree &other)
+    {
+        if (other.p_head)
+            p_head = std::make_unique<Node<T>>(*other.p_head);
+        else
+            p_head = nullptr;
+    }
+
+    template <typename T>
+    BinaryTree<T> &BinaryTree<T>::operator=(const BinaryTree<T> &other)
+    {
+        if (this == &other)
+            return *this;
+        p_head = other.p_head ? std::make_unique<Node<T>>(*other.p_head) : nullptr;
+        return *this;
+    }
+
+    template <typename T>
     void BinaryTree<T>::set_left(Node<T> *parent, std::unique_ptr<Node<T>> left_child)
     {
         if (parent == nullptr)
