@@ -96,7 +96,8 @@ namespace stl_ext
     T get_predecessor(const T &val) const;
 
   private:
-    void insertRec(std::unique_ptr<Node<T>> &node_ptr, const T &val);
+    void insertRec(Node<T> *node, const T &val);
+    void check_contains(const Node<T> *node, const T &val, bool &flag) const;
   };
 
 } // namespace stl_ext
