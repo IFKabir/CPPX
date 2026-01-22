@@ -4,7 +4,9 @@ project(CPPX)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_library(mylib SHARED src/binaryTree.cpp src/node.cpp src/bst.cpp)
+file(GLOB_RECURSE LIB_SOURCES CONFIGURE_DEPENDS "src/*.cpp")
+
+add_library(mylib SHARED ${LIB_SOURCES})
 
 target_include_directories(mylib PUBLIC include)
 
@@ -25,7 +27,9 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
-add_executable(run_tests test_suite/binary_tree_test_cases.cpp)
+file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS "test_suite/*.cpp")
+
+add_executable(run_tests ${TEST_SOURCES})
 
 target_link_libraries(run_tests 
     PRIVATE 
