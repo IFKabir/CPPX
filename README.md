@@ -84,7 +84,7 @@ CPPX/
 
 1. Copy both `libcppx.so` and `cppx.h` into the same directory as your source file (e.g., `main.cpp`).
 
-2. Include the header in your C++ file using #include ```"cppx.h"```.
+2. Include the header in your C++ file using ```#include "cppx.h"```.
 
 3. Compile your application. You must link the .so file and set the runtime path (rpath) so the executable can find the library.
 
