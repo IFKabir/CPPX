@@ -34,7 +34,7 @@ sudo pacman -S cmake git
 ### Option A (Fastest)
 #### Use precompiled .so & .h
 
-1. Export the libcppx.so file and the cppx.h file from a release build.
+1. Export the ```libcppx.so``` file and the ```cppx.h``` file from a release build.
 
 2. Move them to the folder where you plan to compile your C++ source file.
 
@@ -84,11 +84,7 @@ CPPX/
 
 1. Copy both `libcppx.so` and `cppx.h` into the same directory as your source file (e.g., `main.cpp`).
 
-2. Include the header in your C++ file using
-
-```bash
-#include "cppx.h".
-```
+2. Include the header in your C++ file using #include ```"cppx.h"```.
 
 3. Compile your application. You must link the .so file and set the runtime path (rpath) so the executable can find the library.
 
