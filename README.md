@@ -5,8 +5,8 @@ CPPX is currently a Linux-only C++ shared library that implements utility functi
 ## Requirements
 
 - Linux distribution
-- GNU-compatible C/C++ compiler
-- CMake
+- GNU-compatible C/C++ compiler (GCC)
+- CMake (3.10+)
 - git
 
 ## Install dependencies
@@ -31,10 +31,12 @@ sudo pacman -S cmake git
 ```
 
 ## Building CPPX
-### Option A (Recommended for Minimal Hassle)
+### Option A (Fastest)
 #### Use precompiled .so & .h
 
-1. Download the `libcppx.so` file from the `/build/bin` directory and the `cppx.h` file from the `/include` directory, then move them to the folder where you plan to compile your C++ source file.
+1. Export the libcppx.so file and the cppx.h file from a release build.
+
+2. Move them to the folder where you plan to compile your C++ source file.
 
 ```
 CPPX/
@@ -44,7 +46,7 @@ CPPX/
 └── include/
     └── cppx.h
 ```
-### Option B (You are on your own now)
+### Option B
 #### Build from source .so & .h
 
 1. Clone the repository and enter the project root.
@@ -78,22 +80,23 @@ CPPX/
     └── cppx.h
 ```
 
-### Run
+### Integration & Running
 
-1. Copy both `libcppx.so` and `header.h` into the same directory as your `yourFile.cpp`.
+1. Copy both `libcppx.so` and `cppx.h` into the same directory as your source file (e.g., `main.cpp`).
 
-2. Include `header.h` file in your cpp file using `#include "header.h"`.
-
-3. With your file named yourFile.cpp run the following command making sure that `libcppx.so` is in the same directory as the executable when you run it.
+2. Include the header in your C++ file using
 
 ```bash
-g++ -std=c++17 yourFile.cpp \
-    ./libcppx.so \
-    -Wl,-rpath=. \
-    -o app
+#include "cppx.h".
 ```
 
-2. Run the generated executable
+3. Compile your application. You must link the .so file and set the runtime path (rpath) so the executable can find the library.
+
+```bash
+g++ -std=c++17 main.cpp ./libcppx.so -Wl,-rpath=. -o app
+```
+
+4. Run the generated executable
 
 ```bash
 ./app
