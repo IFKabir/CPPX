@@ -3,8 +3,6 @@
 #include <queue>
 #include <iostream>
 
-using namespace std;
-
 namespace stl_ext
 {
     template <typename T>
@@ -13,7 +11,7 @@ namespace stl_ext
         if (node == nullptr)
             return;
 
-        stack<const Node<T> *> s;
+        std::stack<const Node<T> *> s;
         s.push(node);
 
         while (!s.empty())
@@ -21,7 +19,7 @@ namespace stl_ext
             const Node<T> *curr = s.top();
             s.pop();
 
-            cout << curr->get_data() << " ";
+            std::cout << curr->get_data() << " ";
 
             if (curr->get_right() != nullptr)
                 s.push(curr->get_right());
@@ -33,7 +31,7 @@ namespace stl_ext
     template <typename T>
     void BinaryTree<T>::inorder(const Node<T> *node) const
     {
-        stack<const Node<T> *> s;
+        std::stack<const Node<T> *> s;
         const Node<T> *curr = node;
 
         while (curr != nullptr || !s.empty())
@@ -47,7 +45,7 @@ namespace stl_ext
             curr = s.top();
             s.pop();
 
-            cout << curr->get_data() << " ";
+            std::cout << curr->get_data() << " ";
 
             curr = curr->get_right();
         }
@@ -59,7 +57,7 @@ namespace stl_ext
         if (node == nullptr)
             return;
 
-        stack<const Node<T> *> s;
+        std::stack<const Node<T> *> s;
         const Node<T> *curr = node;
         const Node<T> *last_visited = nullptr;
 
@@ -80,7 +78,7 @@ namespace stl_ext
                 }
                 else
                 {
-                    cout << peek_node->get_data() << " ";
+                    std::cout << peek_node->get_data() << " ";
                     last_visited = peek_node;
                     s.pop();
                 }
@@ -95,7 +93,7 @@ namespace stl_ext
             return 0;
 
         int count = 0;
-        queue<const Node<T> *> q;
+        std::queue<const Node<T> *> q;
         q.push(node);
 
         while (!q.empty())
@@ -119,7 +117,7 @@ namespace stl_ext
         if (node == nullptr)
             return;
 
-        queue<const Node<T> *> q;
+        std::queue<const Node<T> *> q;
         q.push(node);
 
         while (!q.empty())
@@ -130,7 +128,7 @@ namespace stl_ext
             if (cur == nullptr)
                 continue;
 
-            cout << cur->get_data() << " ";
+            std::cout << cur->get_data() << " ";
 
             if (cur->get_left() != nullptr)
                 q.push(cur->get_left());
@@ -143,7 +141,7 @@ namespace stl_ext
     BinaryTree<T>::BinaryTree(const BinaryTree &other)
     {
         if (other.p_head)
-            p_head = make_unique<Node<T>>(*other.p_head);
+            p_head = std::make_unique<Node<T>>(*other.p_head);
         else
             p_head = nullptr;
     }
@@ -153,24 +151,24 @@ namespace stl_ext
     {
         if (this == &other)
             return *this;
-        p_head = other.p_head ? make_unique<Node<T>>(*other.p_head) : nullptr;
+        p_head = other.p_head ? std::make_unique<Node<T>>(*other.p_head) : nullptr;
         return *this;
     }
 
     template <typename T>
-    void BinaryTree<T>::set_left(Node<T> *parent, unique_ptr<Node<T>> left_child)
+    void BinaryTree<T>::set_left(Node<T> *parent, std::unique_ptr<Node<T>> left_child)
     {
         if (parent == nullptr)
             return;
-        parent->set_left(move(left_child));
+        parent->set_left(std::move(left_child));
     }
 
     template <typename T>
-    void BinaryTree<T>::set_right(Node<T> *parent, unique_ptr<Node<T>> right_child)
+    void BinaryTree<T>::set_right(Node<T> *parent, std::unique_ptr<Node<T>> right_child)
     {
         if (parent == nullptr)
             return;
-        parent->set_right(move(right_child));
+        parent->set_right(std::move(right_child));
     }
 
     template <typename T>
@@ -183,28 +181,28 @@ namespace stl_ext
     void BinaryTree<T>::print_preorder() const
     {
         preorder(p_head.get());
-        cout << endl;
+        std::cout << std::endl;
     }
 
     template <typename T>
     void BinaryTree<T>::print_inorder() const
     {
         inorder(p_head.get());
-        cout << endl;
+        std::cout << std::endl;
     }
 
     template <typename T>
     void BinaryTree<T>::print_postorder() const
     {
         postorder(p_head.get());
-        cout << endl;
+        std::cout << std::endl;
     }
 
     template <typename T>
     void BinaryTree<T>::print_levelorder() const
     {
         levelorder(p_head.get());
-        cout << endl;
+        std::cout << std::endl;
     }
 
     template <typename T>
@@ -220,21 +218,21 @@ namespace stl_ext
     }
 
     template <typename T>
-    void BinaryTree<T>::set_root(unique_ptr<Node<T>> root)
+    void BinaryTree<T>::set_root(std::unique_ptr<Node<T>> root)
     {
-        p_head = move(root);
+        p_head = std::move(root);
     }
 
     template <typename T>
-    unique_ptr<Node<T>> BinaryTree<T>::make_node(const T &val)
+    std::unique_ptr<Node<T>> BinaryTree<T>::make_node(const T &val)
     {
-        return make_unique<Node<T>>(val);
+        return std::make_unique<Node<T>>(val);
     }
 
     template <typename T>
-    unique_ptr<Node<T>> BinaryTree<T>::make_node(const T &val, unique_ptr<Node<T>> left, unique_ptr<Node<T>> right)
+    std::unique_ptr<Node<T>> BinaryTree<T>::make_node(const T &val, std::unique_ptr<Node<T>> left, std::unique_ptr<Node<T>> right)
     {
-        return make_unique<Node<T>>(val, move(left), move(right));
+        return std::make_unique<Node<T>>(val, std::move(left), std::move(right));
     }
 
 } // namespace stl_ext
