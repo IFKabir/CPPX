@@ -34,13 +34,13 @@ sudo pacman -S cmake git
 ### Option A (Recommended for Minimal Hassle)
 #### Use precompiled .so & .h
 
-1. Download the `lib-cppx.so` file from the `/build/bin` directory and the `cppx.h` file from the `/include` directory, then move them to the folder where you plan to compile your C++ source file.
+1. Download the `libcppx.so` file from the `/build/bin` directory and the `cppx.h` file from the `/include` directory, then move them to the folder where you plan to compile your C++ source file.
 
 ```
 CPPX/
 ├── build/
 │   └── bin/
-│       └── lib-cppx.so
+│       └── libcppx.so
 └── include/
     └── cppx.h
 ```
@@ -73,22 +73,22 @@ make
 CPPX/
 ├── build/
 │   └── bin/
-│       └── lib-cppx.so
+│       └── libcppx.so
 └── include/
     └── cppx.h
 ```
 
 ### Run
 
-1. Copy both `lib-cppx.so` and `header.h` into the same directory as your `yourFile.cpp`.
+1. Copy both `libcppx.so` and `header.h` into the same directory as your `yourFile.cpp`.
 
 2. Include `header.h` file in your cpp file using `#include "header.h"`.
 
-3. With your file named yourFile.cpp run the following command making sure that `lib-cppx.so` is in the same directory as the executable when you run it.
+3. With your file named yourFile.cpp run the following command making sure that `libcppx.so` is in the same directory as the executable when you run it.
 
 ```bash
 g++ -std=c++17 yourFile.cpp \
-    ./lib-cppx.so \
+    ./libcppx.so \
     -Wl,-rpath=. \
     -o app
 ```
