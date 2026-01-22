@@ -12,7 +12,7 @@ namespace stl_ext
             return;
         }
 
-        insertRec(p_head.get(), val);
+        insertIterative(p_head.get(), val);
     }
 
     template <typename T>
@@ -30,6 +30,11 @@ namespace stl_ext
                 current = current->get_right();
         }
         return false;
+    }
+
+    template <typename T>
+    void BST<T>::remove(const T &val)
+    {
     }
 
     template <typename T>
@@ -61,28 +66,35 @@ namespace stl_ext
     }
 
     template <typename T>
-    void BST<T>::insertRec(Node<T> *node_ptr, const T &val)
+    void BST<T>::insertIterative(Node<T> *node_ptr, const T &val)
     {
-        if (val <= node_ptr->get_data())
+        Node<T> *current = node_ptr;
+
+        while (current != nullptr)
         {
-            if (node_ptr->get_left() == nullptr)
+            if (val <= current->get_data())
             {
-                node_ptr->set_left(BinaryTree<T>::make_node(val));
+                if (current->get_left() == nullptr)
+                {
+                    current->set_left(BinaryTree<T>::make_node(val));
+                    return;
+                }
+                else
+                {
+                    current = current->get_left();
+                }
             }
             else
             {
-                insertRec(node_ptr->get_left(), val);
-            }
-        }
-        else if (val > node_ptr->get_data())
-        {
-            if (node_ptr->get_right() == nullptr)
-            {
-                node_ptr->set_right(BinaryTree<T>::make_node(val));
-            }
-            else
-            {
-                insertRec(node_ptr->get_right(), val);
+                if (current->get_right() == nullptr)
+                {
+                    current->set_right(BinaryTree<T>::make_node(val));
+                    return;
+                }
+                else
+                {
+                    current = current->get_right();
+                }
             }
         }
     }
