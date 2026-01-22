@@ -86,6 +86,9 @@ namespace stl_ext
   template <typename T>
   class BST : public BinaryTree<T>
   {
+
+    using BinaryTree<T>::p_head;
+
   public:
     void insert(const T &val);
     bool contains(const T &val) const;
@@ -97,7 +100,6 @@ namespace stl_ext
 
   private:
     void insertRec(Node<T> *node, const T &val);
-    void check_contains(const Node<T> *node, const T &val, bool &flag) const;
   };
 
 } // namespace stl_ext

@@ -1,31 +1,69 @@
 #include "header.h"
+#include <stdexcept>
 
 namespace stl_ext
 {
     template <typename T>
     void BST<T>::insert(const T &val)
     {
-        if (!this->p_head)
+        if (!p_head)
         {
-            this->p_head = BinaryTree<T>::make_node(val);
+            p_head = BinaryTree<T>::make_node(val);
             return;
         }
 
-        insertRec(this->p_head.get(), val);
+        insertRec(p_head.get(), val);
     }
 
     template <typename T>
     bool BST<T>::contains(const T &val) const
     {
-        bool flag = false;
-        check_contains(this->p_head.get(), val, flag);
-        return flag;
+        Node<T> *current = p_head.get();
+        while (current != nullptr)
+        {
+            if (val == current->get_data())
+                return true;
+
+            if (val < current->get_data())
+                current = current->get_left();
+            else
+                current = current->get_right();
+        }
+        return false;
+    }
+
+    template <typename T>
+    T BST<T>::get_min() const
+    {
+        Node<T> *root = p_head.get();
+        if (!root)
+            throw std::runtime_error("Cannot get_min() from an empty BST");
+
+        while (root->get_left() != nullptr)
+        {
+            root = root->get_left();
+        }
+        return root->get_data();
+    }
+
+    template <typename T>
+    T BST<T>::get_max() const
+    {
+        Node<T> *root = p_head.get();
+        if (!root)
+            throw std::runtime_error("Cannot get_max() from an empty BST");
+
+        while (root->get_right() != nullptr)
+        {
+            root = root->get_right();
+        }
+        return root->get_data();
     }
 
     template <typename T>
     void BST<T>::insertRec(Node<T> *node_ptr, const T &val)
     {
-        if (val < node_ptr->get_data())
+        if (val <= node_ptr->get_data())
         {
             if (node_ptr->get_left() == nullptr)
             {
@@ -48,24 +86,6 @@ namespace stl_ext
             }
         }
     }
-
-    template <typename T>
-    void BST<T>::check_contains(const Node<T> *node_ptr, const T &val, bool &flag) const
-    {
-        if (!node_ptr || flag)
-            return;
-
-        if (node_ptr->get_data() == val)
-        {
-            flag = true;
-            return;
-        }
-        if (val < node_ptr->get_data())
-            check_contains(node_ptr->get_left(), val, flag);
-        else
-            check_contains(node_ptr->get_right(), val, flag);
-    }
-
 } // namespace stl_ext
 
 template class stl_ext::BST<int>;
