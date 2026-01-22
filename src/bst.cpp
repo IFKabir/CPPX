@@ -140,6 +140,56 @@ namespace stl_ext
     }
 
     template <typename T>
+    T BST<T>::get_successor(const T &val) const
+    {
+        Node<T> *current = this->get_root();
+        Node<T> *successor = nullptr;
+
+        while (current != nullptr)
+        {
+            if (current->get_data() > val)
+            {
+                successor = current;
+                current = current->get_left();
+            }
+            else
+            {
+                current = current->get_right();
+            }
+        }
+
+        if (successor == nullptr)
+            throw std::runtime_error("No successor found (value is maximum or tree is empty)");
+
+        return successor->get_data();
+    }
+
+    template <typename T>
+    T BST<T>::get_predecessor(const T &val) const
+    {
+        Node<T> *current = this->get_root();
+        Node<T> *predecessor = nullptr;
+
+        while (current != nullptr)
+        {
+            if (current->get_data() < val)
+            {
+                predecessor = current;
+                current = current->get_right();
+            }
+            else
+            {
+                current = current->get_left();
+            }
+        }
+
+        if (predecessor == nullptr)
+            throw std::runtime_error("No predecessor found (value is minimum or tree is empty)");
+
+        return predecessor->get_data();
+    }
+
+    template <typename T>
     void BST<T>::insertIterative(Node<T> *node_ptr, const T &val)
     {
         Node<T> *current = node_ptr;
