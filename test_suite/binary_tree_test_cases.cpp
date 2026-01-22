@@ -99,3 +99,8 @@ TEST(BinaryTreeStressTest, AdvancedNodeConstruction)
     ASSERT_NE(tree.get_root()->get_right(), nullptr);
     EXPECT_EQ(tree.get_root()->get_right()->get_data(), 30);
 }
+
+TEST(BinaryTreeTest, IntentionalFail)
+{
+    EXPECT_TRUE(false) << "This should fail the build!";
+}
