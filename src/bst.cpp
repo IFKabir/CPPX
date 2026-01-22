@@ -1,23 +1,175 @@
-#include "header.h"
+#include "cppx.h"
+#include <stdexcept>
 
 namespace stl_ext
 {
     template <typename T>
-    Node<T> BST<T>::*insertRec(const T &val, Node<T> *node)
+    void BST<T>::insert(const T &val)
     {
-        if (node == nullptr)
+        if (!p_head)
         {
-            return new Node(val);
-        }
-        if (val < node->m_data)
-        {
-            node->set_left(std::move(insertRec(node->p_left, val)));
-        }
-        else if (val > node->m_data)
-        {
-            node->set_right(std::move(insertRec(node->p_right, val)));
+            p_head = BinaryTree<T>::make_node(val);
+            return;
         }
 
-        return node;
+        insertIterative(p_head.get(), val);
     }
-}
+
+    template <typename T>
+    bool BST<T>::contains(const T &val) const
+    {
+        Node<T> *current = p_head.get();
+        while (current != nullptr)
+        {
+            if (val == current->get_data())
+                return true;
+
+            if (val < current->get_data())
+                current = current->get_left();
+            else
+                current = current->get_right();
+        }
+        return false;
+    }
+
+    template <typename T>
+    void BST<T>::remove(const T &val)
+    {
+        Node<T> *current = p_head.get();
+        Node<T> *previous = nullptr;
+
+        while (current && current->get_data() != val)
+        {
+            previous = current;
+            if (val < current->get_data())
+                current = current->get_left();
+            else
+                current = current->get_right();
+        }
+
+        if (!current)
+        {
+            throw std::runtime_error("Value not found in BST");
+        }
+
+        if (!current->get_left() || !current->get_right())
+        {
+            Node<T> *child = current->get_left() ? current->get_left() : current->get_right();
+            if (!previous)
+            {
+                if (child)
+                {
+                    if (current == p_head.get()->get_left())
+                        p_head = std::unique_ptr<Node<T>>(current->get_right() ? current->get_right() : current->get_left());
+                    else
+                        p_head.reset();
+                }
+                else
+                    p_head.reset();
+            }
+            else if (current == previous->get_left())
+            {
+                if (child)
+                    previous->set_left(std::unique_ptr<Node<T>>(child));
+                else
+                    previous->set_left(nullptr);
+            }
+            else
+            {
+                if (child)
+                    previous->set_right(std::unique_ptr<Node<T>>(child));
+                else
+                    previous->set_right(nullptr);
+            }
+        }
+        else
+        {
+            Node<T> *succParent = current;
+            Node<T> *succ = current->get_right();
+            while (succ->get_left())
+            {
+                succParent = succ;
+                succ = succ->get_left();
+            }
+            current->set_data(succ->get_data());
+            if (succParent->get_left() == succ)
+            {
+                Node<T> *temp = succ->get_right();
+                if (temp)
+                    succParent->set_left(std::unique_ptr<Node<T>>(temp));
+                else
+                    succParent->set_left(nullptr);
+            }
+            else
+            {
+                Node<T> *temp = succ->get_right();
+                if (temp)
+                    succParent->set_right(std::unique_ptr<Node<T>>(temp));
+                else
+                    succParent->set_right(nullptr);
+            }
+        }
+    }
+
+    template <typename T>
+    T BST<T>::get_min() const
+    {
+        Node<T> *root = p_head.get();
+        if (!root)
+            throw std::runtime_error("Cannot get_min() from an empty BST");
+
+        while (root->get_left() != nullptr)
+        {
+            root = root->get_left();
+        }
+        return root->get_data();
+    }
+
+    template <typename T>
+    T BST<T>::get_max() const
+    {
+        Node<T> *root = p_head.get();
+        if (!root)
+            throw std::runtime_error("Cannot get_max() from an empty BST");
+
+        while (root->get_right() != nullptr)
+        {
+            root = root->get_right();
+        }
+        return root->get_data();
+    }
+
+    template <typename T>
+    void BST<T>::insertIterative(Node<T> *node_ptr, const T &val)
+    {
+        Node<T> *current = node_ptr;
+
+        while (true)
+        {
+            if (val <= current->get_data())
+            {
+                if (current->get_left() == nullptr)
+                {
+                    current->set_left(BinaryTree<T>::make_node(val));
+                    return;
+                }
+                current = current->get_left();
+            }
+            else
+            {
+                if (current->get_right() == nullptr)
+                {
+                    current->set_right(BinaryTree<T>::make_node(val));
+                    return;
+                }
+                current = current->get_right();
+            }
+        }
+    }
+} // namespace stl_ext
+
+template class stl_ext::BST<int>;
+template class stl_ext::BST<double>;
+template class stl_ext::BST<float>;
+template class stl_ext::BST<char>;
+template class stl_ext::BST<long>;

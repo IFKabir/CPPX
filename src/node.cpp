@@ -1,10 +1,29 @@
-#include "header.h"
+#include "cppx.h"
 
 namespace stl_ext
 {
+    template <typename T>
+    Node<T>::Node(const Node &other)
+    {
+        if (other.p_left)
+            p_left = std::make_unique<Node<T>>(*other.p_left);
+        if (other.p_right)
+            p_right = std::make_unique<Node<T>>(*other.p_right);
+    }
 
     template <typename T>
-    const T& Node<T>::get_data() const
+    Node<T> &Node<T>::operator=(const Node<T> &other)
+    {
+        if (this == &other)
+            return *this;
+        m_data = other.m_data;
+        p_left = other.p_left ? std::make_unique<Node<T>>(*other.p_left) : nullptr;
+        p_right = other.p_right ? std::make_unique<Node<T>>(*other.p_right) : nullptr;
+        return *this;
+    }
+
+    template <typename T>
+    const T &Node<T>::get_data() const
     {
         return m_data;
     }
