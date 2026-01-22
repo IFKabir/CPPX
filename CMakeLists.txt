@@ -39,3 +39,22 @@ target_link_libraries(run_tests
 
 include(GoogleTest)
 gtest_discover_tests(run_tests)
+
+find_package(Doxygen)
+
+if(DOXYGEN_FOUND)
+    # Configure the Doxyfile.in to a real Doxyfile
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in
+                   ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
+
+    # Add a custom target "doc" to run Doxygen
+    add_custom_target(doc ALL
+        ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        COMMENT "Generating API documentation with Doxygen"
+        VERBATIM
+    )
+    message(STATUS "Doxygen found. You can build docs using 'cmake --build build --target doc'")
+else()
+    message(WARNING "Doxygen not found. Documentation target will not be available.")
+endif()
