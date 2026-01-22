@@ -43,15 +43,16 @@ cd CPPX
 ### Configure & Build
 
 ```text
-cmake -S . -B build
-cmake --build build
+cd build
+cmake ..
+make
 ```
 
 ### Run Tests
 
 ```text
 cd build
-ctest --output-on-failure
+ctest
 ```
 
 > **Note:** Auto-detects new `.cpp` files in `src/` and `test_suite/`.
