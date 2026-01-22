@@ -35,6 +35,80 @@ namespace stl_ext
     template <typename T>
     void BST<T>::remove(const T &val)
     {
+        Node<T> *current = p_head.get();
+        Node<T> *previous = nullptr;
+
+        while (current && current->get_data() != val)
+        {
+            previous = current;
+            if (val < current->get_data())
+                current = current->get_left();
+            else
+                current = current->get_right();
+        }
+
+        if (!current)
+        {
+            throw std::runtime_error("Value not found in BST");
+        }
+
+        if (!current->get_left() || !current->get_right())
+        {
+            Node<T> *child = current->get_left() ? current->get_left() : current->get_right();
+            if (!previous)
+            {
+                if (child)
+                {
+                    if (current == p_head.get()->get_left())
+                        p_head = std::unique_ptr<Node<T>>(current->get_right() ? current->get_right() : current->get_left());
+                    else
+                        p_head.reset();
+                }
+                else
+                    p_head.reset();
+            }
+            else if (current == previous->get_left())
+            {
+                if (child)
+                    previous->set_left(std::unique_ptr<Node<T>>(child));
+                else
+                    previous->set_left(nullptr);
+            }
+            else
+            {
+                if (child)
+                    previous->set_right(std::unique_ptr<Node<T>>(child));
+                else
+                    previous->set_right(nullptr);
+            }
+        }
+        else
+        {
+            Node<T> *succParent = current;
+            Node<T> *succ = current->get_right();
+            while (succ->get_left())
+            {
+                succParent = succ;
+                succ = succ->get_left();
+            }
+            current->set_data(succ->get_data());
+            if (succParent->get_left() == succ)
+            {
+                Node<T> *temp = succ->get_right();
+                if (temp)
+                    succParent->set_left(std::unique_ptr<Node<T>>(temp));
+                else
+                    succParent->set_left(nullptr);
+            }
+            else
+            {
+                Node<T> *temp = succ->get_right();
+                if (temp)
+                    succParent->set_right(std::unique_ptr<Node<T>>(temp));
+                else
+                    succParent->set_right(nullptr);
+            }
+        }
     }
 
     template <typename T>
@@ -70,7 +144,7 @@ namespace stl_ext
     {
         Node<T> *current = node_ptr;
 
-        while (current != nullptr)
+        while (true)
         {
             if (val <= current->get_data())
             {
@@ -79,10 +153,7 @@ namespace stl_ext
                     current->set_left(BinaryTree<T>::make_node(val));
                     return;
                 }
-                else
-                {
-                    current = current->get_left();
-                }
+                current = current->get_left();
             }
             else
             {
@@ -91,10 +162,7 @@ namespace stl_ext
                     current->set_right(BinaryTree<T>::make_node(val));
                     return;
                 }
-                else
-                {
-                    current = current->get_right();
-                }
+                current = current->get_right();
             }
         }
     }
