@@ -57,6 +57,22 @@ ctest
 
 > **Note:** Auto-detects new `.cpp` files in `src/` and `test_suite/`.
 
+## Documentation
+
+### Generate Docs
+
+```text
+cmake --build build --target doc
+```
+
+> **Note:** If you configured CMake to build docs automatically, this step happens during the normal build.
+
+### View Docs
+
+```text
+xdg-open build/docs/html/index.html
+```
+
 ## Using the Library
 
 - **Option A (Fastest):** Use precompiled `libcppx.so` + `cppx.h` from release.
@@ -84,4 +100,5 @@ g++ -std=c++17 main.cpp ./libcppx.so -Wl,-rpath=. -o app
 
 ## Usage
 
-See corresponding release.
+* **API Reference:** Generate and view the [local documentation](#documentation) for full class and function details.
+* **Version Info:** Check the [Releases page](https://github.com/IFKabir/CPPX/releases) for version-specific notes and changes.
