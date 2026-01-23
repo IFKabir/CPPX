@@ -65,7 +65,7 @@ ctest
 cmake --build build --target doc
 ```
 
-> **Note:** If you configured CMake to build docs automatically, this step happens during the normal build.
+> **Note:** If Doxygen is installed, documentation is built automatically alongside the library.
 
 ### View Docs
 
