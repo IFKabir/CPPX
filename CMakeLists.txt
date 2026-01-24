@@ -43,11 +43,9 @@ gtest_discover_tests(run_tests)
 find_package(Doxygen)
 
 if(DOXYGEN_FOUND)
-    # Configure the Doxyfile.in to a real Doxyfile
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in
                    ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
 
-    # Add a custom target "doc" to run Doxygen
     add_custom_target(doc ALL
         ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
