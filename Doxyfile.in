@@ -1,5 +1,5 @@
 PROJECT_NAME           = "@CMAKE_PROJECT_NAME@"
-PROJECT_NUMBER         = "0.2.0-beta"
+PROJECT_NUMBER         = "0.2.0"
 STRIP_FROM_PATH        = @PROJECT_SOURCE_DIR@ \
                          @PROJECT_BINARY_DIR@
 INPUT                  = @PROJECT_SOURCE_DIR@/include \
