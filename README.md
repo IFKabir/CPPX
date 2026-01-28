@@ -8,6 +8,8 @@ CPPX is a Linux-only C++ shared library that implements utility functions comple
 - GNU-compatible C/C++ compiler (GCC) supporting C++14 or later
 - CMake (3.15+)
 - git
+- **clang-format** (for code styling)
+- **doxygen** (optional, for generating documentation)
 - Internet connection (required for CMake to fetch Google Test automatically)
 
 ## Install Dependencies
@@ -16,19 +18,19 @@ CPPX is a Linux-only C++ shared library that implements utility functions comple
 
 ```text
 sudo apt update
-sudo apt install build-essential cmake git
+sudo apt install build-essential cmake git clang-format doxygen graphviz
 ```
 
 ### Fedora/RHEL
 
 ```text
-sudo dnf install cmake git
+sudo dnf install cmake git clang-format doxygen graphviz
 ```
 
 ### Arch Linux
 
 ```text
-sudo pacman -S cmake git
+sudo pacman -S cmake git clang-format doxygen graphviz
 ```
 
 ## Building & Testing (Developer Workflow)
@@ -56,6 +58,14 @@ ctest
 ```
 
 > **Note:** Auto-detects new `.cpp` files in `src/` and `test_suite/`.
+
+## Coding Style
+
+This project enforces Microsoft Style (Allman braces, 4-space indent).
+
+- Do not format manually. The build system (via `make`) applies the `.clang-format` rules to your source files automatically before compilation begins.
+
+- Ensure you use `using namespace std;` in implementation files (`.cpp`) if desired, but avoid it in header files (`.h`) to prevent namespace pollution.
 
 ## Documentation
 
@@ -101,4 +111,5 @@ g++ -std=c++17 main.cpp ./libcppx.so -Wl,-rpath=. -o app
 ## Usage
 
 * **API Reference:** Generate and view the [local documentation](#documentation) for full class and function details.
+
 * **Version Info:** Check the [Releases page](https://github.com/IFKabir/CPPX/releases) for version-specific notes and changes.
