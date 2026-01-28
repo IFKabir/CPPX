@@ -50,4 +50,3 @@ Error output here...
 - [ ] I have checked existing issues to verify this isn't a duplicate.
 
 - [ ] I am running on a supported Linux distribution.
-```
