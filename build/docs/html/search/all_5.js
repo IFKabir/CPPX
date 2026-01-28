@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['generate_20docs_0',['Generate Docs',['../index.html#autotoc_md11',1,'']]],
+  ['generate_20docs_0',['Generate Docs',['../index.html#autotoc_md12',1,'']]],
   ['get_5fdata_1',['get_data',['../classstl__ext_1_1Node.html#a6221b7456dc16566ac63aec5302cf043',1,'stl_ext::Node']]],
   ['get_5fleft_2',['get_left',['../classstl__ext_1_1Node.html#ab3dbc96ed89133bce9b5a2cebd57cc84',1,'stl_ext::Node']]],
   ['get_5fmax_3',['get_max',['../classstl__ext_1_1BST.html#a72c1a4d50386b7fa0f87c46aba5e41a8',1,'stl_ext::BST']]],
