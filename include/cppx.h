@@ -99,7 +99,7 @@ namespace stl_ext
     T get_predecessor(const T &val) const;
 
   private:
-    void insertIterative(Node<T> *node, const T &val);
+    void insert_iterative(Node<T> *node, const T &val);
   };
 
 } // namespace stl_ext

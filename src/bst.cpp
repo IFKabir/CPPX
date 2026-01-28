@@ -84,29 +84,29 @@ namespace stl_ext
         }
         else
         {
-            Node<T> *succParent = current;
+            Node<T> *succ_parent = current;
             Node<T> *succ = current->get_right();
             while (succ->get_left())
             {
-                succParent = succ;
+                succ_parent = succ;
                 succ = succ->get_left();
             }
             current->set_data(succ->get_data());
-            if (succParent->get_left() == succ)
+            if (succ_parent->get_left() == succ)
             {
                 Node<T> *temp = succ->get_right();
                 if (temp)
-                    succParent->set_left(std::unique_ptr<Node<T>>(temp));
+                    succ_parent->set_left(std::unique_ptr<Node<T>>(temp));
                 else
-                    succParent->set_left(nullptr);
+                    succ_parent->set_left(nullptr);
             }
             else
             {
                 Node<T> *temp = succ->get_right();
                 if (temp)
-                    succParent->set_right(std::unique_ptr<Node<T>>(temp));
+                    succ_parent->set_right(std::unique_ptr<Node<T>>(temp));
                 else
-                    succParent->set_right(nullptr);
+                    succ_parent->set_right(nullptr);
             }
         }
     }
@@ -190,7 +190,7 @@ namespace stl_ext
     }
 
     template <typename T>
-    void BST<T>::insertIterative(Node<T> *node_ptr, const T &val)
+    void BST<T>::insert_iterative(Node<T> *node_ptr, const T &val)
     {
         Node<T> *current = node_ptr;
 
