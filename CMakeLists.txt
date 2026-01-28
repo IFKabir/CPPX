@@ -56,3 +56,26 @@ if(DOXYGEN_FOUND)
 else()
     message(WARNING "Doxygen not found. Documentation target will not be available.")
 endif()
+
+find_program(CLANG_FORMAT "clang-format")
+if(CLANG_FORMAT)
+    file(GLOB_RECURSE ALL_SOURCES "src/*.cpp" "include/*.h" "test_suite/*.cpp")
+
+    add_custom_target(
+        auto_format
+        COMMAND ${CLANG_FORMAT} -style=file -i ${ALL_SOURCES}
+        COMMENT "🎨 Auto-formatting code with clang-format..."
+    )
+
+    add_dependencies(mylib auto_format)
+else()
+    message(WARNING "clang-format not found. Auto-formatting is disabled.")
+endif()
+
+add_custom_command(
+    TARGET run_tests
+    POST_BUILD
+    COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    COMMENT "🧪 Running tests automatically after build..."
+)

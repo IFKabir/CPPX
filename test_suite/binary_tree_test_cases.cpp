@@ -1,7 +1,9 @@
 #include <gtest/gtest.h>
-#include "cppx.h"
-#include <vector>
+
 #include <utility>
+#include <vector>
+
+#include "cppx.h"
 
 using namespace std;
 using namespace stl_ext;

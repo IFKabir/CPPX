@@ -7,19 +7,24 @@
 namespace stl_ext
 {
 
-  template <typename T>
-  class Node
-  {
+template <typename T> class Node
+{
   private:
     T m_data;
     std::unique_ptr<Node<T>> p_left;
     std::unique_ptr<Node<T>> p_right;
 
   public:
-    explicit Node() : p_left(nullptr), p_right(nullptr) {}
-    explicit Node(const T &val) : m_data(val), p_left(nullptr), p_right(nullptr) {}
+    explicit Node() : p_left(nullptr), p_right(nullptr)
+    {
+    }
+    explicit Node(const T &val) : m_data(val), p_left(nullptr), p_right(nullptr)
+    {
+    }
     explicit Node(const T &val, std::unique_ptr<Node<T>> left, std::unique_ptr<Node<T>> right)
-        : m_data(val), p_left(std::move(left)), p_right(std::move(right)) {}
+        : m_data(val), p_left(std::move(left)), p_right(std::move(right))
+    {
+    }
 
     ~Node() = default;
 
@@ -37,11 +42,10 @@ namespace stl_ext
     void set_left(std::unique_ptr<Node<T>> node);
     Node *get_right() const;
     void set_right(std::unique_ptr<Node<T>> node);
-  };
+};
 
-  template <typename T>
-  class BinaryTree
-  {
+template <typename T> class BinaryTree
+{
   protected:
     std::unique_ptr<Node<T>> p_head;
 
@@ -53,8 +57,12 @@ namespace stl_ext
     int compute_size(const Node<T> *node) const;
 
   public:
-    explicit BinaryTree() : p_head(nullptr) {}
-    explicit BinaryTree(std::unique_ptr<Node<T>> root) : p_head(std::move(root)) {}
+    explicit BinaryTree() : p_head(nullptr)
+    {
+    }
+    explicit BinaryTree(std::unique_ptr<Node<T>> root) : p_head(std::move(root))
+    {
+    }
 
     virtual ~BinaryTree() = default;
 
@@ -80,13 +88,12 @@ namespace stl_ext
     int size() const;
 
     static std::unique_ptr<Node<T>> make_node(const T &val);
-    static std::unique_ptr<Node<T>> make_node(const T &val, std::unique_ptr<Node<T>> left, std::unique_ptr<Node<T>> right);
-  };
+    static std::unique_ptr<Node<T>> make_node(const T &val, std::unique_ptr<Node<T>> left,
+                                              std::unique_ptr<Node<T>> right);
+};
 
-  template <typename T>
-  class BST : public BinaryTree<T>
-  {
-
+template <typename T> class BST : public BinaryTree<T>
+{
     using BinaryTree<T>::p_head;
 
   public:
@@ -100,6 +107,6 @@ namespace stl_ext
 
   private:
     void insert_iterative(Node<T> *node, const T &val);
-  };
+};
 
 } // namespace stl_ext

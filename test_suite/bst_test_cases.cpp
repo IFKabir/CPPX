@@ -1,15 +1,16 @@
 #include <gtest/gtest.h>
-#include "cppx.h"
-#include <vector>
+
 #include <algorithm> // for std::is_sorted
 #include <stdexcept> // for exceptions
+#include <vector>
+
+#include "cppx.h"
 
 using namespace std;
 using namespace stl_ext;
 
 // Helper to capture inorder traversal into a vector
-template <typename T>
-void capture_inorder(const Node<T> *node, vector<T> &result)
+template <typename T> void capture_inorder(const Node<T> *node, vector<T> &result)
 {
     if (node == nullptr)
         return;
@@ -100,8 +101,9 @@ TEST(BSTTest, GetSuccessor)
     // Case C: No Successor (Maximum value)
     EXPECT_THROW(bst.get_successor(35), std::runtime_error);
 
-    // Case D: Value not in tree (Optional, depending on implementation this might throw or behave undefined)
-    // If your logic relies on finding the node first, you might need to handle this.
+    // Case D: Value not in tree (Optional, depending on implementation this might
+    // throw or behave undefined) If your logic relies on finding the node first,
+    // you might need to handle this.
 }
 
 // 4. Test Predecessor Logic
@@ -147,8 +149,8 @@ TEST(BSTTest, DuplicateInsertion)
     // Depending on logic, size might stay 1 (if strict set) or go to 2 (multiset)
     // Assuming standard BST (no duplicates):
     // If your insert logic allows duplicates, change expected size to 2.
-    // Based on previous code: "if (val <= node_ptr->get_data())" implies duplicates go left.
-    // If duplicates are allowed and go left:
+    // Based on previous code: "if (val <= node_ptr->get_data())" implies
+    // duplicates go left. If duplicates are allowed and go left:
     EXPECT_EQ(bst.size(), 2);
     EXPECT_EQ(bst.get_root()->get_left()->get_data(), 10);
 }
