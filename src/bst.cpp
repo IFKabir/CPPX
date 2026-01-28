@@ -12,7 +12,7 @@ namespace stl_ext
             return;
         }
 
-        insertIterative(p_head.get(), val);
+        insert_iterative(p_head.get(), val);
     }
 
     template <typename T>
