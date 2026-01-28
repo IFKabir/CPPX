@@ -50,11 +50,25 @@ This library separates template declarations (`header.h`) from implementations (
 * Do not use `using namespace std;` in header files.
 
 ## Style Guide
-* **Indentation**: Follow the existing indentation style (4 spaces).
-* **Naming**:
-    * Classes: `PascalCase` (e.g., `BinaryTree`)
-    * Functions/Methods: `snake_case` (e.g., `get_min`, `insert`)
-    * Member variables: `m_prefix` or `snake_case` (e.g., `m_data`, `p_head`).
+
+To keep the codebase clean and consistent, please adhere to the following naming conventions:
+
+### Naming Conventions
+
+| Entity | Style | Example |
+| :--- | :--- | :--- |
+| **Classes** | PascalCase | `BinaryTree`, `Node`, `BST` |
+| **Files** | snake_case | `binary_tree.cpp`, `node.cpp`, `cppx.h` |
+| **Functions** | snake_case | `get_min()`, `compute_size()`, `insert_iterative()` |
+| **Variables (Local)** | snake_case | `current_node`, `succ_parent` |
+| **Member Variables** | Hungarian-style prefix | `m_data` (member), `p_head` (pointer) |
+
+### C++ Specifics
+
+* **Namespaces:** All code must be wrapped in `namespace stl_ext`.
+* **No `using namespace std`:** Do not use `using namespace std;` in header files (`.h`). It is acceptable in implementation files (`.cpp`) if it improves readability, but explicit qualification (`std::`) is preferred.
+* **Smart Pointers:** Use `std::unique_ptr` for ownership and memory management. Avoid raw `new`/`delete`.
+* **Template Instantiation:** Because implementation is separated into `.cpp` files, you **must** explicitly instantiate templates at the bottom of the `.cpp` file for all supported types (int, double, float, char, long).
 
 ## Questions?
 If you have questions, feel free to open an issue or contact me via the method listed in the Code of Conduct.
