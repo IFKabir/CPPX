@@ -1,49 +1,68 @@
-cmake_minimum_required(VERSION 3.15)
-project(CPPX)
+cmake_minimum_required(VERSION 3.14)
+project(CPPX VERSION 1.0.0 LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# 1. Library Sources (Hardcoded to be safe)
-set(LIB_SOURCES
-    "src/binary_tree.cpp"
-    "src/bst.cpp"
-    "src/node.cpp"
+file(GLOB_RECURSE SRC_FILES "src/*.cpp" "src/*.tpp")
+file(GLOB_RECURSE HEADER_FILES "include/*.h" "include/*.hpp")
+
+add_library(${PROJECT_NAME}_lib ${SRC_FILES} ${HEADER_FILES})
+target_include_directories(${PROJECT_NAME}_lib PUBLIC 
+    include 
+    src
 )
 
-# 2. Build Static Library
-add_library(mylib STATIC ${LIB_SOURCES})
-target_include_directories(mylib PUBLIC include)
+set_target_properties(${PROJECT_NAME}_lib PROPERTIES LINKER_LANGUAGE CXX)
 
-# 3. Fetch GoogleTest
+find_program(CLANG_FORMAT "clang-format")
+if(CLANG_FORMAT)
+    file(GLOB_RECURSE ALL_SOURCE_FILES 
+        "src/*.cpp" "src/*.tpp" "src/*.h" "src/*.hpp"
+        "include/*.h" "include/*.hpp"
+        "test_suite/*.cpp"
+    )
+    add_custom_target(
+        format_code
+        COMMAND ${CLANG_FORMAT} -i -style=file ${ALL_SOURCE_FILES}
+        COMMENT "Auto-formatting code with clang-format..."
+    )
+    add_dependencies(${PROJECT_NAME}_lib format_code)
+else()
+    message(WARNING "clang-format not found! Code will not be auto-formatted.")
+endif()
+
 include(FetchContent)
 FetchContent_Declare(
   googletest
-  URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
-  DOWNLOAD_EXTRACT_TIMESTAMP ON
+  URL https://github.com/google/googletest/archive/refs/heads/main.zip
+  DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 )
+
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-# 4. Build Test Executable (Hardcoded Sources)
-add_executable(run_tests 
-    "test_suite/binary_tree_test_cases.cpp"
-    "test_suite/bst_test_cases.cpp"
-)
+enable_testing()
 
-target_link_libraries(run_tests 
-    PRIVATE 
-    mylib 
-    GTest::gtest_main
-)
+file(GLOB_RECURSE TEST_FILES "test_suite/*.cpp")
 
-# 5. Enable Formatting (Optional)
-find_program(CLANG_FORMAT "clang-format")
-if(CLANG_FORMAT)
-    file(GLOB_RECURSE ALL_SOURCES "src/*.cpp" "include/*.h" "test_suite/*.cpp")
-    add_custom_target(
-        auto_format
-        COMMAND ${CLANG_FORMAT} -style=file -i ${ALL_SOURCES}
-    )
-    add_dependencies(mylib auto_format)
+add_executable(unit_tests ${TEST_FILES})
+target_link_libraries(unit_tests PRIVATE ${PROJECT_NAME}_lib GTest::gtest_main)
+target_include_directories(unit_tests PRIVATE include)
+
+include(GoogleTest)
+gtest_discover_tests(unit_tests)
+
+find_package(Doxygen)
+if(DOXYGEN_FOUND)
+    set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in)
+    set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+    configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
+    add_custom_target(doc_doxygen ALL
+        COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        COMMENT "Generating API documentation with Doxygen"
+        VERBATIM)
+else()
+    message(WARNING "Doxygen not found! Documentation will not be generated.")
 endif()

@@ -5,7 +5,13 @@ STRIP_FROM_PATH        = @PROJECT_SOURCE_DIR@ \
 INPUT                  = @PROJECT_SOURCE_DIR@/include \
                          @PROJECT_SOURCE_DIR@/src \
                          @PROJECT_SOURCE_DIR@/README.md
-FILE_PATTERNS          = *.h *.cpp *.md
+
+# Updated patterns to include .tpp and .hpp
+FILE_PATTERNS          = *.h *.hpp *.cpp *.tpp *.md
+
+# Ensure .tpp is treated as C++
+EXTENSION_MAPPING      = tpp=C++
+
 RECURSIVE              = YES
 USE_MDFILE_AS_MAINPAGE = @PROJECT_SOURCE_DIR@/README.md
 

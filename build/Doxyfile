@@ -1,0 +1,25 @@
+PROJECT_NAME           = "CPPX"
+PROJECT_NUMBER         = "0.2.0"
+STRIP_FROM_PATH        = /home/ifkabir/Coading/CPPX \
+                         /home/ifkabir/Coading/CPPX/build
+INPUT                  = /home/ifkabir/Coading/CPPX/include \
+                         /home/ifkabir/Coading/CPPX/src \
+                         /home/ifkabir/Coading/CPPX/README.md
+
+# Updated patterns to include .tpp and .hpp
+FILE_PATTERNS          = *.h *.hpp *.cpp *.tpp *.md
+
+# Ensure .tpp is treated as C++
+EXTENSION_MAPPING      = tpp=C++
+
+RECURSIVE              = YES
+USE_MDFILE_AS_MAINPAGE = /home/ifkabir/Coading/CPPX/README.md
+
+OUTPUT_DIRECTORY       = /home/ifkabir/Coading/CPPX/build/docs
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+
+# Visuals
+JAVADOC_AUTOBRIEF      = YES
+EXTRACT_ALL            = YES
+HAVE_DOT               = YES
