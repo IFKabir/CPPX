@@ -2,7 +2,7 @@
 
 namespace stl_ext
 {
-template <typename T> Node<T>::Node(const Node &other)
+template <typename T> Node<T>::Node(const Node &other) : m_data(other.m_data)
 {
     if (other.p_left)
         p_left = std::make_unique<Node<T>>(*other.p_left);

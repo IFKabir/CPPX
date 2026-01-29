@@ -1,0 +1,10 @@
+^C:\USERS\IFKIS\DESKTOP\CODING\CPPX\BUILD\CMAKEFILES\CA5FAA63956EF3DA8CE606A24EFA9C69\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/ifkis/Desktop/coding/CPPX -BC:/Users/ifkis/Desktop/coding/CPPX/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/ifkis/Desktop/coding/CPPX/build/CPPX.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
