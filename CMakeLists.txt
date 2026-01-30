@@ -1,81 +1,77 @@
-cmake_minimum_required(VERSION 3.15)
-project(CPPX)
+cmake_minimum_required(VERSION 3.14)
+project(CPPX VERSION 1.0.0 LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-file(GLOB_RECURSE LIB_SOURCES CONFIGURE_DEPENDS "src/*.cpp")
+file(GLOB_RECURSE SRC_FILES "src/*.cpp" "src/*.tpp")
+file(GLOB_RECURSE HEADER_FILES "include/*.h" "include/*.hpp")
 
-add_library(mylib SHARED ${LIB_SOURCES})
-
-target_include_directories(mylib PUBLIC include)
-
-set_target_properties(mylib PROPERTIES
-    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
-    OUTPUT_NAME "cppx"
+add_library(${PROJECT_NAME}_lib ${SRC_FILES} ${HEADER_FILES})
+target_include_directories(${PROJECT_NAME}_lib PUBLIC 
+    include 
+    src
 )
+
+set_target_properties(${PROJECT_NAME}_lib PROPERTIES LINKER_LANGUAGE CXX)
+
+find_program(CLANG_FORMAT "clang-format")
+if(CLANG_FORMAT)
+    file(GLOB_RECURSE ALL_SOURCE_FILES 
+        "src/*.cpp" "src/*.tpp" "src/*.h" "src/*.hpp"
+        "include/*.h" "include/*.hpp"
+        "test_suite/*.cpp"
+    )
+    add_custom_target(
+        format_code
+        COMMAND ${CLANG_FORMAT} -i -style=file ${ALL_SOURCE_FILES}
+        COMMENT "Auto-formatting code with clang-format..."
+    )
+    add_dependencies(${PROJECT_NAME}_lib format_code)
+else()
+    message(WARNING "clang-format not found! Code will not be auto-formatted.")
+endif()
 
 include(FetchContent)
 FetchContent_Declare(
   googletest
-  URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
-  DOWNLOAD_EXTRACT_TIMESTAMP ON
+  URL https://github.com/google/googletest/archive/refs/heads/main.zip
+  DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 )
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
-file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS "test_suite/*.cpp")
+file(GLOB_RECURSE TEST_FILES "test_suite/*.cpp")
 
-add_executable(run_tests ${TEST_SOURCES})
-
-target_link_libraries(run_tests 
-    PRIVATE 
-    mylib 
-    GTest::gtest_main
-)
+add_executable(unit_tests ${TEST_FILES})
+target_link_libraries(unit_tests PRIVATE ${PROJECT_NAME}_lib GTest::gtest_main)
+target_include_directories(unit_tests PRIVATE include)
 
 include(GoogleTest)
-gtest_discover_tests(run_tests)
-
-find_package(Doxygen)
-
-if(DOXYGEN_FOUND)
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in
-                   ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
-
-    add_custom_target(doc ALL
-        ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-        COMMENT "Generating API documentation with Doxygen"
-        VERBATIM
-    )
-    message(STATUS "Doxygen found. You can build docs using 'cmake --build build --target doc'")
-else()
-    message(WARNING "Doxygen not found. Documentation target will not be available.")
-endif()
-
-find_program(CLANG_FORMAT "clang-format")
-if(CLANG_FORMAT)
-    file(GLOB_RECURSE ALL_SOURCES "src/*.cpp" "include/*.h" "test_suite/*.cpp")
-
-    add_custom_target(
-        auto_format
-        COMMAND ${CLANG_FORMAT} -style=file -i ${ALL_SOURCES}
-        COMMENT "🎨 Auto-formatting code with clang-format..."
-    )
-
-    add_dependencies(mylib auto_format)
-else()
-    message(WARNING "clang-format not found. Auto-formatting is disabled.")
-endif()
+gtest_discover_tests(unit_tests)
 
 add_custom_command(
-    TARGET run_tests
+    TARGET unit_tests
     POST_BUILD
-    COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
+    COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure -C $<CONFIG>
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    COMMENT "🧪 Running tests automatically after build..."
+    COMMENT "Running automated tests..."
+    VERBATIM
 )
+
+find_package(Doxygen)
+if(DOXYGEN_FOUND)
+    set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in)
+    set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+    configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
+    add_custom_target(doc_doxygen ALL
+        COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        COMMENT "Generating API documentation with Doxygen"
+        VERBATIM)
+else()
+    message(WARNING "Doxygen not found! Documentation will not be generated.")
+endif()

@@ -13,7 +13,6 @@ TEST(BinaryTreeStressTest, MoveSemantics)
     BinaryTree<int> tree1;
     tree1.set_root(BinaryTree<int>::make_node(10));
 
-    // Move Constructor
     BinaryTree<int> tree2(std::move(tree1));
     EXPECT_TRUE(tree1.is_empty()) << "Tree1 should be empty after move constructor";
     EXPECT_EQ(tree2.size(), 1) << "Tree2 should have inherited the node";

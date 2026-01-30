@@ -1,0 +1,20 @@
+^C:\USERS\IFKIS\DESKTOP\CODING\CPPX\BUILD\CMAKEFILES\CA5FAA63956EF3DA8CE606A24EFA9C69\AUTO_FORMAT.RULE
+setlocal
+"C:\Program Files\LLVM\bin\clang-format.exe" -style=file -i C:/Users/ifkis/Desktop/coding/CPPX/include/cppx.h C:/Users/ifkis/Desktop/coding/CPPX/src/binary_tree.cpp C:/Users/ifkis/Desktop/coding/CPPX/src/bst.cpp C:/Users/ifkis/Desktop/coding/CPPX/src/node.cpp C:/Users/ifkis/Desktop/coding/CPPX/test_suite/binary_tree_test_cases.cpp C:/Users/ifkis/Desktop/coding/CPPX/test_suite/bst_test_cases.cpp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\IFKIS\DESKTOP\CODING\CPPX\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/ifkis/Desktop/coding/CPPX -BC:/Users/ifkis/Desktop/coding/CPPX/build --check-stamp-file C:/Users/ifkis/Desktop/coding/CPPX/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
