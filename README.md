@@ -83,6 +83,6 @@ To use this library in any of your existing projects:
 
 ## Usage
 
-- **API Reference:** Generate and view the [local documentation](#documentation) for full class and function details.
+- **API Reference:** **[Online Documentation](https://ifkabir.github.io/CPPX/)** (Recommended)
 
 - **Version Info:** Check the [Releases page](https://github.com/IFKabir/CPPX/releases) for version-specific notes and changes.

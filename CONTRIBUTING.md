@@ -1,6 +1,6 @@
-# Contributing to stl_ext
+# Contributing to CPPX (stl_ext)
 
-Thank you for your interest in contributing to `stl_ext`!
+Thank you for your interest in contributing to `CPPX`!
 
 As a solo maintainer, I appreciate any help—whether it's fixing bugs, improving documentation, or suggesting new features. Please take a moment to review this document to make the contribution process easy and effective for everyone.
 
@@ -31,9 +31,12 @@ I welcome Pull Requests (PRs)!
 
 1.  **Fork** the repository.
 2.  **Create a branch** for your feature or fix (`git checkout -b feature/amazing-feature`).
-3.  **Commit** your changes.
-4.  **Push** to the branch (`git push origin feature/amazing-feature`).
-5.  **Open a Pull Request** targeting the `main` branch.
+3.  **Write Tests**: Ensure your change is covered by unit tests in `test_suite/`.
+4.  **Build & Format**: Run the build command locally (`cmake --build build`). This will automatically format your code using `clang-format`.
+5.  **Run Tests**: Ensure all tests pass (`ctest` or ./`unit_tests`)
+6.  **Commit** your changes.
+7.  **Push** to the branch (`git push origin feature/amazing-feature`).
+8.  **Open a Pull Request** targeting the `main` branch.
 
 Please keep your PRs focused on a single issue or feature.
 
@@ -41,18 +44,21 @@ Please keep your PRs focused on a single issue or feature.
 
 To keep the codebase consistent, please follow these guidelines:
 
-### C++ Standards
+### Project Structure (Template Library)
 
-- The project uses **Modern C++** (smart pointers, `nullptr`, etc.).
-- Please ensure your code compiles without warnings.
+This library uses a header-only style with separated implementation files to keep code clean.
 
-### Template Instantiation (Important!)
+- **Header Files** (`.h`): Contain class declarations and documentation. (e.g., `include/cppx.h`).
+- **Implementation Files** (`.tpp`): Contain the actual template logic.
+  - Do not use `.cpp` for template classes.
+  - Implementations in `.tpp` files are automatically included at the bottom of the main header.
 
-This library separates template declarations (`header.h`) from implementations (`.cpp` files).
+### Testing
 
-- If you add a new template class or function, you must write the implementation in a `.cpp` file.
-- **Explicit Instantiation**: You must explicitly instantiate the template for supported types (e.g., `int`, `double`, `float`) at the bottom of the `.cpp` file.
-  - _Example:_ `template class stl_ext::BST<int>;`
+We use **GoogleTest** for unit testing.
+
+- Every new feature must be accompanied by a corresponding test file in the `test_suite/` directory.
+- Run tests locally before submitting using `ctest` in your build directory.
 
 ### Namespaces
 
@@ -61,7 +67,11 @@ This library separates template declarations (`header.h`) from implementations (
 
 ## Style Guide
 
-To keep the codebase clean and consistent, please adhere to the following naming conventions:
+We enforce a consistent coding style automatically.
+
+### Automated Formatting
+
+**Do not format manually**. The build system uses `clang-format` to enforce Microsoft Style (Allman braces, 4-space indent). simply running the build command will clean up your code.
 
 ### Naming Conventions
 
@@ -75,35 +85,28 @@ To keep the codebase clean and consistent, please adhere to the following naming
 
 ### C++ Specifics
 
-- **Namespaces:** All code must be wrapped in `namespace stl_ext`.
-- **No `using namespace std`:** Do not use `using namespace std;` in header files (`.h`). It is acceptable in implementation files (`.cpp`) if it improves readability, but explicit qualification (`std::`) is preferred.
 - **Smart Pointers:** Use `std::unique_ptr` for ownership and memory management. Avoid raw `new`/`delete`.
-- **Template Instantiation:** Because implementation is separated into `.cpp` files, you **must** explicitly instantiate templates at the bottom of the `.cpp` file for all supported types (int, double, float, char, long).
+- **Move Semantics**: Utilize `std::move` when transferring ownership of nodes.
+- **Template Instantiation:** Place all template definitions in `.tpp` files. Do not explicit instantiate templates for specific types (e.g., `int`, `double`) inside the library code; let the compiler handle instantiation based on user usage.
 
 ### Important Concepts for Contributors
 
 When working on data structures or database-related components in `stl_ext`, keep these principles in mind:
 
-#### Data Management
+#### Data Management & Integrity
 
 - **Data vs. Information:** Ensure your implementations treat raw data correctly so it can be processed into meaningful information.
-- **Data Integrity:** Avoid data redundancy and inconsistency in your structures. Ensure methods maintain data integrity and atomicity where applicable.
+- **Data Integrity:** Avoid data redundancy. Ensure methods (like `insert` or `remove`) maintain the structural integrity of the tree (e.g., preserving BST properties).
 
-#### Architecture & Design
+#### Architecture
 
-- **Abstraction:** Aim for a clear separation between the logical level (how users interact with the class) and the physical/internal level (how data is stored/managed internally).
-- **Schema Independence:** Internal changes to data storage (physical schema) should not break the public API (logical schema).
-
-#### Entity Modeling
-
-- **Entities:** Treat objects as distinct entities.
-- **Attributes:** Handle single-valued, composite, and multi-valued attributes appropriately within your classes.
-- **Constraints:** Enforce domain constraints (valid data types/values) and entity constraints (e.g., valid keys) in your implementations.
+- **Abstraction:** Keep the internal node logic (`Node`class) distinct from the tree operations (`BST` class).
+- **Schema Independence:** Internal changes to how nodes are linked should not break the public API of the `BST` or `BinaryTree` classes.
 
 ## Questions?
 
-If you have questions, feel free to open an issue or contact me via the method listed in the Code of Conduct.
+If you have questions, feel free to open an issue or contact me via the method listed in the [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ---
 
-_Thank you for helping improve stl_ext!_
+_Thank you for helping improve CPPX!_

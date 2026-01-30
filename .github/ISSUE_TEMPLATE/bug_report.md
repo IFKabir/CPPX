@@ -6,47 +6,47 @@ labels: bug
 assignees: ""
 ---
 
-# 🐛 Bug Report
+# Bug Report
 
 ## Description
 
-A clear and concise description of what the bug is.
+A description of what the bug is.
 
-## 💻 Minimal Reproducible Example
+## Minimal Reproducible Example
 
 Please provide a minimal C++ code snippet that reproduces the issue.
 
-```cpp
-#include "cppx.h" // or relevant header
-#include <iostream>
-
-int main() {
-    // Your code here that causes the crash/bug
-    return 0;
-}
+```C++
+//paste your code here
 ```
 
-## 📉 Expected vs. Actual Behavior
-Expected: [What you expected to happen]
+## Expected vs. Actual Behavior
 
-Actual: [What actually happened]
+Expected:
 
-## ⚙️ Environment
-OS: [e.g. Ubuntu 22.04]
+Actual:
 
-Compiler: [e.g. GCC 11.4, Clang 14]
+## Environment
 
-CMake Version: [e.g. 3.22]
+OS:
 
-GTest Version: [If known]
+Compiler:
 
-## 📋 Logs / Backtrace
-If applicable, paste the error logs or stack trace here.
+CMake Version:
 
-Plaintext
-Error output here...
+GTest Version:
 
-## ✅ Checklist
+## Logs / Backtrace
+
+If the program crashes or fails to build, please paste the output here.
+
+<details> <summary>Click to expand logs</summary>
+
+</details>
+
+## Checklist
+
 - [ ] I have checked existing issues to verify this isn't a duplicate.
 
-- [ ] I am running on a supported Linux distribution.
+- [ ] I am using a C++17 compliant compiler (or later).
+- [ ] I have tried running the unit tests (ctest) and they pass/fail.

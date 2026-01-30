@@ -6,25 +6,20 @@ labels: enhancement
 assignees: ""
 ---
 
-# 🚀 Feature Request
+# Feature Request
 
-## 🧐 Problem Statement
+## Problem Statement
 
-Is your feature request related to a problem? Please describe.
-_Ex: I'm always frustrated when I have to..._
+Describe your currentely faced problem.
 
-## 💡 Proposed Solution
+## Proposed Solution
 
-Describe the solution you'd like. If possible, provide a **hypothetical API usage**:
+Describe the solution
 
-```cpp
-// How would you like to use this new feature?
-stl_ext::NewStructure<int> ds;
-ds.do_something_cool();
-```
+## Alternatives Considered
 
-## 🔄 Alternatives Considered
-Describe any alternative solutions or workarounds you've considered.
+Describe any alternative solutions.
 
-## 📝 Additional Context
-Add any other context or screenshots about the feature request here.
+## Additional Context
+
+Add any other context here.
