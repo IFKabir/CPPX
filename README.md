@@ -1,115 +1,88 @@
 # CPPX Documentation
 
-CPPX is a Linux-only C++ shared library that implements utility functions complementing the STL for GNU toolchains. It features a comprehensive automated test suite powered by Google Test.
+CPPX is a cross-platform C++ template library providing extended data structures. It features a comprehensive automated test suite powered by Google Test.
 
 ## Requirements
 
-- Linux distribution
-- GNU-compatible C/C++ compiler (GCC) supporting C++14 or later
-- CMake (3.15+)
-- git
-- **clang-format** (for code styling)
-- **doxygen** (optional, for generating documentation)
-- Internet connection (required for CMake to fetch Google Test automatically)
+- **C++17 compatible compiler**: GCC, Clang, or MSVC.
+- **CMake (3.14+)**: Required for project configuration.
+- **clang-format**: Automates code styling during the build process.
+- **doxygen** **(Optional)**: Used for generating API documentation.
+- **Internet connection**: Required for CMake to fetch Google Test.
 
 ## Install Dependencies
 
 ### Ubuntu/Debian
 
-```text
+```bash
 sudo apt update
-sudo apt install build-essential cmake git clang-format doxygen graphviz
+sudo apt install build-essential cmake clang-format doxygen graphviz
 ```
 
 ### Fedora/RHEL
 
-```text
+```bash
 sudo dnf install cmake git clang-format doxygen graphviz
 ```
 
 ### Arch Linux
 
-```text
+```bash
 sudo pacman -S cmake git clang-format doxygen graphviz
 ```
 
-## Building & Testing (Developer Workflow)
+### Windows
 
-### Clone
+1. **Compiler**: Install [Visual Studio](https://visualstudio.microsoft.com/) (with "Desktop development with C++") or [MinGW-w64](https://www.mingw-w64.org/).
 
-```text
-git clone git@github.com:IFKabir/CPPX.git
-cd CPPX
-```
+2. **CMake**: Download and install from [cmake.org](https://cmake.org/download/).
 
-### Configure & Build
+3. **Tools**: Install `clang-format` and `doxygen`(often included with LLVM or via [Chocolatey](https://chocolatey.org/)).
 
-```text
-cd build
+## Developer Workflow
+
+#### Build & Test
+
+1. **Linux / macOS**:
+
+```bash
+mkdir build && cd build
 cmake ..
-make
+cmake --build .
 ```
 
-### Run Tests
+2. **Windows(PowerShell)**:
 
-```text
-cd build
-ctest
+```bash
+mkdir build; cd build
+cmake ..
+cmake --build .
 ```
 
-> **Note:** Auto-detects new `.cpp` files in `src/` and `test_suite/`.
-
-## Coding Style
-
-This project enforces Microsoft Style (Allman braces, 4-space indent).
-
-- Do not format manually. The build system (via `make`) applies the `.clang-format` rules to your source files automatically before compilation begins.
-
-- Ensure you use `using namespace std;` in implementation files (`.cpp`) if desired, but avoid it in header files (`.h`) to prevent namespace pollution.
-
-## Documentation
-
-### Generate Docs
-
-```text
-cmake --build build --target doc
-```
-
-> **Note:** If Doxygen is installed, documentation is built automatically alongside the library.
-
-### View Docs
-
-```text
-xdg-open build/docs/html/index.html
-```
-
-## Using the Library
-
-- **Option A (Fastest):** Use precompiled `libcppx.so` + `cppx.h` from release.
-- **Option B:** Build from source (artifacts: `build/bin/libcppx.so`, `include/cppx.h`)
+> **Note:** If the build finishes without error, it means all tests passed. If a test fails, the build command will exit with an error and display the failure details.
 
 ## Integration
 
-In your C++ file:
+To use this library in any of your existing projects:
 
-```cpp
-#include "cppx.h"
+1. **Copy Folders**: Move the `src` and `include` folders from this repository into your project directory.
+
+2. **Include Header**: In your C++ file, include the main header:
+
+```C++
+#include "include/cppx.h"
 ```
 
-### Compile
+3. **Compile**: Ensure your compiler knows where to look for the template files. You may need to add the src and include paths to your compilation command, otherwise run as usual.
 
-```text
-g++ -std=c++17 main.cpp ./libcppx.so -Wl,-rpath=. -o app
-```
+## Coding Style
 
-### Run
+- **Automatic Formatting**: The build system applies `clang-format` rules to all `.cpp`, `.tpp`, and `.h` files automatically.
 
-```text
-./app
-```
+- **Namespaces**: All components reside within the stl_ext namespace.
 
 ## Usage
 
-* **API Reference:** Generate and view the [local documentation](#documentation) for full class and function details.
+- **API Reference:** Generate and view the [local documentation](#documentation) for full class and function details.
 
-* **Version Info:** Check the [Releases page](https://github.com/IFKabir/CPPX/releases) for version-specific notes and changes.
+- **Version Info:** Check the [Releases page](https://github.com/IFKabir/CPPX/releases) for version-specific notes and changes.

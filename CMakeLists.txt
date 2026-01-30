@@ -53,6 +53,15 @@ target_include_directories(unit_tests PRIVATE include)
 include(GoogleTest)
 gtest_discover_tests(unit_tests)
 
+add_custom_command(
+    TARGET unit_tests
+    POST_BUILD
+    COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure -C $<CONFIG>
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    COMMENT "Running automated tests..."
+    VERBATIM
+)
+
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
     set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in)

@@ -11,7 +11,6 @@
 namespace stl_ext
 {
 
-// --- Node Declaration ---
 template <typename T> class Node
 {
   private:
@@ -41,7 +40,6 @@ template <typename T> class Node
     void set_right(std::unique_ptr<Node<T>> node);
 };
 
-// --- BinaryTree Declaration ---
 template <typename T> class BinaryTree
 {
   protected:
@@ -78,7 +76,6 @@ template <typename T> class BinaryTree
     void set_right(Node<T> *parent, std::unique_ptr<Node<T>> right_child);
 };
 
-// --- BST Declaration ---
 template <typename T> class BST : public BinaryTree<T>
 {
   private:
@@ -88,7 +85,7 @@ template <typename T> class BST : public BinaryTree<T>
     using BinaryTree<T>::p_head;
     void insert(const T &val);
     bool contains(const T &val) const;
-    void remove(const T &val); // Note: Full implementation required in tpp
+    void remove(const T &val);
     T get_min() const;
     T get_max() const;
     T get_successor(const T &val) const;
@@ -97,8 +94,6 @@ template <typename T> class BST : public BinaryTree<T>
 
 } // namespace stl_ext
 
-// --- IMPLEMENTATION INCLUDES ---
-// The compiler will look one folder up (..) then into src
 #include "binary_tree.tpp"
 #include "bst.tpp"
 #include "node.tpp"
