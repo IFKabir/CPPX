@@ -1,5 +1,5 @@
 PROJECT_NAME           = "CPPX"
-PROJECT_NUMBER         = "0.2.0"
+PROJECT_NUMBER         = "1.0.0"
 STRIP_FROM_PATH        = /home/ifkabir/Coading/CPPX \
                          /home/ifkabir/Coading/CPPX/build
 INPUT                  = /home/ifkabir/Coading/CPPX/include \

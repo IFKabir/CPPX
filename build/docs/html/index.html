@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">CPPX<span id="projectnumber">&#160;0.2.0</span>
+   <div id="projectname">CPPX<span id="projectnumber">&#160;1.0.0</span>
    </div>
   </td>
  </tr>
@@ -104,59 +104,42 @@ Windows</h2>
 <h1><a class="anchor" id="autotoc_md7"></a>
 Developer Workflow</h1>
 <h3><a class="anchor" id="autotoc_md8"></a>
-Configure and Build</h3>
-<div class="fragment"><div class="line">mkdir build</div>
-<div class="line">cd build</div>
+Build &amp; Test</h3>
+<ol type="1">
+<li><b>Linux / macOS</b>:</li>
+</ol>
+<div class="fragment"><div class="line">mkdir build &amp;&amp; cd build</div>
 <div class="line">cmake ..</div>
 <div class="line">cmake --build .</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md9"></a>
-Run Unit Tests</h3>
-<div class="fragment"><div class="line">cd build</div>
+</div><!-- fragment --><ol type="1">
+<li><b>Windows(PowerShell)</b>:</li>
+</ol>
+<div class="fragment"><div class="line">mkdir build; cd build</div>
 <div class="line">cmake ..</div>
-<div class="line">make</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md10"></a>
-Run Tests</h2>
-<div class="fragment"><div class="line">cd build</div>
-<div class="line">ctest</div>
+<div class="line">cmake --build .</div>
 </div><!-- fragment --><blockquote class="doxtable">
-<p>&zwj;<b>Note:</b> Auto-detects new <code>.cpp</code> files in <code>src/</code> and <code>test_suite/</code>. </p>
+<p>&zwj;<b>Note:</b> If the build finishes without error, it means all tests passed. If a test fails, the build command will exit with an error and display the failure details. </p>
 </blockquote>
-<h1><a class="anchor" id="autotoc_md11"></a>
-Coding Style</h1>
-<p>This project enforces Microsoft Style (Allman braces, 4-space indent).</p>
-<ul>
-<li>Do not format manually. The build system (via <code>make</code>) applies the <code>.clang-format</code> rules to your source files automatically before compilation begins.</li>
-<li>Ensure you use <code>using namespace std;</code> in implementation files (<code>.cpp</code>) if desired, but avoid it in header files (<code>.h</code>) to prevent namespace pollution.</li>
-</ul>
-<h1><a class="anchor" id="autotoc_md12"></a>
-Documentation</h1>
-<h2><a class="anchor" id="autotoc_md13"></a>
-Generate Docs</h2>
-<div class="fragment"><div class="line">cmake --build build --target doc</div>
-</div><!-- fragment --><blockquote class="doxtable">
-<p>&zwj;<b>Note:</b> If Doxygen is installed, documentation is built automatically alongside the library. </p>
-</blockquote>
-<h2><a class="anchor" id="autotoc_md14"></a>
-View Docs</h2>
-<div class="fragment"><div class="line">xdg-open build/docs/html/index.html</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md15"></a>
-Using the Library</h1>
-<ul>
-<li><b>Option A (Fastest):</b> Use precompiled <code>libcppx.so</code> + <code><a class="el" href="cppx_8h.html">cppx.h</a></code> from release.</li>
-<li><b>Option B:</b> Build from source (artifacts: <code>build/bin/libcppx.so</code>, <code><a class="el" href="cppx_8h.html">include/cppx.h</a></code>)</li>
-</ul>
-<h1><a class="anchor" id="autotoc_md16"></a>
+<h1><a class="anchor" id="autotoc_md9"></a>
 Integration</h1>
-<p>In your C++ file:</p>
-<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="cppx_8h.html">cppx.h</a>&quot;</span></div>
+<p>To use this library in any of your existing projects:</p>
+<ol type="1">
+<li><b>Copy Folders</b>: Move the <code>src</code> and <code>include</code> folders from this repository into your project directory.</li>
+<li><b>Include Header</b>: In your C++ file, include the main header:</li>
+</ol>
+<div class="fragment"><div class="line"> ++</div>
+<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="cppx_8h.html">include/cppx.h</a>&quot;</span></div>
 <div class="ttc" id="acppx_8h_html"><div class="ttname"><a href="cppx_8h.html">cppx.h</a></div></div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md17"></a>
-Compile</h2>
-<div class="fragment"><div class="line">g++ -std=c++17 main.cpp ./libcppx.so -Wl,-rpath=. -o app</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md18"></a>
-Run</h2>
-<div class="fragment"><div class="line">./app</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md19"></a>
+</div><!-- fragment --><ol type="1">
+<li><b>Compile</b>: Ensure your compiler knows where to look for the template files. You may need to add the src and include paths to your compilation command, otherwise run as usual.</li>
+</ol>
+<h1><a class="anchor" id="autotoc_md10"></a>
+Coding Style</h1>
+<ul>
+<li><b>Automatic Formatting</b>: The build system applies <code>clang-format</code> rules to all <code>.cpp</code>, <code>.tpp</code>, and <code>.h</code> files automatically.</li>
+<li><b>Namespaces</b>: All components reside within the <a class="el" href="namespacestl__ext.html">stl_ext</a> namespace.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md11"></a>
 Usage</h1>
 <ul>
 <li><b>API Reference:</b> Generate and view the local documentation for full class and function details.</li>

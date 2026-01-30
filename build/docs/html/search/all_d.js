@@ -6,5 +6,5 @@ var searchData=
   ['set_5froot_3',['set_root',['../classstl__ext_1_1BinaryTree.html#a7d4e85f6ac78d187ece493e949ac25ff',1,'stl_ext::BinaryTree']]],
   ['size_4',['size',['../classstl__ext_1_1BinaryTree.html#a7de03f614ceff79e0c00fb1047d7e0f7',1,'stl_ext::BinaryTree']]],
   ['stl_5fext_5',['stl_ext',['../namespacestl__ext.html',1,'']]],
-  ['style_6',['Coding Style',['../index.html#autotoc_md11',1,'']]]
+  ['style_6',['Coding Style',['../index.html#autotoc_md10',1,'']]]
 ];
