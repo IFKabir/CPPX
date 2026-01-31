@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
-project(CPPX VERSION 1.1.0 LANGUAGES CXX)
+project(CPPX VERSION 1.1.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -52,15 +52,6 @@ target_include_directories(unit_tests PRIVATE include)
 
 include(GoogleTest)
 gtest_discover_tests(unit_tests)
-
-add_custom_command(
-    TARGET unit_tests
-    POST_BUILD
-    COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure -C $<CONFIG>
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    COMMENT "Running automated tests..."
-    VERBATIM
-)
 
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
