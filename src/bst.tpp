@@ -84,6 +84,7 @@ template <typename T> inline std::unique_ptr<Node<T>> BST<T>::remove_impl(std::u
     }
     return node;
 }
+
 template <typename T> bool BST<T>::contains(const T &val) const
 {
     Node<T> *curr = this->p_head.get();
@@ -127,38 +128,72 @@ template <typename T> T BST<T>::get_max() const
 template <typename T> T BST<T>::get_successor(const T &val) const
 {
     Node<T> *curr = this->get_root();
-    Node<T> *succ = nullptr;
+    Node<T> *ancestor_succ = nullptr;
+
     while (curr)
     {
-        if (curr->get_data() > val)
+        if (val < curr->get_data())
         {
-            succ = curr;
+            ancestor_succ = curr;
             curr = curr->get_left();
         }
-        else
+        else if (val > curr->get_data())
+        {
             curr = curr->get_right();
+        }
+        else
+        {
+            if (curr->get_right())
+            {
+                Node<T> *temp = curr->get_right();
+                while (temp->get_left())
+                    temp = temp->get_left();
+                return temp->get_data();
+            }
+
+            if (ancestor_succ)
+                return ancestor_succ->get_data();
+
+            throw std::runtime_error("No successor");
+        }
     }
-    if (!succ)
-        throw std::runtime_error("No successor");
-    return succ->get_data();
+
+    throw std::runtime_error("Value not found");
 }
 
 template <typename T> T BST<T>::get_predecessor(const T &val) const
 {
     Node<T> *curr = this->get_root();
-    Node<T> *pred = nullptr;
+    Node<T> *ancestor_pred = nullptr;
+
     while (curr)
     {
-        if (curr->get_data() < val)
+        if (val < curr->get_data())
         {
-            pred = curr;
+            curr = curr->get_left();
+        }
+        else if (val > curr->get_data())
+        {
+            ancestor_pred = curr;
             curr = curr->get_right();
         }
         else
-            curr = curr->get_left();
+        {
+            if (curr->get_left())
+            {
+                Node<T> *temp = curr->get_left();
+                while (temp->get_right())
+                    temp = temp->get_right();
+                return temp->get_data();
+            }
+
+            if (ancestor_pred)
+                return ancestor_pred->get_data();
+
+            throw std::runtime_error("No predecessor");
+        }
     }
-    if (!pred)
-        throw std::runtime_error("No predecessor");
-    return pred->get_data();
+    throw std::runtime_error("Value not found");
 }
+
 } // namespace stl_ext
