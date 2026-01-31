@@ -17,13 +17,14 @@ template <typename T> class Node
     T m_data;
     std::unique_ptr<Node<T>> p_left;
     std::unique_ptr<Node<T>> p_right;
+    int m_height = 1;
 
   public:
-    explicit Node(T val) : m_data(val), p_left(nullptr), p_right(nullptr)
+    explicit Node(T val) : m_data(val), p_left(nullptr), p_right(nullptr), m_height(1)
     {
     }
     Node(T val, std::unique_ptr<Node<T>> left, std::unique_ptr<Node<T>> right)
-        : m_data(val), p_left(std::move(left)), p_right(std::move(right))
+        : m_data(val), p_left(std::move(left)), p_right(std::move(right)), m_height(1)
     {
     }
 
@@ -31,6 +32,8 @@ template <typename T> class Node
     Node &operator=(const Node &other);
     Node(Node &&other) noexcept = default;
     Node &operator=(Node &&other) noexcept = default;
+    int get_height_val() const { return m_height; } //getter
+    void set_height_val(int h) { m_height = h; } //setter
 
     const T &get_data() const;
     void set_data(const T &val);
@@ -76,14 +79,14 @@ template <typename T> class BinaryTree
     void set_right(Node<T> *parent, std::unique_ptr<Node<T>> right_child);
 };
 
-template <typename T> class BST : public BinaryTree<T>
+template <typename T> class BST : public BinaryTree<T>  
 {
   private:
     void insert_iterative(Node<T> *node, const T &val);
 
   public:
-    using BinaryTree<T>::p_head;
-    void insert(const T &val);
+    virtual using BinaryTree<T>::p_head;
+    virtual void insert(const T &val);
     bool contains(const T &val) const;
     void remove(const T &val);
     T get_min() const;
@@ -92,10 +95,27 @@ template <typename T> class BST : public BinaryTree<T>
     T get_predecessor(const T &val) const;
 };
 
+template <typename T> class AVLTree : public BST<T>
+{
+  
+  private:
+  int get_height(const Node<T> *node) const;
+  int get_balance_factor(const Node<T> *node) const;
+  void update_height(Node<T> *node);
+  node<T>* rotate_left(Node<T> *node);
+  node<T>* rotate_right(Node<T> *node);
+  node<T>* rebalace(Node<T> *node);
+
+  public:
+  void insert(const T&val) override;
+  void remove(const T&val) override;
+};
+
 } // namespace stl_ext
 
 #include "binary_tree.tpp"
 #include "bst.tpp"
 #include "node.tpp"
+#include "avl_tree.tpp"
 
 #endif
