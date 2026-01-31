@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -8,95 +8,245 @@
 using namespace std;
 using namespace stl_ext;
 
-TEST(BinaryTreeStressTest, MoveSemantics)
+TEST(BinaryTreeTest, DefaultConstructor)
 {
-    BinaryTree<int> tree1;
-    tree1.set_root(BinaryTree<int>::make_node(10));
-
-    BinaryTree<int> tree2(std::move(tree1));
-    EXPECT_TRUE(tree1.is_empty()) << "Tree1 should be empty after move constructor";
-    EXPECT_EQ(tree2.size(), 1) << "Tree2 should have inherited the node";
-
-    BinaryTree<int> tree3;
-    tree3.set_root(BinaryTree<int>::make_node(50));
-    tree3 = std::move(tree2);
-
-    EXPECT_TRUE(tree2.is_empty()) << "Tree2 should be empty after move assignment";
-    ASSERT_NE(tree3.get_root(), nullptr);
-    EXPECT_EQ(tree3.get_root()->get_data(), 10) << "Tree3 should now hold moved data (10) instead of 50";
+    BinaryTree<int> tree;
+    EXPECT_TRUE(tree.is_empty());
+    EXPECT_EQ(tree.size(), 0);
+    EXPECT_EQ(tree.get_root(), nullptr);
 }
 
-TEST(BinaryTreeStressTest, DeepCopyAndTraversal)
+TEST(BinaryTreeTest, SetRoot)
 {
-    BinaryTree<int> deep_tree;
-    deep_tree.set_root(BinaryTree<int>::make_node(0));
-    Node<int> *current = deep_tree.get_root();
+    BinaryTree<int> tree;
 
-    for (int i = 1; i < 100; ++i)
-    {
-        deep_tree.set_left(current, BinaryTree<int>::make_node(i));
-        current = current->get_left();
-    }
+    tree.set_root(BinaryTree<int>::make_node(10));
+    EXPECT_FALSE(tree.is_empty());
+    EXPECT_EQ(tree.size(), 1);
+    EXPECT_EQ(tree.get_root()->get_data(), 10);
 
-    EXPECT_EQ(deep_tree.size(), 100);
-    ASSERT_NE(current, nullptr);
-    EXPECT_EQ(current->get_data(), 99);
+    tree.set_root(BinaryTree<int>::make_node(99));
+    EXPECT_EQ(tree.size(), 1);
+    EXPECT_EQ(tree.get_root()->get_data(), 99);
 
-    BinaryTree<int> deep_copy = deep_tree;
-    EXPECT_EQ(deep_copy.size(), 100);
-
-    EXPECT_NE(deep_copy.get_root(), deep_tree.get_root()) << "Roots should point to different memory addresses";
-    EXPECT_EQ(deep_copy.get_root()->get_data(), deep_tree.get_root()->get_data());
+    tree.set_root(nullptr);
+    EXPECT_TRUE(tree.is_empty());
+    EXPECT_EQ(tree.size(), 0);
 }
 
-TEST(BinaryTreeStressTest, OverwriteStructure)
+TEST(BinaryTreeTest, MakeNodeFactory)
+{
+    auto node = BinaryTree<int>::make_node(5);
+    EXPECT_EQ(node->get_data(), 5);
+    EXPECT_EQ(node->get_left(), nullptr);
+
+    auto left = BinaryTree<int>::make_node(1);
+    auto right = BinaryTree<int>::make_node(2);
+    auto root = BinaryTree<int>::make_node(3, move(left), move(right));
+
+    EXPECT_EQ(root->get_data(), 3);
+    ASSERT_NE(root->get_left(), nullptr);
+    ASSERT_NE(root->get_right(), nullptr);
+    EXPECT_EQ(root->get_left()->get_data(), 1);
+}
+
+TEST(BinaryTreeTest, BuildRightSkewed)
 {
     BinaryTree<int> tree;
     tree.set_root(BinaryTree<int>::make_node(1));
-    auto r = tree.get_root();
 
-    tree.set_left(r, BinaryTree<int>::make_node(2));
-    tree.set_left(r->get_left(), BinaryTree<int>::make_node(3));
-    tree.set_right(r->get_left(), BinaryTree<int>::make_node(4));
+    Node<int> *curr = tree.get_root();
+    for (int i = 2; i <= 5; ++i)
+    {
+        tree.set_right(curr, BinaryTree<int>::make_node(i));
+        curr = curr->get_right();
+    }
 
-    EXPECT_EQ(tree.size(), 4);
-
-    tree.set_left(r, BinaryTree<int>::make_node(10));
-
-    EXPECT_EQ(tree.size(), 2) << "Size should decrease after overwriting a subtree";
-    ASSERT_NE(r->get_left(), nullptr);
-    EXPECT_EQ(r->get_left()->get_data(), 10);
-    EXPECT_EQ(r->get_left()->get_left(), nullptr) << "New node should have no children";
+    EXPECT_EQ(tree.size(), 5);
+    EXPECT_EQ(tree.get_root()->get_right()->get_data(), 2);
 }
 
-TEST(BinaryTreeStressTest, EmptyTree)
+TEST(BinaryTreeTest, BuildLeftSkewed)
 {
-    BinaryTree<float> empty_f;
-
-    EXPECT_EQ(empty_f.size(), 0);
-    EXPECT_TRUE(empty_f.is_empty());
-
-    BinaryTree<float> empty_copy(empty_f);
-    EXPECT_TRUE(empty_copy.is_empty());
-}
-
-TEST(BinaryTreeStressTest, AdvancedNodeConstruction)
-{
-    auto left_child = BinaryTree<int>::make_node(20);
-    auto right_child = BinaryTree<int>::make_node(30);
-
-    auto parent = BinaryTree<int>::make_node(10, std::move(left_child), std::move(right_child));
-
     BinaryTree<int> tree;
-    tree.set_root(std::move(parent));
+    tree.set_root(BinaryTree<int>::make_node(1));
+
+    Node<int> *curr = tree.get_root();
+    for (int i = 2; i <= 5; ++i)
+    {
+        tree.set_left(curr, BinaryTree<int>::make_node(i));
+        curr = curr->get_left();
+    }
+
+    EXPECT_EQ(tree.size(), 5);
+    EXPECT_EQ(tree.get_root()->get_left()->get_data(), 2);
+}
+
+TEST(BinaryTreeTest, SetChildrenLogic)
+{
+    BinaryTree<int> tree;
+    tree.set_root(BinaryTree<int>::make_node(10));
+    auto root = tree.get_root();
+
+    tree.set_left(root, BinaryTree<int>::make_node(5));
+    ASSERT_NE(root->get_left(), nullptr);
+    EXPECT_EQ(root->get_left()->get_data(), 5);
+    EXPECT_EQ(tree.size(), 2);
+
+    tree.set_right(root, BinaryTree<int>::make_node(15));
+    ASSERT_NE(root->get_right(), nullptr);
+    EXPECT_EQ(root->get_right()->get_data(), 15);
+    EXPECT_EQ(tree.size(), 3);
+}
+
+TEST(BinaryTreeTest, PruneSubtree)
+{
+    BinaryTree<int> tree;
+    tree.set_root(BinaryTree<int>::make_node(10));
+    auto root = tree.get_root();
+
+    tree.set_left(root, BinaryTree<int>::make_node(20));
+    tree.set_left(root->get_left(), BinaryTree<int>::make_node(30));
 
     EXPECT_EQ(tree.size(), 3);
-    ASSERT_NE(tree.get_root(), nullptr);
+
+    tree.set_left(root, nullptr);
+
+    EXPECT_EQ(tree.size(), 1);
+    EXPECT_EQ(root->get_left(), nullptr);
+}
+
+TEST(BinaryTreeTest, OverwriteSubtreeUpdateSize)
+{
+    BinaryTree<int> tree;
+    tree.set_root(BinaryTree<int>::make_node(1));
+    auto root = tree.get_root();
+
+    auto left_child = BinaryTree<int>::make_node(2);
+    left_child->set_left(BinaryTree<int>::make_node(3));
+    left_child->set_right(BinaryTree<int>::make_node(4));
+
+    tree.set_left(root, move(left_child));
+    EXPECT_EQ(tree.size(), 4);
+
+    tree.set_left(root, BinaryTree<int>::make_node(99));
+
+    EXPECT_EQ(tree.size(), 2);
+    EXPECT_EQ(root->get_left()->get_data(), 99);
+    EXPECT_EQ(root->get_left()->get_left(), nullptr);
+}
+
+TEST(BinaryTreeTest, CopyConstructorDeepCopy)
+{
+    BinaryTree<int> original;
+    original.set_root(BinaryTree<int>::make_node(1));
+    original.set_left(original.get_root(), BinaryTree<int>::make_node(2));
+    original.set_right(original.get_root(), BinaryTree<int>::make_node(3));
+
+    BinaryTree<int> copy = original;
+
+    EXPECT_EQ(copy.size(), 3);
+    EXPECT_NE(copy.get_root(), original.get_root());
+    EXPECT_NE(copy.get_root()->get_left(), original.get_root()->get_left());
+
+    EXPECT_EQ(copy.get_root()->get_data(), 1);
+    EXPECT_EQ(copy.get_root()->get_left()->get_data(), 2);
+}
+
+TEST(BinaryTreeTest, CopyAssignmentOperator)
+{
+    BinaryTree<int> original;
+    original.set_root(BinaryTree<int>::make_node(100));
+
+    BinaryTree<int> copy;
+    copy.set_root(BinaryTree<int>::make_node(5));
+
+    copy = original;
+
+    EXPECT_EQ(copy.size(), 1);
+    EXPECT_EQ(copy.get_root()->get_data(), 100);
+    EXPECT_NE(copy.get_root(), original.get_root());
+}
+
+TEST(BinaryTreeTest, CopySelfAssignment)
+{
+    BinaryTree<int> tree;
+    tree.set_root(BinaryTree<int>::make_node(10));
+
+    tree = tree;
+
+    EXPECT_EQ(tree.size(), 1);
     EXPECT_EQ(tree.get_root()->get_data(), 10);
+}
 
-    ASSERT_NE(tree.get_root()->get_left(), nullptr);
-    EXPECT_EQ(tree.get_root()->get_left()->get_data(), 20);
+TEST(BinaryTreeTest, MoveConstructor)
+{
+    BinaryTree<int> original;
+    original.set_root(BinaryTree<int>::make_node(10));
 
-    ASSERT_NE(tree.get_root()->get_right(), nullptr);
-    EXPECT_EQ(tree.get_root()->get_right()->get_data(), 30);
+    BinaryTree<int> moved_to(move(original));
+
+    EXPECT_TRUE(original.is_empty());
+    EXPECT_EQ(original.get_root(), nullptr);
+
+    EXPECT_EQ(moved_to.size(), 1);
+    EXPECT_EQ(moved_to.get_root()->get_data(), 10);
+}
+
+TEST(BinaryTreeTest, MoveAssignment)
+{
+    BinaryTree<int> original;
+    original.set_root(BinaryTree<int>::make_node(42));
+
+    BinaryTree<int> target;
+    target.set_root(BinaryTree<int>::make_node(1));
+
+    target = move(original);
+
+    EXPECT_TRUE(original.is_empty());
+    EXPECT_EQ(target.size(), 1);
+    EXPECT_EQ(target.get_root()->get_data(), 42);
+}
+
+TEST(BinaryTreeTest, MoveSelfAssignment)
+{
+    BinaryTree<int> tree;
+    tree.set_root(BinaryTree<int>::make_node(10));
+
+    tree = move(tree);
+
+    EXPECT_FALSE(tree.is_empty());
+    if (!tree.is_empty())
+    {
+        EXPECT_EQ(tree.get_root()->get_data(), 10);
+    }
+}
+
+TEST(BinaryTreeTest, StringTypeSupport)
+{
+    BinaryTree<std::string> tree;
+    tree.set_root(BinaryTree<std::string>::make_node("Root"));
+    tree.set_left(tree.get_root(), BinaryTree<std::string>::make_node("Left"));
+
+    EXPECT_EQ(tree.size(), 2);
+    EXPECT_EQ(tree.get_root()->get_data(), "Root");
+    EXPECT_EQ(tree.get_root()->get_left()->get_data(), "Left");
+
+    BinaryTree<std::string> copy = tree;
+    EXPECT_EQ(copy.get_root()->get_data(), "Root");
+    EXPECT_NE(copy.get_root(), tree.get_root());
+}
+
+TEST(BinaryTreeTest, TraversalSmokeTest)
+{
+    BinaryTree<int> tree;
+
+    EXPECT_NO_THROW(tree.print_preorder());
+    EXPECT_NO_THROW(tree.print_inorder());
+
+    tree.set_root(BinaryTree<int>::make_node(1));
+    tree.set_left(tree.get_root(), BinaryTree<int>::make_node(2));
+
+    EXPECT_NO_THROW(tree.print_postorder());
+    EXPECT_NO_THROW(tree.print_levelorder());
 }
