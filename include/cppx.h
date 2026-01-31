@@ -11,8 +11,13 @@
 namespace stl_ext
 {
 
+template <typename T> class BST;
+
 template <typename T> class Node
 {
+
+    friend class BST<T>;
+
   private:
     T m_data;
     std::unique_ptr<Node<T>> p_left;
@@ -84,6 +89,7 @@ template <typename T> class BST : public BinaryTree<T>
 {
   private:
     void insert_iterative(Node<T> *node, const T &val);
+    std::unique_ptr<Node<T>> remove_impl(std::unique_ptr<Node<T>> node, const T &val);
 
   public:
     using BinaryTree<T>::p_head;
@@ -118,9 +124,9 @@ template <typename T> class AVLTree : public BST<T>
 
 } // namespace stl_ext
 
-#include "avl.tpp"
-#include "binary_tree.tpp"
-#include "bst.tpp"
-#include "node.tpp"
+#include "../src/avl.tpp"
+#include "../src/binary_tree.tpp"
+#include "../src/bst.tpp"
+#include "../src/node.tpp"
 
 #endif
