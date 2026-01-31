@@ -34,6 +34,11 @@ template <typename T> class Node
     Node &operator=(Node &&other) noexcept = default;
     int get_height_val() const { return m_height; } //getter
     void set_height_val(int h) { m_height = h; } //setter
+    // Moves the left child out of this node and returns it (ownership transfer)
+    std::unique_ptr<Node<T>> detach_left() { return std::move(p_left); }
+
+    // Moves the right child out of this node and returns it (ownership transfer)
+    std::unique_ptr<Node<T>> detach_right() { return std::move(p_right); }
 
     const T &get_data() const;
     void set_data(const T &val);
@@ -85,10 +90,10 @@ template <typename T> class BST : public BinaryTree<T>
     void insert_iterative(Node<T> *node, const T &val);
 
   public:
-    virtual using BinaryTree<T>::p_head;
+    using BinaryTree<T>::p_head;
     virtual void insert(const T &val);
     bool contains(const T &val) const;
-    void remove(const T &val);
+    virtual void remove(const T &val);
     T get_min() const;
     T get_max() const;
     T get_successor(const T &val) const;
@@ -98,14 +103,20 @@ template <typename T> class BST : public BinaryTree<T>
 template <typename T> class AVLTree : public BST<T>
 {
   
+  
   private:
-  int get_height(const Node<T> *node) const;
-  int get_balance_factor(const Node<T> *node) const;
-  void update_height(Node<T> *node);
-  node<T>* rotate_left(Node<T> *node);
-  node<T>* rotate_right(Node<T> *node);
-  node<T>* rebalace(Node<T> *node);
+    int get_height(const Node<T> *node) const;
+    int get_balance_factor(const Node<T> *node) const;
+    void update_height(Node<T> *node);
 
+    
+    std::unique_ptr<Node<T>> rotate_left(std::unique_ptr<Node<T>> node);
+    std::unique_ptr<Node<T>> rotate_right(std::unique_ptr<Node<T>> node);
+    std::unique_ptr<Node<T>> rebalance(std::unique_ptr<Node<T>> node);
+
+    // Recursive helpers for insert and remove
+    std::unique_ptr<Node<T>> insert_helper(std::unique_ptr<Node<T>> node, const T &val);
+    std::unique_ptr<Node<T>> remove_helper(std::unique_ptr<Node<T>> node, const T &val);
   public:
   void insert(const T&val) override;
   void remove(const T&val) override;
@@ -116,6 +127,6 @@ template <typename T> class AVLTree : public BST<T>
 #include "binary_tree.tpp"
 #include "bst.tpp"
 #include "node.tpp"
-#include "avl_tree.tpp"
+#include "avl.tpp"
 
 #endif
