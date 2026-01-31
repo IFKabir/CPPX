@@ -17,13 +17,14 @@ template <typename T> class Node
     T m_data;
     std::unique_ptr<Node<T>> p_left;
     std::unique_ptr<Node<T>> p_right;
+    int m_height = 1;
 
   public:
-    explicit Node(T val) : m_data(val), p_left(nullptr), p_right(nullptr)
+    explicit Node(T val) : m_data(val), p_left(nullptr), p_right(nullptr), m_height(1)
     {
     }
     Node(T val, std::unique_ptr<Node<T>> left, std::unique_ptr<Node<T>> right)
-        : m_data(val), p_left(std::move(left)), p_right(std::move(right))
+        : m_data(val), p_left(std::move(left)), p_right(std::move(right)), m_height(1)
     {
     }
 
@@ -31,7 +32,10 @@ template <typename T> class Node
     Node &operator=(const Node &other);
     Node(Node &&other) noexcept = default;
     Node &operator=(Node &&other) noexcept = default;
-
+    int get_height_val() const;
+    void set_height_val(int h);
+    std::unique_ptr<Node<T>> detach_left();
+    std::unique_ptr<Node<T>> detach_right();
     const T &get_data() const;
     void set_data(const T &val);
     Node<T> *get_left() const;
@@ -83,17 +87,38 @@ template <typename T> class BST : public BinaryTree<T>
 
   public:
     using BinaryTree<T>::p_head;
-    void insert(const T &val);
+    virtual void insert(const T &val);
     bool contains(const T &val) const;
-    void remove(const T &val);
+    virtual void remove(const T &val);
     T get_min() const;
     T get_max() const;
     T get_successor(const T &val) const;
     T get_predecessor(const T &val) const;
 };
 
+template <typename T> class AVLTree : public BST<T>
+{
+
+  private:
+    int get_height(const Node<T> *node) const;
+    int get_balance_factor(const Node<T> *node) const;
+    void update_height(Node<T> *node);
+
+    std::unique_ptr<Node<T>> rotate_left(std::unique_ptr<Node<T>> node);
+    std::unique_ptr<Node<T>> rotate_right(std::unique_ptr<Node<T>> node);
+    std::unique_ptr<Node<T>> rebalance(std::unique_ptr<Node<T>> node);
+
+    std::unique_ptr<Node<T>> insert_helper(std::unique_ptr<Node<T>> node, const T &val);
+    std::unique_ptr<Node<T>> remove_helper(std::unique_ptr<Node<T>> node, const T &val);
+
+  public:
+    void insert(const T &val) override;
+    void remove(const T &val) override;
+};
+
 } // namespace stl_ext
 
+#include "avl.tpp"
 #include "binary_tree.tpp"
 #include "bst.tpp"
 #include "node.tpp"

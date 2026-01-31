@@ -81,74 +81,121 @@ $(document).ready(function() { init_codefold(0); });
   <div class="headertitle"><div class="title">node.tpp</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="node_8tpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacestl__ext.html">stl_ext</a></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span>{</div>
-<div class="foldopen" id="foldopen00003" data-start="{" data-end="}">
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno"><a class="line" href="classstl__ext_1_1Node.html#a0c15ded485592a4fd4f61b3897243e55">    3</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <a class="code hl_function" href="classstl__ext_1_1Node.html#a28714879af27fa9c38e577a7ff2f50a8">Node&lt;T&gt;::Node</a>(<span class="keyword">const</span> <a class="code hl_class" href="classstl__ext_1_1Node.html">Node</a> &amp;other) : m_data(other.m_data)</div>
+<a href="node_8tpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;<a class="code" href="cppx_8h.html">cppx.h</a>&quot;</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacestl__ext.html">stl_ext</a></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span>{</div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>    <span class="keywordflow">if</span> (other.p_left)</div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>        p_left = std::make_unique&lt;Node&lt;T&gt;&gt;(*other.p_left);</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    <span class="keywordflow">if</span> (other.p_right)</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>        p_right = std::make_unique&lt;Node&lt;T&gt;&gt;(*other.p_right);</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>}</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="foldopen" id="foldopen00006" data-start="{" data-end="}">
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="classstl__ext_1_1Node.html#a0c15ded485592a4fd4f61b3897243e55">    6</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <a class="code hl_function" href="classstl__ext_1_1Node.html#a28714879af27fa9c38e577a7ff2f50a8">Node&lt;T&gt;::Node</a>(<span class="keyword">const</span> <a class="code hl_class" href="classstl__ext_1_1Node.html">Node</a> &amp;<a class="code hl_class" href="classstl__ext_1_1Node.html">other</a>) : m_data(<a class="code hl_class" href="classstl__ext_1_1Node.html">other</a>.m_data), m_height(<a class="code hl_class" href="classstl__ext_1_1Node.html">other</a>.m_height)</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>{</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    <span class="keywordflow">if</span> (<a class="code hl_class" href="classstl__ext_1_1Node.html">other</a>.p_left)</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>        p_left = std::make_unique&lt;Node&lt;T&gt;&gt;(*<a class="code hl_class" href="classstl__ext_1_1Node.html">other</a>.p_left);</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    <span class="keywordflow">if</span> (<a class="code hl_class" href="classstl__ext_1_1Node.html">other</a>.p_right)</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>        p_right = std::make_unique&lt;Node&lt;T&gt;&gt;(*<a class="code hl_class" href="classstl__ext_1_1Node.html">other</a>.p_right);</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>}</div>
 </div>
-<div class="foldopen" id="foldopen00010" data-start="{" data-end="}">
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="classstl__ext_1_1Node.html#a531b69830f6afc18aaa64ef25625e001">   10</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <a class="code hl_class" href="classstl__ext_1_1Node.html">Node&lt;T&gt;</a> &amp;<a class="code hl_function" href="classstl__ext_1_1Node.html#a531b69830f6afc18aaa64ef25625e001">Node&lt;T&gt;::operator=</a>(<span class="keyword">const</span> <a class="code hl_class" href="classstl__ext_1_1Node.html">Node&lt;T&gt;</a> &amp;other)</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>{</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <span class="keywordflow">if</span> (<span class="keyword">this</span> == &amp;other)</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    m_data = other.m_data;</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    p_left = other.p_left ? std::make_unique&lt;Node&lt;T&gt;&gt;(*other.p_left) : <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    p_right = other.p_right ? std::make_unique&lt;Node&lt;T&gt;&gt;(*other.p_right) : <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>}</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="foldopen" id="foldopen00014" data-start="{" data-end="}">
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="classstl__ext_1_1Node.html#a531b69830f6afc18aaa64ef25625e001">   14</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <a class="code hl_class" href="classstl__ext_1_1Node.html">Node&lt;T&gt;</a> &amp;<a class="code hl_function" href="classstl__ext_1_1Node.html#a531b69830f6afc18aaa64ef25625e001">Node&lt;T&gt;::operator=</a>(<span class="keyword">const</span> <a class="code hl_class" href="classstl__ext_1_1Node.html">Node&lt;T&gt;</a> &amp;<a class="code hl_class" href="classstl__ext_1_1Node.html">other</a>)</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>{</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keywordflow">if</span> (<span class="keyword">this</span> == &amp;<a class="code hl_class" href="classstl__ext_1_1Node.html">other</a>)</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    m_data = <a class="code hl_class" href="classstl__ext_1_1Node.html">other</a>.m_data;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    m_height = <a class="code hl_class" href="classstl__ext_1_1Node.html">other</a>.m_height;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    p_left = <a class="code hl_class" href="classstl__ext_1_1Node.html">other</a>.p_left ? std::make_unique&lt;Node&lt;T&gt;&gt;(*<a class="code hl_class" href="classstl__ext_1_1Node.html">other</a>.p_left) : <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    p_right = <a class="code hl_class" href="classstl__ext_1_1Node.html">other</a>.p_right ? std::make_unique&lt;Node&lt;T&gt;&gt;(*<a class="code hl_class" href="classstl__ext_1_1Node.html">other</a>.p_right) : <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>}</div>
 </div>
-<div class="foldopen" id="foldopen00019" data-start="{" data-end="}">
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="classstl__ext_1_1Node.html#a6221b7456dc16566ac63aec5302cf043">   19</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">const</span> T &amp;<a class="code hl_function" href="classstl__ext_1_1Node.html#a6221b7456dc16566ac63aec5302cf043">Node&lt;T&gt;::get_data</a>()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="keywordflow">return</span> m_data;</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>}</div>
-</div>
-<div class="foldopen" id="foldopen00023" data-start="{" data-end="}">
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="classstl__ext_1_1Node.html#ad231b618f1c64ec93e03f8d42087a308">   23</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keywordtype">void</span> <a class="code hl_function" href="classstl__ext_1_1Node.html#ad231b618f1c64ec93e03f8d42087a308">Node&lt;T&gt;::set_data</a>(<span class="keyword">const</span> T &amp;val)</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>{</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    m_data = val;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>}</div>
-</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
 <div class="foldopen" id="foldopen00027" data-start="{" data-end="}">
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classstl__ext_1_1Node.html#ab3dbc96ed89133bce9b5a2cebd57cc84">   27</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <a class="code hl_class" href="classstl__ext_1_1Node.html">Node&lt;T&gt;</a> *<a class="code hl_function" href="classstl__ext_1_1Node.html#ab3dbc96ed89133bce9b5a2cebd57cc84">Node&lt;T&gt;::get_left</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classstl__ext_1_1Node.html#a270690e071666200867db751f1c7fe8a">   27</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code hl_function" href="classstl__ext_1_1Node.html#a270690e071666200867db751f1c7fe8a">Node&lt;T&gt;::get_height_val</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keywordflow">return</span> p_left.get();</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keywordflow">return</span> m_height;</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>}</div>
 </div>
-<div class="foldopen" id="foldopen00031" data-start="{" data-end="}">
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classstl__ext_1_1Node.html#a2b3914f3640ca232f4adaf7e2cc63182">   31</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keywordtype">void</span> <a class="code hl_function" href="classstl__ext_1_1Node.html#a2b3914f3640ca232f4adaf7e2cc63182">Node&lt;T&gt;::set_left</a>(std::unique_ptr&lt;<a class="code hl_class" href="classstl__ext_1_1Node.html">Node&lt;T&gt;</a>&gt; node)</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>{</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    p_left = std::move(node);</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>}</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="foldopen" id="foldopen00032" data-start="{" data-end="}">
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="classstl__ext_1_1Node.html#af2bc0b0de490c16ad53486b237c2995f">   32</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classstl__ext_1_1Node.html#af2bc0b0de490c16ad53486b237c2995f">Node&lt;T&gt;::set_height_val</a>(<span class="keywordtype">int</span> <a class="code hl_class" href="classstl__ext_1_1Node.html">h</a>)</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>{</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    m_height = <a class="code hl_class" href="classstl__ext_1_1Node.html">h</a>;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>}</div>
 </div>
-<div class="foldopen" id="foldopen00035" data-start="{" data-end="}">
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classstl__ext_1_1Node.html#a6ecd8ff6dd75f63809a95b6fb7a88e64">   35</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <a class="code hl_class" href="classstl__ext_1_1Node.html">Node&lt;T&gt;</a> *<a class="code hl_function" href="classstl__ext_1_1Node.html#a6ecd8ff6dd75f63809a95b6fb7a88e64">Node&lt;T&gt;::get_right</a>()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordflow">return</span> p_right.get();</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>}</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="foldopen" id="foldopen00037" data-start="{" data-end="}">
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="classstl__ext_1_1Node.html#a1ecc32d5d6c4a765cf30ec709002f3ed">   37</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">inline</span> std::unique_ptr&lt;Node&lt;T&gt;&gt; <a class="code hl_function" href="classstl__ext_1_1Node.html#a1ecc32d5d6c4a765cf30ec709002f3ed">Node&lt;T&gt;::detach_left</a>()</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>{</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordflow">return</span> std::move(p_left);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>}</div>
 </div>
-<div class="foldopen" id="foldopen00039" data-start="{" data-end="}">
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classstl__ext_1_1Node.html#aa5730fa7c0b5daaae14b0e66a3c16fda">   39</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keywordtype">void</span> <a class="code hl_function" href="classstl__ext_1_1Node.html#aa5730fa7c0b5daaae14b0e66a3c16fda">Node&lt;T&gt;::set_right</a>(std::unique_ptr&lt;<a class="code hl_class" href="classstl__ext_1_1Node.html">Node&lt;T&gt;</a>&gt; node)</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>{</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    p_right = std::move(node);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>}</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="foldopen" id="foldopen00042" data-start="{" data-end="}">
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="classstl__ext_1_1Node.html#a456ae330fae63632f38b33b5898425ae">   42</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">inline</span> std::unique_ptr&lt;Node&lt;T&gt;&gt; <a class="code hl_function" href="classstl__ext_1_1Node.html#a456ae330fae63632f38b33b5898425ae">Node&lt;T&gt;::detach_right</a>()</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>{</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordflow">return</span> std::move(p_right);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>}</div>
 </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>} <span class="comment">// namespace stl_ext</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="foldopen" id="foldopen00047" data-start="{" data-end="}">
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="classstl__ext_1_1Node.html#a6221b7456dc16566ac63aec5302cf043">   47</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">const</span> <a class="code hl_class" href="classstl__ext_1_1Node.html">T</a> &amp;<a class="code hl_function" href="classstl__ext_1_1Node.html#a6221b7456dc16566ac63aec5302cf043">Node&lt;T&gt;::get_data</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordflow">return</span> m_data;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>}</div>
+</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="foldopen" id="foldopen00052" data-start="{" data-end="}">
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="classstl__ext_1_1Node.html#ad231b618f1c64ec93e03f8d42087a308">   52</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keywordtype">void</span> <a class="code hl_function" href="classstl__ext_1_1Node.html#ad231b618f1c64ec93e03f8d42087a308">Node&lt;T&gt;::set_data</a>(<span class="keyword">const</span> <a class="code hl_class" href="classstl__ext_1_1Node.html">T</a> &amp;<a class="code hl_class" href="classstl__ext_1_1Node.html">val</a>)</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>{</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    m_data = <a class="code hl_class" href="classstl__ext_1_1Node.html">val</a>;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>}</div>
+</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="foldopen" id="foldopen00057" data-start="{" data-end="}">
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="classstl__ext_1_1Node.html#ab3dbc96ed89133bce9b5a2cebd57cc84">   57</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <a class="code hl_class" href="classstl__ext_1_1Node.html">Node&lt;T&gt;</a> *<a class="code hl_function" href="classstl__ext_1_1Node.html#ab3dbc96ed89133bce9b5a2cebd57cc84">Node&lt;T&gt;::get_left</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keywordflow">return</span> p_left.get();</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>}</div>
+</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="foldopen" id="foldopen00062" data-start="{" data-end="}">
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="classstl__ext_1_1Node.html#a2b3914f3640ca232f4adaf7e2cc63182">   62</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keywordtype">void</span> <a class="code hl_function" href="classstl__ext_1_1Node.html#a2b3914f3640ca232f4adaf7e2cc63182">Node&lt;T&gt;::set_left</a>(std::unique_ptr&lt;<a class="code hl_class" href="classstl__ext_1_1Node.html">Node&lt;T&gt;</a>&gt; <a class="code hl_class" href="classstl__ext_1_1Node.html">node</a>)</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>{</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    p_left = std::move(<a class="code hl_class" href="classstl__ext_1_1Node.html">node</a>);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>}</div>
+</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="foldopen" id="foldopen00067" data-start="{" data-end="}">
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="classstl__ext_1_1Node.html#a6ecd8ff6dd75f63809a95b6fb7a88e64">   67</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <a class="code hl_class" href="classstl__ext_1_1Node.html">Node&lt;T&gt;</a> *<a class="code hl_function" href="classstl__ext_1_1Node.html#a6ecd8ff6dd75f63809a95b6fb7a88e64">Node&lt;T&gt;::get_right</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keywordflow">return</span> p_right.get();</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>}</div>
+</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="foldopen" id="foldopen00072" data-start="{" data-end="}">
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="classstl__ext_1_1Node.html#aa5730fa7c0b5daaae14b0e66a3c16fda">   72</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keywordtype">void</span> <a class="code hl_function" href="classstl__ext_1_1Node.html#aa5730fa7c0b5daaae14b0e66a3c16fda">Node&lt;T&gt;::set_right</a>(std::unique_ptr&lt;<a class="code hl_class" href="classstl__ext_1_1Node.html">Node&lt;T&gt;</a>&gt; <a class="code hl_class" href="classstl__ext_1_1Node.html">node</a>)</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>{</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    p_right = std::move(<a class="code hl_class" href="classstl__ext_1_1Node.html">node</a>);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>}</div>
+</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>} <span class="comment">// namespace stl_ext</span></div>
 <div class="ttc" id="aclassstl__ext_1_1Node_html"><div class="ttname"><a href="classstl__ext_1_1Node.html">stl_ext::Node</a></div><div class="ttdef"><b>Definition</b> cppx.h:15</div></div>
-<div class="ttc" id="aclassstl__ext_1_1Node_html_a28714879af27fa9c38e577a7ff2f50a8"><div class="ttname"><a href="classstl__ext_1_1Node.html#a28714879af27fa9c38e577a7ff2f50a8">stl_ext::Node::Node</a></div><div class="ttdeci">Node(T val)</div><div class="ttdef"><b>Definition</b> cppx.h:22</div></div>
-<div class="ttc" id="aclassstl__ext_1_1Node_html_a2b3914f3640ca232f4adaf7e2cc63182"><div class="ttname"><a href="classstl__ext_1_1Node.html#a2b3914f3640ca232f4adaf7e2cc63182">stl_ext::Node::set_left</a></div><div class="ttdeci">void set_left(std::unique_ptr&lt; Node&lt; T &gt; &gt; node)</div><div class="ttdef"><b>Definition</b> node.tpp:31</div></div>
-<div class="ttc" id="aclassstl__ext_1_1Node_html_a531b69830f6afc18aaa64ef25625e001"><div class="ttname"><a href="classstl__ext_1_1Node.html#a531b69830f6afc18aaa64ef25625e001">stl_ext::Node::operator=</a></div><div class="ttdeci">Node &amp; operator=(const Node &amp;other)</div><div class="ttdef"><b>Definition</b> node.tpp:10</div></div>
-<div class="ttc" id="aclassstl__ext_1_1Node_html_a6221b7456dc16566ac63aec5302cf043"><div class="ttname"><a href="classstl__ext_1_1Node.html#a6221b7456dc16566ac63aec5302cf043">stl_ext::Node::get_data</a></div><div class="ttdeci">const T &amp; get_data() const</div><div class="ttdef"><b>Definition</b> node.tpp:19</div></div>
-<div class="ttc" id="aclassstl__ext_1_1Node_html_a6ecd8ff6dd75f63809a95b6fb7a88e64"><div class="ttname"><a href="classstl__ext_1_1Node.html#a6ecd8ff6dd75f63809a95b6fb7a88e64">stl_ext::Node::get_right</a></div><div class="ttdeci">Node&lt; T &gt; * get_right() const</div><div class="ttdef"><b>Definition</b> node.tpp:35</div></div>
-<div class="ttc" id="aclassstl__ext_1_1Node_html_aa5730fa7c0b5daaae14b0e66a3c16fda"><div class="ttname"><a href="classstl__ext_1_1Node.html#aa5730fa7c0b5daaae14b0e66a3c16fda">stl_ext::Node::set_right</a></div><div class="ttdeci">void set_right(std::unique_ptr&lt; Node&lt; T &gt; &gt; node)</div><div class="ttdef"><b>Definition</b> node.tpp:39</div></div>
-<div class="ttc" id="aclassstl__ext_1_1Node_html_ab3dbc96ed89133bce9b5a2cebd57cc84"><div class="ttname"><a href="classstl__ext_1_1Node.html#ab3dbc96ed89133bce9b5a2cebd57cc84">stl_ext::Node::get_left</a></div><div class="ttdeci">Node&lt; T &gt; * get_left() const</div><div class="ttdef"><b>Definition</b> node.tpp:27</div></div>
-<div class="ttc" id="aclassstl__ext_1_1Node_html_ad231b618f1c64ec93e03f8d42087a308"><div class="ttname"><a href="classstl__ext_1_1Node.html#ad231b618f1c64ec93e03f8d42087a308">stl_ext::Node::set_data</a></div><div class="ttdeci">void set_data(const T &amp;val)</div><div class="ttdef"><b>Definition</b> node.tpp:23</div></div>
+<div class="ttc" id="aclassstl__ext_1_1Node_html_a1ecc32d5d6c4a765cf30ec709002f3ed"><div class="ttname"><a href="classstl__ext_1_1Node.html#a1ecc32d5d6c4a765cf30ec709002f3ed">stl_ext::Node::detach_left</a></div><div class="ttdeci">std::unique_ptr&lt; Node&lt; T &gt; &gt; detach_left()</div><div class="ttdef"><b>Definition</b> node.tpp:37</div></div>
+<div class="ttc" id="aclassstl__ext_1_1Node_html_a270690e071666200867db751f1c7fe8a"><div class="ttname"><a href="classstl__ext_1_1Node.html#a270690e071666200867db751f1c7fe8a">stl_ext::Node::get_height_val</a></div><div class="ttdeci">int get_height_val() const</div><div class="ttdef"><b>Definition</b> node.tpp:27</div></div>
+<div class="ttc" id="aclassstl__ext_1_1Node_html_a28714879af27fa9c38e577a7ff2f50a8"><div class="ttname"><a href="classstl__ext_1_1Node.html#a28714879af27fa9c38e577a7ff2f50a8">stl_ext::Node::Node</a></div><div class="ttdeci">Node(T val)</div><div class="ttdef"><b>Definition</b> cppx.h:23</div></div>
+<div class="ttc" id="aclassstl__ext_1_1Node_html_a2b3914f3640ca232f4adaf7e2cc63182"><div class="ttname"><a href="classstl__ext_1_1Node.html#a2b3914f3640ca232f4adaf7e2cc63182">stl_ext::Node::set_left</a></div><div class="ttdeci">void set_left(std::unique_ptr&lt; Node&lt; T &gt; &gt; node)</div><div class="ttdef"><b>Definition</b> node.tpp:62</div></div>
+<div class="ttc" id="aclassstl__ext_1_1Node_html_a456ae330fae63632f38b33b5898425ae"><div class="ttname"><a href="classstl__ext_1_1Node.html#a456ae330fae63632f38b33b5898425ae">stl_ext::Node::detach_right</a></div><div class="ttdeci">std::unique_ptr&lt; Node&lt; T &gt; &gt; detach_right()</div><div class="ttdef"><b>Definition</b> node.tpp:42</div></div>
+<div class="ttc" id="aclassstl__ext_1_1Node_html_a531b69830f6afc18aaa64ef25625e001"><div class="ttname"><a href="classstl__ext_1_1Node.html#a531b69830f6afc18aaa64ef25625e001">stl_ext::Node::operator=</a></div><div class="ttdeci">Node &amp; operator=(const Node &amp;other)</div><div class="ttdef"><b>Definition</b> node.tpp:14</div></div>
+<div class="ttc" id="aclassstl__ext_1_1Node_html_a6221b7456dc16566ac63aec5302cf043"><div class="ttname"><a href="classstl__ext_1_1Node.html#a6221b7456dc16566ac63aec5302cf043">stl_ext::Node::get_data</a></div><div class="ttdeci">const T &amp; get_data() const</div><div class="ttdef"><b>Definition</b> node.tpp:47</div></div>
+<div class="ttc" id="aclassstl__ext_1_1Node_html_a6ecd8ff6dd75f63809a95b6fb7a88e64"><div class="ttname"><a href="classstl__ext_1_1Node.html#a6ecd8ff6dd75f63809a95b6fb7a88e64">stl_ext::Node::get_right</a></div><div class="ttdeci">Node&lt; T &gt; * get_right() const</div><div class="ttdef"><b>Definition</b> node.tpp:67</div></div>
+<div class="ttc" id="aclassstl__ext_1_1Node_html_aa5730fa7c0b5daaae14b0e66a3c16fda"><div class="ttname"><a href="classstl__ext_1_1Node.html#aa5730fa7c0b5daaae14b0e66a3c16fda">stl_ext::Node::set_right</a></div><div class="ttdeci">void set_right(std::unique_ptr&lt; Node&lt; T &gt; &gt; node)</div><div class="ttdef"><b>Definition</b> node.tpp:72</div></div>
+<div class="ttc" id="aclassstl__ext_1_1Node_html_ab3dbc96ed89133bce9b5a2cebd57cc84"><div class="ttname"><a href="classstl__ext_1_1Node.html#ab3dbc96ed89133bce9b5a2cebd57cc84">stl_ext::Node::get_left</a></div><div class="ttdeci">Node&lt; T &gt; * get_left() const</div><div class="ttdef"><b>Definition</b> node.tpp:57</div></div>
+<div class="ttc" id="aclassstl__ext_1_1Node_html_ad231b618f1c64ec93e03f8d42087a308"><div class="ttname"><a href="classstl__ext_1_1Node.html#ad231b618f1c64ec93e03f8d42087a308">stl_ext::Node::set_data</a></div><div class="ttdeci">void set_data(const T &amp;val)</div><div class="ttdef"><b>Definition</b> node.tpp:52</div></div>
+<div class="ttc" id="aclassstl__ext_1_1Node_html_af2bc0b0de490c16ad53486b237c2995f"><div class="ttname"><a href="classstl__ext_1_1Node.html#af2bc0b0de490c16ad53486b237c2995f">stl_ext::Node::set_height_val</a></div><div class="ttdeci">void set_height_val(int h)</div><div class="ttdef"><b>Definition</b> node.tpp:32</div></div>
+<div class="ttc" id="acppx_8h_html"><div class="ttname"><a href="cppx_8h.html">cppx.h</a></div></div>
 <div class="ttc" id="anamespacestl__ext_html"><div class="ttname"><a href="namespacestl__ext.html">stl_ext</a></div><div class="ttdef"><b>Definition</b> cppx.h:12</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
