@@ -1,3 +1,6 @@
+#include <algorithm>
+#include <vector>
+
 namespace stl_ext
 {
 template <typename T> void BST<T>::insert(const T &val)
@@ -9,17 +12,22 @@ template <typename T> void BST<T>::insert(const T &val)
     }
     insert_iterative(this->p_head.get(), val);
 }
+
 template <typename T> void BST<T>::insert_iterative(Node<T> *node, const T &val)
 {
     Node<T> *curr = node;
+    std::vector<Node<T> *> path;
+
     while (true)
     {
+        path.push_back(curr);
+
         if (val <= curr->get_data())
         {
             if (!curr->get_left())
             {
                 curr->set_left(BinaryTree<T>::make_node(val));
-                return;
+                break;
             }
             curr = curr->get_left();
         }
@@ -28,12 +36,21 @@ template <typename T> void BST<T>::insert_iterative(Node<T> *node, const T &val)
             if (!curr->get_right())
             {
                 curr->set_right(BinaryTree<T>::make_node(val));
-                return;
+                break;
             }
             curr = curr->get_right();
         }
     }
+    for (auto it = path.rbegin(); it != path.rend(); ++it)
+    {
+        Node<T> *ancestor = *it;
+        int h_left = ancestor->get_left() ? ancestor->get_left()->get_height_val() : 0;
+        int h_right = ancestor->get_right() ? ancestor->get_right()->get_height_val() : 0;
+
+        ancestor->set_height_val(1 + std::max(h_left, h_right));
+    }
 }
+
 template <typename T> bool BST<T>::contains(const T &val) const
 {
     Node<T> *curr = this->p_head.get();
@@ -48,11 +65,12 @@ template <typename T> bool BST<T>::contains(const T &val) const
     }
     return false;
 }
+
 template <typename T> void BST<T>::remove(const T &val)
 {
-    // [Add full removal logic here - same as your original bst.cpp file]
     throw std::runtime_error("Removal not fully implemented in this snippet");
 }
+
 template <typename T> T BST<T>::get_min() const
 {
     Node<T> *r = this->p_head.get();
@@ -62,6 +80,7 @@ template <typename T> T BST<T>::get_min() const
         r = r->get_left();
     return r->get_data();
 }
+
 template <typename T> T BST<T>::get_max() const
 {
     Node<T> *r = this->p_head.get();
@@ -71,6 +90,7 @@ template <typename T> T BST<T>::get_max() const
         r = r->get_right();
     return r->get_data();
 }
+
 template <typename T> T BST<T>::get_successor(const T &val) const
 {
     Node<T> *curr = this->get_root();
@@ -89,6 +109,7 @@ template <typename T> T BST<T>::get_successor(const T &val) const
         throw std::runtime_error("No successor");
     return succ->get_data();
 }
+
 template <typename T> T BST<T>::get_predecessor(const T &val) const
 {
     Node<T> *curr = this->get_root();

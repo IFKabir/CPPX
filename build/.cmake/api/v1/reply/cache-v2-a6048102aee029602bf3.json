@@ -1654,18 +1654,6 @@
 			"value" : "[/usr/bin/doxygen][cfound components: doxygen dot ][v1.9.8()]"
 		},
 		{
-			"name" : "FIND_PACKAGE_MESSAGE_DETAILS_Python3",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Details about finding Python3"
-				}
-			],
-			"type" : "INTERNAL",
-			"value" : "[/usr/bin/python3][cfound components: Interpreter ][v3.12.3()]"
-		},
-		{
 			"name" : "FIND_PACKAGE_MESSAGE_DETAILS_Threads",
 			"properties" : 
 			[
@@ -1724,78 +1712,6 @@
 			],
 			"type" : "INTERNAL",
 			"value" : "/usr/local"
-		},
-		{
-			"name" : "_Python3_Compiler_REASON_FAILURE",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Compiler reason failure"
-				}
-			],
-			"type" : "INTERNAL",
-			"value" : ""
-		},
-		{
-			"name" : "_Python3_Development_REASON_FAILURE",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Development reason failure"
-				}
-			],
-			"type" : "INTERNAL",
-			"value" : ""
-		},
-		{
-			"name" : "_Python3_EXECUTABLE",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Path to a program."
-				}
-			],
-			"type" : "INTERNAL",
-			"value" : "/usr/bin/python3"
-		},
-		{
-			"name" : "_Python3_INTERPRETER_PROPERTIES",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Python3 Properties"
-				}
-			],
-			"type" : "INTERNAL",
-			"value" : "Python;3;12;3;64;32;;cpython-312-x86_64-linux-gnu;abi3;/usr/lib/python3.12;/usr/lib/python3.12;/usr/local/lib/python3.12/dist-packages;/usr/local/lib/python3.12/dist-packages"
-		},
-		{
-			"name" : "_Python3_INTERPRETER_SIGNATURE",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : ""
-				}
-			],
-			"type" : "INTERNAL",
-			"value" : "4c8bfa8951e99fa32e4000a94f8c04a2"
-		},
-		{
-			"name" : "_Python3_NumPy_REASON_FAILURE",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "NumPy reason failure"
-				}
-			],
-			"type" : "INTERNAL",
-			"value" : ""
 		},
 		{
 			"name" : "cmake_package_name",
