@@ -6,8 +6,8 @@ CPPX currently support the following versions of the `stl_ext` library. If you a
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.1.1   | :white_check_mark: |
-| < 1.0.0 | :x:                |
+| 1.1.2   | :white_check_mark: |
+| < 1.1.2 | :x:                |
 
 ## Reporting a Vulnerability
 

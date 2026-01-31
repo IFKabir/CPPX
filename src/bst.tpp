@@ -51,6 +51,39 @@ template <typename T> void BST<T>::insert_iterative(Node<T> *node, const T &val)
     }
 }
 
+template <typename T> inline std::unique_ptr<Node<T>> BST<T>::remove_impl(std::unique_ptr<Node<T>> node, const T &val)
+{
+    if (!node)
+        return nullptr;
+
+    if (val < node->m_data)
+    {
+        node->p_left = remove_impl(std::move(node->p_left), val);
+    }
+    else if (val > node->m_data)
+    {
+        node->p_right = remove_impl(std::move(node->p_right), val);
+    }
+    else
+    {
+        if (!node->p_left)
+            return std::move(node->p_right);
+
+        if (!node->p_right)
+            return std::move(node->p_left);
+
+        Node<T> *temp = node->p_right.get();
+        while (temp->p_left)
+        {
+            temp = temp->p_left.get();
+        }
+
+        node->m_data = temp->m_data;
+
+        node->p_right = remove_impl(std::move(node->p_right), temp->m_data);
+    }
+    return node;
+}
 template <typename T> bool BST<T>::contains(const T &val) const
 {
     Node<T> *curr = this->p_head.get();
@@ -68,7 +101,7 @@ template <typename T> bool BST<T>::contains(const T &val) const
 
 template <typename T> void BST<T>::remove(const T &val)
 {
-    throw std::runtime_error("Removal not fully implemented in this snippet");
+    this->p_head = remove_impl(std::move(this->p_head), val);
 }
 
 template <typename T> T BST<T>::get_min() const

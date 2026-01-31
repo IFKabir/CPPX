@@ -1,5 +1,3 @@
-#include "cppx.h"
-
 namespace stl_ext
 {
 
