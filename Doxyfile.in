@@ -39,13 +39,7 @@ HTML_EXTRA_FILES       = "@PROJECT_SOURCE_DIR@/docs/logo.svg" \
                          "@AWESOME_CSS_DIR@/doxygen-awesome-paragraph-link.js" \
                          "@AWESOME_CSS_DIR@/doxygen-awesome-interactive-toc.js"
 
-# SCRIPTS: Load these in the HTML head
-HTML_EXTRA_SCRIPTS     = "@AWESOME_CSS_DIR@/doxygen-awesome-darkmode-toggle.js" \
-                         "@AWESOME_CSS_DIR@/doxygen-awesome-fragment-copy-button.js" \
-                         "@AWESOME_CSS_DIR@/doxygen-awesome-paragraph-link.js" \
-                         "@AWESOME_CSS_DIR@/doxygen-awesome-interactive-toc.js" \
-                         "@PROJECT_SOURCE_DIR@/docs/header_setup.js"
-
+# HTML_HEADER = "@PROJECT_SOURCE_DIR@/docs/header.html"
 HTML_FOOTER = "@PROJECT_SOURCE_DIR@/docs/footer.html"
 
 # Visual Enhancements
@@ -62,3 +56,7 @@ TEMPLATE_RELATIONS     = YES
 INCLUDE_GRAPH          = YES
 INCLUDED_BY_GRAPH      = YES
 TREEVIEW_WIDTH = 335
+# Enable the search engine
+SEARCHENGINE           = YES
+SERVER_BASED_SEARCH    = NO
+EXTERNAL_SEARCH        = NO

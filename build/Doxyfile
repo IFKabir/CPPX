@@ -39,13 +39,7 @@ HTML_EXTRA_FILES       = "/home/ifkabir/Coading/CPPX/docs/logo.svg" \
                          "/home/ifkabir/Coading/CPPX/build/_deps/doxygen-awesome-css-src/doxygen-awesome-paragraph-link.js" \
                          "/home/ifkabir/Coading/CPPX/build/_deps/doxygen-awesome-css-src/doxygen-awesome-interactive-toc.js"
 
-# SCRIPTS: Load these in the HTML head
-HTML_EXTRA_SCRIPTS     = "/home/ifkabir/Coading/CPPX/build/_deps/doxygen-awesome-css-src/doxygen-awesome-darkmode-toggle.js" \
-                         "/home/ifkabir/Coading/CPPX/build/_deps/doxygen-awesome-css-src/doxygen-awesome-fragment-copy-button.js" \
-                         "/home/ifkabir/Coading/CPPX/build/_deps/doxygen-awesome-css-src/doxygen-awesome-paragraph-link.js" \
-                         "/home/ifkabir/Coading/CPPX/build/_deps/doxygen-awesome-css-src/doxygen-awesome-interactive-toc.js" \
-                         "/home/ifkabir/Coading/CPPX/docs/header_setup.js"
-
+# HTML_HEADER = "/home/ifkabir/Coading/CPPX/docs/header.html"
 HTML_FOOTER = "/home/ifkabir/Coading/CPPX/docs/footer.html"
 
 # Visual Enhancements
@@ -62,3 +56,7 @@ TEMPLATE_RELATIONS     = YES
 INCLUDE_GRAPH          = YES
 INCLUDED_BY_GRAPH      = YES
 TREEVIEW_WIDTH = 335
+# Enable the search engine
+SEARCHENGINE           = YES
+SERVER_BASED_SEARCH    = NO
+EXTERNAL_SEARCH        = NO
