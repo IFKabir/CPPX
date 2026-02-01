@@ -3,7 +3,6 @@ name: Deploy Doxygen to Pages
 on:
   push:
     branches: ["main"]
-
   workflow_dispatch:
 
 permissions:
@@ -35,6 +34,9 @@ jobs:
 
       - name: Generate Documentation
         run: cmake --build build --target doc_doxygen
+
+      - name: Disable Jekyll
+        run: touch build/docs/html/.nojekyll
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

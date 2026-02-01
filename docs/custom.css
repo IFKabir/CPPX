@@ -3,7 +3,7 @@ body {
   overflow: hidden !important;
   height: 100% !important;
   margin: 0 !important;
-  padding: 0 !important; /* Added padding reset */
+  padding: 0 !important;
 }
 
 #doc-content {
@@ -13,7 +13,6 @@ body {
   box-sizing: border-box;
 }
 
-/* --- FIX 2: REFINED STICKY FOOTER --- */
 .footer {
   position: fixed !important;
   bottom: 0 !important;
@@ -21,23 +20,19 @@ body {
   left: var(--side-nav-fixed-width) !important;
   width: auto !important;
 
-  /* TIGHTER SIZE: Reduced height/padding so it doesn't float "up" */
-  height: 30px !important; /* Fixed compact height */
-  padding: 5px 20px !important; /* Slimmer padding */
-  margin: 0 !important; /* Force zero margin */
+  height: 30px !important;
+  padding: 5px 20px !important;
+  margin: 0 !important;
 
-  /* ALIGNMENT */
   display: flex !important;
   align-items: center !important;
   justify-content: flex-end !important;
 
-  /* VISUALS */
   background-color: var(--page-background-color) !important;
   border-top: 1px solid var(--separator-color);
   z-index: 999;
 }
 
-/* Mobile fix */
 @media screen and (max-width: 767px) {
   .footer {
     left: 0 !important;

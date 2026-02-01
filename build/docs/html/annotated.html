@@ -138,13 +138,12 @@ $(document).ready(function(){initNavTree('annotated.html',''); initResizable(); 
         var link = document.createElement('link');
         link.type = 'image/svg+xml';
         link.rel = 'icon';
-        link.href = 'logo.svg'; // This points to the file copied by HTML_EXTRA_FILES
+        link.href = 'logo.svg';
         document.getElementsByTagName('head')[0].appendChild(link);
     })();
 </script>
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function() {
-        // If the title is the annoying duplicate "CPPX: CPPX", change it to just "CPPX"
         if (document.title === "CPPX: CPPX") {
             document.title = "CPPX";
         }
