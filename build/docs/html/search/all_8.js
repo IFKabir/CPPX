@@ -1,4 +1,9 @@
 var searchData=
 [
-  ['make_5fnode_0',['make_node',['../classstl__ext_1_1BinaryTree.html#a0e3441654c4ace8fb3c924e9bae21709',1,'stl_ext::BinaryTree::make_node(const T &amp;val)'],['../classstl__ext_1_1BinaryTree.html#a2abd70ce3ed70f85dc67fd05c1574e2b',1,'stl_ext::BinaryTree::make_node(const T &amp;val, std::unique_ptr&lt; Node&lt; T &gt; &gt; left, std::unique_ptr&lt; Node&lt; T &gt; &gt; right)']]]
+  ['enforcement_0',['Enforcement',['../md_docs_2CODE__OF__CONDUCT.html#autotoc_md5',1,'']]],
+  ['enforcement_20guidelines_1',['Enforcement Guidelines',['../md_docs_2CODE__OF__CONDUCT.html#autotoc_md6',1,'']]],
+  ['enforcement_20responsibilities_2',['Enforcement Responsibilities',['../md_docs_2CODE__OF__CONDUCT.html#autotoc_md3',1,'']]],
+  ['enhancements_3',['2. Suggesting Enhancements',['../md_docs_2CONTRIBUTING.html#autotoc_md16',1,'']]],
+  ['example_20usage_4',['Example Usage',['../index.html#autotoc_md34',1,'']]],
+  ['expect_5',['What to Expect',['../md_docs_2SECURITY.html#autotoc_md51',1,'']]]
 ];

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['_7ebinarytree_0',['~BinaryTree',['../classstl__ext_1_1BinaryTree.html#a4f9ec092437a24cd59068ac3bd881952',1,'stl_ext::BinaryTree']]]
+  ['questions_0',['Questions?',['../md_docs_2CONTRIBUTING.html#autotoc_md29',1,'']]],
+  ['quick_20navigation_1',['Quick Navigation',['../index.html#autotoc_md32',1,'']]]
 ];

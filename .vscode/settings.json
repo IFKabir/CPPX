@@ -1,4 +1,7 @@
 {
+  "css.validate": false,
+  "scss.validate": false,
+  "less.validate": false,
   "files.associations": {
     "random": "cpp",
     "string": "cpp",

@@ -1,25 +1,59 @@
+# Project Settings
 PROJECT_NAME           = "@CMAKE_PROJECT_NAME@"
 PROJECT_NUMBER         = "@PROJECT_VERSION@"
-STRIP_FROM_PATH        = @PROJECT_SOURCE_DIR@ \
-                         @PROJECT_BINARY_DIR@
+PROJECT_BRIEF          = "A Modern C++ Utility Library"
+PROJECT_LOGO           = "@PROJECT_SOURCE_DIR@/docs/logo.svg" 
+
+# Inputs
+STRIP_FROM_PATH        = @PROJECT_SOURCE_DIR@ @PROJECT_BINARY_DIR@
 INPUT                  = @PROJECT_SOURCE_DIR@/include \
                          @PROJECT_SOURCE_DIR@/src \
-                         @PROJECT_SOURCE_DIR@/README.md
-
-# Updated patterns to include .tpp and .hpp
+                         @PROJECT_SOURCE_DIR@/README.md \
+                         @PROJECT_SOURCE_DIR@/docs
 FILE_PATTERNS          = *.h *.hpp *.cpp *.tpp *.md
-
-# Ensure .tpp is treated as C++
 EXTENSION_MAPPING      = tpp=C++
-
 RECURSIVE              = YES
-USE_MDFILE_AS_MAINPAGE = @PROJECT_SOURCE_DIR@/README.md
+USE_MDFILE_AS_MAINPAGE = @PROJECT_SOURCE_DIR@/docs/mainpage.md
 
+# Output
 OUTPUT_DIRECTORY       = @CMAKE_CURRENT_BINARY_DIR@/docs
 GENERATE_HTML          = YES
 GENERATE_LATEX         = NO
 
-# Visuals
+# --- THEME SETTINGS (Sidebar + Dark Mode) ---
+GENERATE_TREEVIEW      = YES
+DISABLE_INDEX          = NO
+FULL_SIDEBAR           = NO
+HTML_COLORSTYLE        = LIGHT 
+
+# CSS: Main Theme + Sidebar + Dark Mode Tweaks
+HTML_EXTRA_STYLESHEET  = "@AWESOME_CSS_DIR@/doxygen-awesome.css" \
+                         "@AWESOME_CSS_DIR@/doxygen-awesome-sidebar-only.css" \
+                         "@AWESOME_CSS_DIR@/doxygen-awesome-sidebar-only-darkmode-toggle.css"
+
+# FILES: Copy these to the build folder so the browser can find them
+HTML_EXTRA_FILES       = "@PROJECT_SOURCE_DIR@/docs/logo.svg" \
+                         "@AWESOME_CSS_DIR@/doxygen-awesome-darkmode-toggle.js" \
+                         "@AWESOME_CSS_DIR@/doxygen-awesome-fragment-copy-button.js" \
+                         "@AWESOME_CSS_DIR@/doxygen-awesome-paragraph-link.js" \
+                         "@AWESOME_CSS_DIR@/doxygen-awesome-interactive-toc.js"
+
+# SCRIPTS: Load these in the HTML head
+HTML_EXTRA_SCRIPTS     = "@AWESOME_CSS_DIR@/doxygen-awesome-darkmode-toggle.js" \
+                         "@AWESOME_CSS_DIR@/doxygen-awesome-fragment-copy-button.js" \
+                         "@AWESOME_CSS_DIR@/doxygen-awesome-paragraph-link.js" \
+                         "@AWESOME_CSS_DIR@/doxygen-awesome-interactive-toc.js" \
+                         "@PROJECT_SOURCE_DIR@/docs/header_setup.js"
+
+# Visual Enhancements
 JAVADOC_AUTOBRIEF      = YES
+QT_AUTOBRIEF           = YES
 EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = NO
 HAVE_DOT               = YES
+CLASS_GRAPH            = YES
+COLLABORATION_GRAPH    = YES
+UML_LOOK               = YES
+TEMPLATE_RELATIONS     = YES
+INCLUDE_GRAPH          = YES
+INCLUDED_BY_GRAPH      = YES

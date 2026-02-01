@@ -1,25 +1,59 @@
+# Project Settings
 PROJECT_NAME           = "CPPX"
 PROJECT_NUMBER         = "1.1.2"
-STRIP_FROM_PATH        = /home/ifkabir/Coading/CPPX \
-                         /home/ifkabir/Coading/CPPX/build
+PROJECT_BRIEF          = "A Modern C++ Utility Library"
+PROJECT_LOGO           = "/home/ifkabir/Coading/CPPX/docs/logo.svg" 
+
+# Inputs
+STRIP_FROM_PATH        = /home/ifkabir/Coading/CPPX /home/ifkabir/Coading/CPPX/build
 INPUT                  = /home/ifkabir/Coading/CPPX/include \
                          /home/ifkabir/Coading/CPPX/src \
-                         /home/ifkabir/Coading/CPPX/README.md
-
-# Updated patterns to include .tpp and .hpp
+                         /home/ifkabir/Coading/CPPX/README.md \
+                         /home/ifkabir/Coading/CPPX/docs
 FILE_PATTERNS          = *.h *.hpp *.cpp *.tpp *.md
-
-# Ensure .tpp is treated as C++
 EXTENSION_MAPPING      = tpp=C++
-
 RECURSIVE              = YES
-USE_MDFILE_AS_MAINPAGE = /home/ifkabir/Coading/CPPX/README.md
+USE_MDFILE_AS_MAINPAGE = /home/ifkabir/Coading/CPPX/docs/mainpage.md
 
+# Output
 OUTPUT_DIRECTORY       = /home/ifkabir/Coading/CPPX/build/docs
 GENERATE_HTML          = YES
 GENERATE_LATEX         = NO
 
-# Visuals
+# --- THEME SETTINGS (Sidebar + Dark Mode) ---
+GENERATE_TREEVIEW      = YES
+DISABLE_INDEX          = NO
+FULL_SIDEBAR           = NO
+HTML_COLORSTYLE        = LIGHT 
+
+# CSS: Main Theme + Sidebar + Dark Mode Tweaks
+HTML_EXTRA_STYLESHEET  = "/home/ifkabir/Coading/CPPX/build/_deps/doxygen-awesome-css-src/doxygen-awesome.css" \
+                         "/home/ifkabir/Coading/CPPX/build/_deps/doxygen-awesome-css-src/doxygen-awesome-sidebar-only.css" \
+                         "/home/ifkabir/Coading/CPPX/build/_deps/doxygen-awesome-css-src/doxygen-awesome-sidebar-only-darkmode-toggle.css"
+
+# FILES: Copy these to the build folder so the browser can find them
+HTML_EXTRA_FILES       = "/home/ifkabir/Coading/CPPX/docs/logo.svg" \
+                         "/home/ifkabir/Coading/CPPX/build/_deps/doxygen-awesome-css-src/doxygen-awesome-darkmode-toggle.js" \
+                         "/home/ifkabir/Coading/CPPX/build/_deps/doxygen-awesome-css-src/doxygen-awesome-fragment-copy-button.js" \
+                         "/home/ifkabir/Coading/CPPX/build/_deps/doxygen-awesome-css-src/doxygen-awesome-paragraph-link.js" \
+                         "/home/ifkabir/Coading/CPPX/build/_deps/doxygen-awesome-css-src/doxygen-awesome-interactive-toc.js"
+
+# SCRIPTS: Load these in the HTML head
+HTML_EXTRA_SCRIPTS     = "/home/ifkabir/Coading/CPPX/build/_deps/doxygen-awesome-css-src/doxygen-awesome-darkmode-toggle.js" \
+                         "/home/ifkabir/Coading/CPPX/build/_deps/doxygen-awesome-css-src/doxygen-awesome-fragment-copy-button.js" \
+                         "/home/ifkabir/Coading/CPPX/build/_deps/doxygen-awesome-css-src/doxygen-awesome-paragraph-link.js" \
+                         "/home/ifkabir/Coading/CPPX/build/_deps/doxygen-awesome-css-src/doxygen-awesome-interactive-toc.js" \
+                         "/home/ifkabir/Coading/CPPX/docs/header_setup.js"
+
+# Visual Enhancements
 JAVADOC_AUTOBRIEF      = YES
+QT_AUTOBRIEF           = YES
 EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = NO
 HAVE_DOT               = YES
+CLASS_GRAPH            = YES
+COLLABORATION_GRAPH    = YES
+UML_LOOK               = YES
+TEMPLATE_RELATIONS     = YES
+INCLUDE_GRAPH          = YES
+INCLUDED_BY_GRAPH      = YES
