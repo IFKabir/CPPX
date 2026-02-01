@@ -1,17 +1,45 @@
-html {
-  /* Change the primary blue to your preferred color */
-  --primary-color: #1779c4; /*  */
-  --primary-dark-color: #335c80; /*  */
-  --primary-light-color: #70b1e9; /*  */
-
-  /* Adjust the content width (default is 1000px) */
-  --content-maxwidth: 1200px; /* [cite: 9] */
+html,
+body {
+  overflow: hidden !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important; /* Added padding reset */
 }
 
-/* Dark mode overrides (if you use the toggle) */
-html.dark-mode {
-  --primary-color: #1982d2; /*  */
+#doc-content {
+  overflow-y: auto !important;
+  height: 100vh !important;
+  padding-bottom: 80px !important;
+  box-sizing: border-box;
 }
-html {
-  --side-nav-fixed-width: 335px; /*  */
+
+/* --- FIX 2: REFINED STICKY FOOTER --- */
+.footer {
+  position: fixed !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  left: var(--side-nav-fixed-width) !important;
+  width: auto !important;
+
+  /* TIGHTER SIZE: Reduced height/padding so it doesn't float "up" */
+  height: 30px !important; /* Fixed compact height */
+  padding: 5px 20px !important; /* Slimmer padding */
+  margin: 0 !important; /* Force zero margin */
+
+  /* ALIGNMENT */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+
+  /* VISUALS */
+  background-color: var(--page-background-color) !important;
+  border-top: 1px solid var(--separator-color);
+  z-index: 999;
+}
+
+/* Mobile fix */
+@media screen and (max-width: 767px) {
+  .footer {
+    left: 0 !important;
+  }
 }
