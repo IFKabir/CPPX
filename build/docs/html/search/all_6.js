@@ -18,7 +18,8 @@ var searchData=
   ['conventions_15',['Naming Conventions',['../md_docs_2CONTRIBUTING.html#autotoc_md36',1,'']]],
   ['correction_16',['1. Correction',['../md_docs_2CODE__OF__CONDUCT.html#autotoc_md19',1,'']]],
   ['covenant_20code_20of_20conduct_17',['Contributor Covenant Code of Conduct',['../md_docs_2CODE__OF__CONDUCT.html',1,'']]],
-  ['cppx_20documentation_18',['cppx documentation',['../md_docs_2README.html',1,'CPPX Documentation'],['../index.html',1,'Welcome to CPPX Documentation']]],
-  ['cppx_20stl_5fext_19',['Contributing to CPPX (stl_ext)',['../md_docs_2CONTRIBUTING.html',1,'']]],
-  ['cppx_2eh_20',['cppx.h',['../cppx_8h.html',1,'']]]
+  ['cppx_18',['CPPX',['../index.html',1,'']]],
+  ['cppx_20documentation_19',['CPPX Documentation',['../md_docs_2README.html',1,'']]],
+  ['cppx_20stl_5fext_20',['Contributing to CPPX (stl_ext)',['../md_docs_2CONTRIBUTING.html',1,'']]],
+  ['cppx_2eh_21',['cppx.h',['../cppx_8h.html',1,'']]]
 ];

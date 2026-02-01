@@ -130,5 +130,13 @@ $(document).ready(function(){initNavTree('dir_d44c64559bbebec7f509842c48db8b23.h
         document.getElementsByTagName('head')[0].appendChild(link);
     })();
 </script>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        // If the title is the annoying duplicate "CPPX: CPPX", change it to just "CPPX"
+        if (document.title === "CPPX: CPPX") {
+            document.title = "CPPX";
+        }
+    });
+</script>
 </body>
 </html>

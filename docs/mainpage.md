@@ -1,4 +1,4 @@
-# Welcome to CPPX Documentation {#mainpage}
+# {#mainpage}
 
 **CPPX** is a modern C++17 library providing robust, memory-safe implementations of complex data structures.
 

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>CPPX: Welcome to CPPX Documentation</title>
+<title>CPPX: CPPX</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -95,14 +95,14 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">Welcome to CPPX Documentation </div></div>
+  <div class="headertitle"><div class="title">CPPX </div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="mainpage"></a> <b>CPPX</b> is a modern C++17 library providing robust, memory-safe implementations of complex data structures.</p>
 <p>This documentation provides detailed API references for all classes, namespaces, and functions available in the library.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md44"></a>
-Quick Navigation</h1>
+<h2><a class="anchor" id="autotoc_md44"></a>
+Quick Navigation</h2>
 <p>If you are looking for specific data structures, start here:</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -117,8 +117,8 @@ Quick Navigation</h1>
 <td class="markdownTableBodyLeft"><b>Node</b>   </td><td class="markdownTableBodyLeft">The fundamental building block managed by smart pointers.   </td><td class="markdownTableBodyLeft"><a class="el" href="classstl__ext_1_1Node.html">stl_ext::Node</a>   </td></tr>
 </table>
 <hr  />
-<h1><a class="anchor" id="autotoc_md46"></a>
-Example Usage</h1>
+<h2><a class="anchor" id="autotoc_md46"></a>
+Example Usage</h2>
 <p>A simple example of using the <b>AVL Tree</b> to ensure O(log n) lookups:</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="cppx_8h.html">cppx.h</a>&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
@@ -135,11 +135,11 @@ Example Usage</h1>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Root is: &quot;</span> &lt;&lt; tree.get_root()-&gt;<a class="code hl_function" href="classstl__ext_1_1Node.html#a6221b7456dc16566ac63aec5302cf043">get_data</a>() &lt;&lt; std::endl; <span class="comment">// Output: 20</span></div>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassstl__ext_1_1Node_html"><div class="ttname"><a href="classstl__ext_1_1Node.html">stl_ext::Node</a></div><div class="ttdef"><b>Definition</b> cppx.h:17</div></div>
-<div class="ttc" id="aclassstl__ext_1_1Node_html_a6221b7456dc16566ac63aec5302cf043"><div class="ttname"><a href="classstl__ext_1_1Node.html#a6221b7456dc16566ac63aec5302cf043">stl_ext::Node::get_data</a></div><div class="ttdeci">const T &amp; get_data() const</div><div class="ttdef"><b>Definition</b> node.tpp:45</div></div>
+<div class="ttc" id="aclassstl__ext_1_1Node_html"><div class="ttname"><a href="classstl__ext_1_1Node.html">stl_ext::Node</a></div><div class="ttdef"><b>Definition</b> <a href="cppx_8h_source.html#l00016">cppx.h:17</a></div></div>
+<div class="ttc" id="aclassstl__ext_1_1Node_html_a6221b7456dc16566ac63aec5302cf043"><div class="ttname"><a href="classstl__ext_1_1Node.html#a6221b7456dc16566ac63aec5302cf043">stl_ext::Node::get_data</a></div><div class="ttdeci">const T &amp; get_data() const</div><div class="ttdef"><b>Definition</b> <a href="node_8tpp_source.html#l00045">node.tpp:45</a></div></div>
 <div class="ttc" id="acppx_8h_html"><div class="ttname"><a href="cppx_8h.html">cppx.h</a></div></div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md47"></a>
-Useful Links</h1>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md47"></a>
+Useful Links</h2>
 <ul>
 <li><a href="https://github.com/IFKabir/CPPX">GitHub Repository</a></li>
 <li><a href="https://github.com/IFKabir/CPPX/issues">Issue Tracker</a></li>
@@ -180,6 +180,14 @@ Useful Links</h1>
         link.href = 'logo.svg'; // This points to the file copied by HTML_EXTRA_FILES
         document.getElementsByTagName('head')[0].appendChild(link);
     })();
+</script>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        // If the title is the annoying duplicate "CPPX: CPPX", change it to just "CPPX"
+        if (document.title === "CPPX: CPPX") {
+            document.title = "CPPX";
+        }
+    });
 </script>
 </body>
 </html>

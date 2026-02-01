@@ -25,8 +25,10 @@
 var NAVTREE =
 [
   [ "CPPX", "index.html", [
-    [ "Welcome to CPPX Documentation", "index.html", "index" ],
     [ "CPPX Documentation", "md_docs_2README.html", [
+      [ "Quick Navigation", "index.html#autotoc_md44", null ],
+      [ "Example Usage", "index.html#autotoc_md46", null ],
+      [ "Useful Links", "index.html#autotoc_md47", null ],
       [ "Requirements", "md_docs_2README.html#autotoc_md1", null ],
       [ "Install Dependencies", "md_docs_2README.html#autotoc_md2", [
         [ "Ubuntu/Debian", "md_docs_2README.html#autotoc_md3", null ],

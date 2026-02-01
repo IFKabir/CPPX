@@ -7,5 +7,5 @@ var searchData=
   ['detach_5fright_4',['detach_right',['../classstl__ext_1_1Node.html#a456ae330fae63632f38b33b5898425ae',1,'stl_ext::Node']]],
   ['developer_20workflow_5',['Developer Workflow',['../md_docs_2README.html#autotoc_md7',1,'']]],
   ['development_20coding_20guidelines_6',['Development &amp; Coding Guidelines',['../md_docs_2CONTRIBUTING.html#autotoc_md30',1,'']]],
-  ['documentation_7',['documentation',['../md_docs_2README.html',1,'CPPX Documentation'],['../index.html',1,'Welcome to CPPX Documentation']]]
+  ['documentation_7',['CPPX Documentation',['../md_docs_2README.html',1,'']]]
 ];
