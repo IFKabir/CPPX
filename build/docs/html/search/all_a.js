@@ -1,4 +1,14 @@
 var searchData=
 [
-  ['operator_3d_0',['operator=',['../classstl__ext_1_1Node.html#a531b69830f6afc18aaa64ef25625e001',1,'stl_ext::Node::operator=(const Node &amp;other)'],['../classstl__ext_1_1Node.html#a808a81441a0c13af6901b12f87e162d8',1,'stl_ext::Node::operator=(Node &amp;&amp;other) noexcept=default'],['../classstl__ext_1_1BinaryTree.html#add3cd0ee4042f058cc47a5ccc0e480f3',1,'stl_ext::BinaryTree::operator=(const BinaryTree &amp;other)'],['../classstl__ext_1_1BinaryTree.html#a27eaed140244095538a3fa302c9dfc92',1,'stl_ext::BinaryTree::operator=(BinaryTree &amp;&amp;other) noexcept=default']]]
+  ['get_5fdata_0',['get_data',['../classstl__ext_1_1Node.html#a6221b7456dc16566ac63aec5302cf043',1,'stl_ext::Node']]],
+  ['get_5fheight_5fval_1',['get_height_val',['../classstl__ext_1_1Node.html#a270690e071666200867db751f1c7fe8a',1,'stl_ext::Node']]],
+  ['get_5fleft_2',['get_left',['../classstl__ext_1_1Node.html#ab3dbc96ed89133bce9b5a2cebd57cc84',1,'stl_ext::Node']]],
+  ['get_5fmax_3',['get_max',['../classstl__ext_1_1BST.html#a72c1a4d50386b7fa0f87c46aba5e41a8',1,'stl_ext::BST']]],
+  ['get_5fmin_4',['get_min',['../classstl__ext_1_1BST.html#ac82dbeb32f76d60c9db307e9f230ec2c',1,'stl_ext::BST']]],
+  ['get_5fpredecessor_5',['get_predecessor',['../classstl__ext_1_1BST.html#a0652d749de254e36eb8041396576ff67',1,'stl_ext::BST']]],
+  ['get_5fright_6',['get_right',['../classstl__ext_1_1Node.html#a6ecd8ff6dd75f63809a95b6fb7a88e64',1,'stl_ext::Node']]],
+  ['get_5froot_7',['get_root',['../classstl__ext_1_1BinaryTree.html#a8ac15056e0aba367c5bc9296c182c31d',1,'stl_ext::BinaryTree']]],
+  ['get_5fsuccessor_8',['get_successor',['../classstl__ext_1_1BST.html#ac045954d99435dcfa1c30c11c283289c',1,'stl_ext::BST']]],
+  ['guide_9',['Style Guide',['../md_docs_2CONTRIBUTING.html#autotoc_md34',1,'']]],
+  ['guidelines_10',['guidelines',['../md_docs_2CONTRIBUTING.html#autotoc_md30',1,'Development &amp; Coding Guidelines'],['../md_docs_2CODE__OF__CONDUCT.html#autotoc_md18',1,'Enforcement Guidelines']]]
 ];

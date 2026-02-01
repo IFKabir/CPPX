@@ -9,10 +9,18 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -20,9 +28,11 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="logo.svg"/></td>
   <td id="projectalign">
    <div id="projectname">CPPX<span id="projectnumber">&#160;1.1.2</span>
    </div>
+   <div id="projectbrief">A Modern C++ Utility Library</div>
   </td>
  </tr>
  </tbody>
@@ -51,6 +61,23 @@ $(function() {
 $(document).ready(function() { init_codefold(0); });
 /* @license-end */
 </script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('node_8tpp_source.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -72,11 +99,6 @@ $(document).ready(function() { init_codefold(0); });
 </div>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle"><div class="title">node.tpp</div></div>
 </div><!--header-->
@@ -180,24 +202,61 @@ $(document).ready(function() { init_codefold(0); });
 </div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>} <span class="comment">// namespace stl_ext</span></div>
-<div class="ttc" id="aclassstl__ext_1_1Node_html"><div class="ttname"><a href="classstl__ext_1_1Node.html">stl_ext::Node</a></div><div class="ttdef"><b>Definition</b> cppx.h:17</div></div>
-<div class="ttc" id="aclassstl__ext_1_1Node_html_a1ecc32d5d6c4a765cf30ec709002f3ed"><div class="ttname"><a href="classstl__ext_1_1Node.html#a1ecc32d5d6c4a765cf30ec709002f3ed">stl_ext::Node::detach_left</a></div><div class="ttdeci">std::unique_ptr&lt; Node&lt; T &gt; &gt; detach_left()</div><div class="ttdef"><b>Definition</b> node.tpp:35</div></div>
-<div class="ttc" id="aclassstl__ext_1_1Node_html_a270690e071666200867db751f1c7fe8a"><div class="ttname"><a href="classstl__ext_1_1Node.html#a270690e071666200867db751f1c7fe8a">stl_ext::Node::get_height_val</a></div><div class="ttdeci">int get_height_val() const</div><div class="ttdef"><b>Definition</b> node.tpp:25</div></div>
-<div class="ttc" id="aclassstl__ext_1_1Node_html_a28714879af27fa9c38e577a7ff2f50a8"><div class="ttname"><a href="classstl__ext_1_1Node.html#a28714879af27fa9c38e577a7ff2f50a8">stl_ext::Node::Node</a></div><div class="ttdeci">Node(T val)</div><div class="ttdef"><b>Definition</b> cppx.h:28</div></div>
-<div class="ttc" id="aclassstl__ext_1_1Node_html_a2b3914f3640ca232f4adaf7e2cc63182"><div class="ttname"><a href="classstl__ext_1_1Node.html#a2b3914f3640ca232f4adaf7e2cc63182">stl_ext::Node::set_left</a></div><div class="ttdeci">void set_left(std::unique_ptr&lt; Node&lt; T &gt; &gt; node)</div><div class="ttdef"><b>Definition</b> node.tpp:60</div></div>
-<div class="ttc" id="aclassstl__ext_1_1Node_html_a456ae330fae63632f38b33b5898425ae"><div class="ttname"><a href="classstl__ext_1_1Node.html#a456ae330fae63632f38b33b5898425ae">stl_ext::Node::detach_right</a></div><div class="ttdeci">std::unique_ptr&lt; Node&lt; T &gt; &gt; detach_right()</div><div class="ttdef"><b>Definition</b> node.tpp:40</div></div>
-<div class="ttc" id="aclassstl__ext_1_1Node_html_a531b69830f6afc18aaa64ef25625e001"><div class="ttname"><a href="classstl__ext_1_1Node.html#a531b69830f6afc18aaa64ef25625e001">stl_ext::Node::operator=</a></div><div class="ttdeci">Node &amp; operator=(const Node &amp;other)</div><div class="ttdef"><b>Definition</b> node.tpp:12</div></div>
-<div class="ttc" id="aclassstl__ext_1_1Node_html_a6221b7456dc16566ac63aec5302cf043"><div class="ttname"><a href="classstl__ext_1_1Node.html#a6221b7456dc16566ac63aec5302cf043">stl_ext::Node::get_data</a></div><div class="ttdeci">const T &amp; get_data() const</div><div class="ttdef"><b>Definition</b> node.tpp:45</div></div>
-<div class="ttc" id="aclassstl__ext_1_1Node_html_a6ecd8ff6dd75f63809a95b6fb7a88e64"><div class="ttname"><a href="classstl__ext_1_1Node.html#a6ecd8ff6dd75f63809a95b6fb7a88e64">stl_ext::Node::get_right</a></div><div class="ttdeci">Node&lt; T &gt; * get_right() const</div><div class="ttdef"><b>Definition</b> node.tpp:65</div></div>
-<div class="ttc" id="aclassstl__ext_1_1Node_html_aa5730fa7c0b5daaae14b0e66a3c16fda"><div class="ttname"><a href="classstl__ext_1_1Node.html#aa5730fa7c0b5daaae14b0e66a3c16fda">stl_ext::Node::set_right</a></div><div class="ttdeci">void set_right(std::unique_ptr&lt; Node&lt; T &gt; &gt; node)</div><div class="ttdef"><b>Definition</b> node.tpp:70</div></div>
-<div class="ttc" id="aclassstl__ext_1_1Node_html_ab3dbc96ed89133bce9b5a2cebd57cc84"><div class="ttname"><a href="classstl__ext_1_1Node.html#ab3dbc96ed89133bce9b5a2cebd57cc84">stl_ext::Node::get_left</a></div><div class="ttdeci">Node&lt; T &gt; * get_left() const</div><div class="ttdef"><b>Definition</b> node.tpp:55</div></div>
-<div class="ttc" id="aclassstl__ext_1_1Node_html_ad231b618f1c64ec93e03f8d42087a308"><div class="ttname"><a href="classstl__ext_1_1Node.html#ad231b618f1c64ec93e03f8d42087a308">stl_ext::Node::set_data</a></div><div class="ttdeci">void set_data(const T &amp;val)</div><div class="ttdef"><b>Definition</b> node.tpp:50</div></div>
-<div class="ttc" id="aclassstl__ext_1_1Node_html_af2bc0b0de490c16ad53486b237c2995f"><div class="ttname"><a href="classstl__ext_1_1Node.html#af2bc0b0de490c16ad53486b237c2995f">stl_ext::Node::set_height_val</a></div><div class="ttdeci">void set_height_val(int h)</div><div class="ttdef"><b>Definition</b> node.tpp:30</div></div>
-<div class="ttc" id="anamespacestl__ext_html"><div class="ttname"><a href="namespacestl__ext.html">stl_ext</a></div><div class="ttdef"><b>Definition</b> cppx.h:12</div></div>
+<div class="ttc" id="aclassstl__ext_1_1Node_html"><div class="ttname"><a href="classstl__ext_1_1Node.html">stl_ext::Node</a></div><div class="ttdef"><b>Definition</b> <a href="cppx_8h_source.html#l00016">cppx.h:17</a></div></div>
+<div class="ttc" id="aclassstl__ext_1_1Node_html_a1ecc32d5d6c4a765cf30ec709002f3ed"><div class="ttname"><a href="classstl__ext_1_1Node.html#a1ecc32d5d6c4a765cf30ec709002f3ed">stl_ext::Node::detach_left</a></div><div class="ttdeci">std::unique_ptr&lt; Node&lt; T &gt; &gt; detach_left()</div><div class="ttdef"><b>Definition</b> <a href="node_8tpp_source.html#l00035">node.tpp:35</a></div></div>
+<div class="ttc" id="aclassstl__ext_1_1Node_html_a270690e071666200867db751f1c7fe8a"><div class="ttname"><a href="classstl__ext_1_1Node.html#a270690e071666200867db751f1c7fe8a">stl_ext::Node::get_height_val</a></div><div class="ttdeci">int get_height_val() const</div><div class="ttdef"><b>Definition</b> <a href="node_8tpp_source.html#l00025">node.tpp:25</a></div></div>
+<div class="ttc" id="aclassstl__ext_1_1Node_html_a28714879af27fa9c38e577a7ff2f50a8"><div class="ttname"><a href="classstl__ext_1_1Node.html#a28714879af27fa9c38e577a7ff2f50a8">stl_ext::Node::Node</a></div><div class="ttdeci">Node(T val)</div><div class="ttdef"><b>Definition</b> <a href="cppx_8h_source.html#l00028">cppx.h:28</a></div></div>
+<div class="ttc" id="aclassstl__ext_1_1Node_html_a2b3914f3640ca232f4adaf7e2cc63182"><div class="ttname"><a href="classstl__ext_1_1Node.html#a2b3914f3640ca232f4adaf7e2cc63182">stl_ext::Node::set_left</a></div><div class="ttdeci">void set_left(std::unique_ptr&lt; Node&lt; T &gt; &gt; node)</div><div class="ttdef"><b>Definition</b> <a href="node_8tpp_source.html#l00060">node.tpp:60</a></div></div>
+<div class="ttc" id="aclassstl__ext_1_1Node_html_a456ae330fae63632f38b33b5898425ae"><div class="ttname"><a href="classstl__ext_1_1Node.html#a456ae330fae63632f38b33b5898425ae">stl_ext::Node::detach_right</a></div><div class="ttdeci">std::unique_ptr&lt; Node&lt; T &gt; &gt; detach_right()</div><div class="ttdef"><b>Definition</b> <a href="node_8tpp_source.html#l00040">node.tpp:40</a></div></div>
+<div class="ttc" id="aclassstl__ext_1_1Node_html_a531b69830f6afc18aaa64ef25625e001"><div class="ttname"><a href="classstl__ext_1_1Node.html#a531b69830f6afc18aaa64ef25625e001">stl_ext::Node::operator=</a></div><div class="ttdeci">Node &amp; operator=(const Node &amp;other)</div><div class="ttdef"><b>Definition</b> <a href="node_8tpp_source.html#l00012">node.tpp:12</a></div></div>
+<div class="ttc" id="aclassstl__ext_1_1Node_html_a6221b7456dc16566ac63aec5302cf043"><div class="ttname"><a href="classstl__ext_1_1Node.html#a6221b7456dc16566ac63aec5302cf043">stl_ext::Node::get_data</a></div><div class="ttdeci">const T &amp; get_data() const</div><div class="ttdef"><b>Definition</b> <a href="node_8tpp_source.html#l00045">node.tpp:45</a></div></div>
+<div class="ttc" id="aclassstl__ext_1_1Node_html_a6ecd8ff6dd75f63809a95b6fb7a88e64"><div class="ttname"><a href="classstl__ext_1_1Node.html#a6ecd8ff6dd75f63809a95b6fb7a88e64">stl_ext::Node::get_right</a></div><div class="ttdeci">Node&lt; T &gt; * get_right() const</div><div class="ttdef"><b>Definition</b> <a href="node_8tpp_source.html#l00065">node.tpp:65</a></div></div>
+<div class="ttc" id="aclassstl__ext_1_1Node_html_aa5730fa7c0b5daaae14b0e66a3c16fda"><div class="ttname"><a href="classstl__ext_1_1Node.html#aa5730fa7c0b5daaae14b0e66a3c16fda">stl_ext::Node::set_right</a></div><div class="ttdeci">void set_right(std::unique_ptr&lt; Node&lt; T &gt; &gt; node)</div><div class="ttdef"><b>Definition</b> <a href="node_8tpp_source.html#l00070">node.tpp:70</a></div></div>
+<div class="ttc" id="aclassstl__ext_1_1Node_html_ab3dbc96ed89133bce9b5a2cebd57cc84"><div class="ttname"><a href="classstl__ext_1_1Node.html#ab3dbc96ed89133bce9b5a2cebd57cc84">stl_ext::Node::get_left</a></div><div class="ttdeci">Node&lt; T &gt; * get_left() const</div><div class="ttdef"><b>Definition</b> <a href="node_8tpp_source.html#l00055">node.tpp:55</a></div></div>
+<div class="ttc" id="aclassstl__ext_1_1Node_html_ad231b618f1c64ec93e03f8d42087a308"><div class="ttname"><a href="classstl__ext_1_1Node.html#ad231b618f1c64ec93e03f8d42087a308">stl_ext::Node::set_data</a></div><div class="ttdeci">void set_data(const T &amp;val)</div><div class="ttdef"><b>Definition</b> <a href="node_8tpp_source.html#l00050">node.tpp:50</a></div></div>
+<div class="ttc" id="aclassstl__ext_1_1Node_html_af2bc0b0de490c16ad53486b237c2995f"><div class="ttname"><a href="classstl__ext_1_1Node.html#af2bc0b0de490c16ad53486b237c2995f">stl_ext::Node::set_height_val</a></div><div class="ttdeci">void set_height_val(int h)</div><div class="ttdef"><b>Definition</b> <a href="node_8tpp_source.html#l00030">node.tpp:30</a></div></div>
+<div class="ttc" id="anamespacestl__ext_html"><div class="ttname"><a href="namespacestl__ext.html">stl_ext</a></div><div class="ttdef"><b>Definition</b> <a href="cppx_8h_source.html#l00011">cppx.h:12</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
-<!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</div><!-- doc-content -->
+<hr class="footer"/>
+<address class="footer"><small>
+    &copy; 2025 <a href="https://github.com/IFKabir" target="_blank" style="font-weight: bold; text-decoration: none; color: inherit;">IFKabir</a>. All rights reserved.<br>
 </small></address>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        if(typeof DoxygenAwesomeDarkModeToggle !== 'undefined') {
+            DoxygenAwesomeDarkModeToggle.init();
+        }
+        if(typeof DoxygenAwesomeFragmentCopyButton !== 'undefined') {
+            DoxygenAwesomeFragmentCopyButton.init();
+        }
+        if(typeof DoxygenAwesomeParagraphLink !== 'undefined') {
+            DoxygenAwesomeParagraphLink.init();
+        }
+        if(typeof DoxygenAwesomeInteractiveToc !== 'undefined') {
+            DoxygenAwesomeInteractiveToc.init();
+        }
+    });
+</script>
+<script type="text/javascript">
+    (function() {
+        var link = document.createElement('link');
+        link.type = 'image/svg+xml';
+        link.rel = 'icon';
+        link.href = 'logo.svg';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    })();
+</script>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        if (document.title === "CPPX: CPPX") {
+            document.title = "CPPX";
+        }
+    });
+</script>
 </body>
 </html>
