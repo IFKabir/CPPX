@@ -20,6 +20,7 @@
 <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -97,14 +98,14 @@ $(document).ready(function(){initNavTree('md_docs_2CONTRIBUTING.html',''); initR
   <div class="headertitle"><div class="title">Contributing to CPPX (stl_ext)</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md12"></a> Thank you for your interest in contributing to <code>CPPX</code>!</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md24"></a> Thank you for your interest in contributing to <code>CPPX</code>!</p>
 <p>As a solo maintainer, I appreciate any help—whether it's fixing bugs, improving documentation, or suggesting new features. Please take a moment to review this document to make the contribution process easy and effective for everyone.</p>
-<h1><a class="anchor" id="autotoc_md13"></a>
+<h1><a class="anchor" id="autotoc_md25"></a>
 Code of Conduct</h1>
 <p>This project and everyone participating in it is governed by the <a class="el" href="md_docs_2CODE__OF__CONDUCT.html">Code of Conduct</a>. By participating, you are expected to uphold this code.</p>
-<h1><a class="anchor" id="autotoc_md14"></a>
+<h1><a class="anchor" id="autotoc_md26"></a>
 How Can I Contribute?</h1>
-<h2><a class="anchor" id="autotoc_md15"></a>
+<h2><a class="anchor" id="autotoc_md27"></a>
 1. Reporting Bugs</h2>
 <p>If you find a bug, please create a GitHub Issue.</p>
 <ul>
@@ -112,14 +113,14 @@ How Can I Contribute?</h1>
 <li><b>Be specific</b>: Include the code that caused the error, the expected behavior, and the actual behavior.</li>
 <li><b>Security</b>: If you find a security vulnerability, please do <b>not</b> open a public issue. Refer to <a class="el" href="md_docs_2SECURITY.html">SECURITY.md</a> for instructions.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md16"></a>
+<h2><a class="anchor" id="autotoc_md28"></a>
 2. Suggesting Enhancements</h2>
 <p>Have an idea for a new data structure or algorithm?</p>
 <ul>
 <li>Open an issue with the tag <b>enhancement</b>.</li>
 <li>Explain why this feature would be useful to the library.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md17"></a>
+<h2><a class="anchor" id="autotoc_md29"></a>
 3. Pull Requests</h2>
 <p>I welcome Pull Requests (PRs)!</p>
 <ol type="1">
@@ -133,10 +134,10 @@ How Can I Contribute?</h1>
 <li><b>Open a Pull Request</b> targeting the <code>main</code> branch.</li>
 </ol>
 <p>Please keep your PRs focused on a single issue or feature.</p>
-<h1><a class="anchor" id="autotoc_md18"></a>
+<h1><a class="anchor" id="autotoc_md30"></a>
 Development &amp; Coding Guidelines</h1>
 <p>To keep the codebase consistent, please follow these guidelines:</p>
-<h2><a class="anchor" id="autotoc_md19"></a>
+<h2><a class="anchor" id="autotoc_md31"></a>
 Project Structure (Template Library)</h2>
 <p>This library uses a header-only style with separated implementation files to keep code clean.</p>
 <ul>
@@ -147,26 +148,26 @@ Project Structure (Template Library)</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md20"></a>
+<h2><a class="anchor" id="autotoc_md32"></a>
 Testing</h2>
 <p>We use <b>GoogleTest</b> for unit testing.</p>
 <ul>
 <li>Every new feature must be accompanied by a corresponding test file in the <code>test_suite/</code> directory.</li>
 <li>Run tests locally before submitting using <code>ctest</code> in your build directory.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md21"></a>
+<h2><a class="anchor" id="autotoc_md33"></a>
 Namespaces</h2>
 <ul>
 <li>All code must be contained within the <code>namespace <a class="el" href="namespacestl__ext.html">stl_ext</a></code>.</li>
 <li>Do not use <code>using namespace std;</code> in header files.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md22"></a>
+<h1><a class="anchor" id="autotoc_md34"></a>
 Style Guide</h1>
 <p>We enforce a consistent coding style automatically.</p>
-<h2><a class="anchor" id="autotoc_md23"></a>
+<h2><a class="anchor" id="autotoc_md35"></a>
 Automated Formatting</h2>
 <p><b>Do not format manually</b>. The build system uses <code>clang-format</code> to enforce Microsoft Style (Allman braces, 4-space indent). simply running the build command will clean up your code.</p>
-<h2><a class="anchor" id="autotoc_md24"></a>
+<h2><a class="anchor" id="autotoc_md36"></a>
 Naming Conventions</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -182,29 +183,29 @@ Naming Conventions</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyLeft"><b>Member Variables</b>   </td><td class="markdownTableBodyLeft">Hungarian-style prefix   </td><td class="markdownTableBodyLeft"><code>m_data</code> (member), <code>p_head</code> (pointer)   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md25"></a>
+<h2><a class="anchor" id="autotoc_md37"></a>
 C++ Specifics</h2>
 <ul>
 <li><b>Smart Pointers:</b> Use <code>std::unique_ptr</code> for ownership and memory management. Avoid raw <code>new</code>/<code>delete</code>.</li>
 <li><b>Move Semantics</b>: Utilize <code>std::move</code> when transferring ownership of nodes.</li>
 <li><b>Template Instantiation:</b> Place all template definitions in <code>.tpp</code> files. Do not explicit instantiate templates for specific types (e.g., <code>int</code>, <code>double</code>) inside the library code; let the compiler handle instantiation based on user usage.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md26"></a>
+<h2><a class="anchor" id="autotoc_md38"></a>
 Important Concepts for Contributors</h2>
 <p>When working on data structures or database-related components in <code><a class="el" href="namespacestl__ext.html">stl_ext</a></code>, keep these principles in mind:</p>
-<h3><a class="anchor" id="autotoc_md27"></a>
+<h3><a class="anchor" id="autotoc_md39"></a>
 Data Management &amp; Integrity</h3>
 <ul>
 <li><b>Data vs. Information:</b> Ensure your implementations treat raw data correctly so it can be processed into meaningful information.</li>
 <li><b>Data Integrity:</b> Avoid data redundancy. Ensure methods (like <code>insert</code> or <code>remove</code>) maintain the structural integrity of the tree (e.g., preserving BST properties).</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md28"></a>
+<h3><a class="anchor" id="autotoc_md40"></a>
 Architecture</h3>
 <ul>
 <li><b>Abstraction:</b> Keep the internal node logic (<code>Node</code>class) distinct from the tree operations (<code>BST</code> class).</li>
 <li><b>Schema Independence:</b> Internal changes to how nodes are linked should not break the public API of the <code>BST</code> or <code>BinaryTree</code> classes.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md29"></a>
+<h1><a class="anchor" id="autotoc_md41"></a>
 Questions?</h1>
 <p>If you have questions, feel free to open an issue or contact me via the method listed in the <a class="el" href="md_docs_2CODE__OF__CONDUCT.html">Code of Conduct</a>.</p>
 <hr  />
@@ -212,11 +213,29 @@ Questions?</h1>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
-<!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
-  </ul>
-</div>
+<hr class="footer"/>
+<address class="footer"><small>
+Generated by Doxygen 1.9.8
+</small></address>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        if(typeof DoxygenAwesomeDarkModeToggle !== 'undefined') {
+            DoxygenAwesomeDarkModeToggle.init();
+        }
+        if(typeof DoxygenAwesomeFragmentCopyButton !== 'undefined') {
+            DoxygenAwesomeFragmentCopyButton.init();
+        }
+        if(typeof DoxygenAwesomeParagraphLink !== 'undefined') {
+            DoxygenAwesomeParagraphLink.init();
+        }
+        if(typeof DoxygenAwesomeInteractiveToc !== 'undefined') {
+            DoxygenAwesomeInteractiveToc.init();
+        }
+    });
+</script>
 </body>
 </html>

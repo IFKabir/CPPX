@@ -8,7 +8,7 @@ PROJECT_LOGO           = "/home/ifkabir/Coading/CPPX/docs/logo.svg"
 STRIP_FROM_PATH        = /home/ifkabir/Coading/CPPX /home/ifkabir/Coading/CPPX/build
 INPUT                  = /home/ifkabir/Coading/CPPX/include \
                          /home/ifkabir/Coading/CPPX/src \
-                         /home/ifkabir/Coading/CPPX/README.md \
+                         /home/ifkabir/Coading/CPPX/docs/README.md \
                          /home/ifkabir/Coading/CPPX/docs
 FILE_PATTERNS          = *.h *.hpp *.cpp *.tpp *.md
 EXTENSION_MAPPING      = tpp=C++
@@ -26,10 +26,11 @@ DISABLE_INDEX          = NO
 FULL_SIDEBAR           = NO
 HTML_COLORSTYLE        = LIGHT 
 
-# CSS: Main Theme + Sidebar + Dark Mode Tweaks
+
 HTML_EXTRA_STYLESHEET  = "/home/ifkabir/Coading/CPPX/build/_deps/doxygen-awesome-css-src/doxygen-awesome.css" \
                          "/home/ifkabir/Coading/CPPX/build/_deps/doxygen-awesome-css-src/doxygen-awesome-sidebar-only.css" \
-                         "/home/ifkabir/Coading/CPPX/build/_deps/doxygen-awesome-css-src/doxygen-awesome-sidebar-only-darkmode-toggle.css"
+                         "/home/ifkabir/Coading/CPPX/build/_deps/doxygen-awesome-css-src/doxygen-awesome-sidebar-only-darkmode-toggle.css" \
+                         "/home/ifkabir/Coading/CPPX/docs/custom.css"
 
 # FILES: Copy these to the build folder so the browser can find them
 HTML_EXTRA_FILES       = "/home/ifkabir/Coading/CPPX/docs/logo.svg" \
@@ -45,15 +46,19 @@ HTML_EXTRA_SCRIPTS     = "/home/ifkabir/Coading/CPPX/build/_deps/doxygen-awesome
                          "/home/ifkabir/Coading/CPPX/build/_deps/doxygen-awesome-css-src/doxygen-awesome-interactive-toc.js" \
                          "/home/ifkabir/Coading/CPPX/docs/header_setup.js"
 
+HTML_FOOTER = "/home/ifkabir/Coading/CPPX/docs/footer.html"
+
 # Visual Enhancements
 JAVADOC_AUTOBRIEF      = YES
 QT_AUTOBRIEF           = YES
 EXTRACT_ALL            = YES
 EXTRACT_PRIVATE        = NO
-HAVE_DOT               = YES
+HAVE_DOT           = YES
+DOT_IMAGE_FORMAT   = svg
 CLASS_GRAPH            = YES
 COLLABORATION_GRAPH    = YES
 UML_LOOK               = YES
 TEMPLATE_RELATIONS     = YES
 INCLUDE_GRAPH          = YES
 INCLUDED_BY_GRAPH      = YES
+TREEVIEW_WIDTH = 335

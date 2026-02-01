@@ -1,0 +1,17 @@
+html {
+  /* Change the primary blue to your preferred color */
+  --primary-color: #1779c4; /*  */
+  --primary-dark-color: #335c80; /*  */
+  --primary-light-color: #70b1e9; /*  */
+
+  /* Adjust the content width (default is 1000px) */
+  --content-maxwidth: 1200px; /* [cite: 9] */
+}
+
+/* Dark mode overrides (if you use the toggle) */
+html.dark-mode {
+  --primary-color: #1982d2; /*  */
+}
+html {
+  --side-nav-fixed-width: 335px; /*  */
+}

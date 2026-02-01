@@ -9,6 +9,6 @@ var searchData=
   ['get_5fright_6',['get_right',['../classstl__ext_1_1Node.html#a6ecd8ff6dd75f63809a95b6fb7a88e64',1,'stl_ext::Node']]],
   ['get_5froot_7',['get_root',['../classstl__ext_1_1BinaryTree.html#a8ac15056e0aba367c5bc9296c182c31d',1,'stl_ext::BinaryTree']]],
   ['get_5fsuccessor_8',['get_successor',['../classstl__ext_1_1BST.html#ac045954d99435dcfa1c30c11c283289c',1,'stl_ext::BST']]],
-  ['guide_9',['Style Guide',['../md_docs_2CONTRIBUTING.html#autotoc_md22',1,'']]],
-  ['guidelines_10',['guidelines',['../md_docs_2CONTRIBUTING.html#autotoc_md18',1,'Development &amp; Coding Guidelines'],['../md_docs_2CODE__OF__CONDUCT.html#autotoc_md6',1,'Enforcement Guidelines']]]
+  ['guide_9',['Style Guide',['../md_docs_2CONTRIBUTING.html#autotoc_md34',1,'']]],
+  ['guidelines_10',['guidelines',['../md_docs_2CONTRIBUTING.html#autotoc_md30',1,'Development &amp; Coding Guidelines'],['../md_docs_2CODE__OF__CONDUCT.html#autotoc_md18',1,'Enforcement Guidelines']]]
 ];
