@@ -1,6 +1,6 @@
 # CPPX Documentation
 
-<p align="center">
+<p align="left">
   <img src="logo.svg" alt="CPPX Logo" width="150" height="150">
 </p>
 
