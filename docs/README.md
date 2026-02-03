@@ -1,8 +1,9 @@
+# CPPX Documentation
+
 <p align="center">
   <img src="logo.svg" alt="CPPX Logo" width="150" height="150">
 </p>
 
-# CPPX Documentation
 
 CPPX is a cross-platform C++ template library providing extended data structures. It features a comprehensive automated test suite powered by Google Test.
 
