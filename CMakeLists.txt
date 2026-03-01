@@ -7,9 +7,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 file(GLOB_RECURSE SRC_FILES "src/*.cpp" "src/*.tpp")
 file(GLOB_RECURSE HEADER_FILES "include/*.h" "include/*.hpp")
 
-add_library(${PROJECT_NAME}_lib ${SRC_FILES} ${HEADER_FILES})
-target_include_directories(${PROJECT_NAME}_lib PUBLIC include src)
-set_target_properties(${PROJECT_NAME}_lib PROPERTIES LINKER_LANGUAGE CXX)
+# FIX 1: Make this an INTERFACE library since it relies on templates
+add_library(${PROJECT_NAME}_lib INTERFACE)
+target_include_directories(${PROJECT_NAME}_lib INTERFACE include src)
 
 # --- Auto-Format ---
 find_program(CLANG_FORMAT "clang-format")
@@ -22,15 +22,14 @@ if(CLANG_FORMAT)
         COMMAND ${CLANG_FORMAT} -i -style=file ${ALL_SOURCE_FILES}
         COMMENT "Auto-formatting code..."
     )
-    add_dependencies(${PROJECT_NAME}_lib format_code)
 endif()
 
 # --- Google Test ---
 include(FetchContent)
 FetchContent_Declare(
   googletest
-  URL https://github.com/google/googletest/archive/refs/heads/main.zip
-  DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG        v1.14.0 
 )
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
@@ -40,6 +39,12 @@ file(GLOB_RECURSE TEST_FILES "test_suite/*.cpp")
 add_executable(unit_tests ${TEST_FILES})
 target_link_libraries(unit_tests PRIVATE ${PROJECT_NAME}_lib GTest::gtest_main)
 target_include_directories(unit_tests PRIVATE include)
+
+# FIX 2: Attach the formatter directly to the executable target
+if(TARGET format_code)
+    add_dependencies(unit_tests format_code)
+endif()
+
 include(GoogleTest)
 gtest_discover_tests(unit_tests)
 
@@ -50,10 +55,7 @@ FetchContent_Declare(
     DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 )
 
-FetchContent_GetProperties(doxygen-awesome-css)
-if(NOT doxygen-awesome-css_POPULATED)
-    FetchContent_Populate(doxygen-awesome-css)
-endif()
+FetchContent_MakeAvailable(doxygen-awesome-css)
 set(AWESOME_CSS_DIR ${doxygen-awesome-css_SOURCE_DIR})
 
 # --- Doxygen Generation ---
@@ -62,14 +64,21 @@ if(DOXYGEN_FOUND)
     set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in)
     set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
     
-    # Pass variables to Doxyfile.in
     configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
 
-    add_custom_target(doc_doxygen ALL
-        COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-        COMMENT "Generating Awesome API docs..."
-        VERBATIM)
+    if(WIN32)
+        add_custom_target(doc_doxygen
+            COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+            COMMENT "Generating Awesome API docs on Windows..."
+            VERBATIM)
+    else()
+        add_custom_target(doc_doxygen ALL
+            COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+            COMMENT "Generating Awesome API docs on Ubuntu..."
+            VERBATIM)
+    endif()
 else()
     message(WARNING "Doxygen not found!")
 endif()
