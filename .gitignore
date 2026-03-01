@@ -1,19 +1,70 @@
-CMakeLists.txt.user
+# --- Build & Output Directories ---
+# Prevents Windows/Linux build caches from clashing
+build/
+build-*/
+out/
+bin/
+lib/
+
+# --- CMake Artifacts ---
 CMakeCache.txt
-CMakeFiles
-CMakeScripts
-Testing
+CMakeFiles/
+CMakeScripts/
+Testing/
 Makefile
 cmake_install.cmake
 install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
-_deps
+_deps/
 CMakeUserPresets.json
+CMakeLists.txt.user
 
-# CLion
-#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
-#  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
-#  and can be added to the global gitignore or merged into this file.  For a more nuclear
-#  option (not recommended) you can uncomment the following to ignore the entire idea folder.
-#cmake-build-*
+# --- Compiled Binaries & OS Artifacts ---
+# Windows (MSVC)
+*.exe
+*.dll
+*.lib
+*.exp
+*.pdb
+*.ilk
+*.obj
+# Linux (Ubuntu)
+*.o
+*.a
+*.so
+*.out
+# OS Junk
+Thumbs.db
+.DS_Store
+
+# --- Doxygen Generated Documentation ---
+# We track docs/ but ignore the output HTML/LaTeX
+docs/html/
+docs/latex/
+docs/xml/
+Doxyfile 
+
+# --- IDEs & Editors ---
+# Visual Studio
+.vs/
+*.sln
+*.vcxproj
+*.vcxproj.*
+*.suo
+*.db
+# VS Code (Ignores workspace cache, but keeps shared run configs if you make them)
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+# Qt Creator
+*.pro.user
+*.pro.user.*
+# CLion / JetBrains
+.idea/
+cmake-build-*/
+
+# --- Testing & Logs ---
+*.log
+Testing/Temporary/
