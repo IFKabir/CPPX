@@ -1,104 +1,38 @@
-# CPPX Documentation
+# CPPX
 
 <p align="left">
-  <img src="logo.svg" alt="CPPX Logo" width="150" height="150">
+  <img src="logo.svg" alt="CPPX Logo" width="120" height="120">
 </p>
 
+A cross-platform C++17 template library providing extended data structures with automated testing via Google Test.
 
-CPPX is a cross-platform C++ template library providing extended data structures. It features a comprehensive automated test suite powered by Google Test.
+**[API Reference](https://ifkabir.github.io/CPPX/)** · **[Releases](https://github.com/IFKabir/CPPX/releases)**
+
+---
 
 ## Requirements
 
-- **C++17 compatible compiler**: GCC, Clang, or MSVC.
-- **CMake (3.14+)**: Required for project configuration.
-- **clang-format**: Automates code styling during the build process.
-- **doxygen** **(Optional)**: Used for generating API documentation.
-- **Internet connection**: Required for CMake to fetch Google Test.
+- C++17 compiler (GCC / Clang / MSVC)
+- CMake 3.14+
+- clang-format
+- Internet (CMake fetches Google Test)
+- doxygen + graphviz *(optional, for API docs)*
 
-## Install Dependencies
+---
 
-### Ubuntu/Debian
+## For Users
 
-```bash
-sudo apt update
-sudo apt install build-essential cmake clang-format doxygen graphviz
-```
+### Installation
 
-### Fedora/RHEL
-
-```bash
-sudo dnf install cmake git clang-format doxygen graphviz
-```
-
-### Arch Linux
-
-```bash
-sudo pacman -S cmake git clang-format doxygen graphviz
-```
-
-### Windows
-
-1. **Compiler**: Install [Visual Studio](https://visualstudio.microsoft.com/) (with "Desktop development with C++") or [MinGW-w64](https://www.mingw-w64.org/).
-
-2. **CMake**: Download and install from [cmake.org](https://cmake.org/download/).
-
-3. **Tools**: Install `clang-format` and `doxygen`(often included with LLVM or via [Chocolatey](https://chocolatey.org/)).
-
-## Developer Workflow
-
-#### Build & Test
-
-1. **Linux / macOS**:
-
-```bash
-mkdir build && cd build
-cmake ..
-cmake --build .
-```
-
-2. **Windows(PowerShell)**:
-
-```bash
-mkdir build; cd build
-cmake ..
-cmake --build .
-```
-
-> **Note:** If the build finishes without error, it means all tests passed. If a test fails, the build command will exit with an error and display the failure details.
-
-## Integration
-
-To use this library in any of your existing projects:
-
-1. **Copy Folders**: Move the `src` and `include` folders from this repository into your project directory.
-
-2. **Include Header**: In your C++ file, include the main header:
+Copy the `src/` and `include/` folders into your project, then:
 
 ```cpp
 #include "include/cppx.h"
 ```
 
-3. **Compile**: Ensure your compiler knows where to look for the template files. You may need to add the src and include paths to your compilation command, otherwise run as usual.
+Add `src/` and `include/` to your compiler's include paths.
 
-## Coding Style
-
-- **Automatic Formatting**: The build system applies `clang-format` rules to all `.cpp`, `.tpp`, and `.h` files automatically.
-
-- **Namespaces**: All components reside within the stl_ext namespace.
-
-## Usage
-
-- **API Reference:** **[Online Documentation](https://ifkabir.github.io/CPPX/)** (Recommended)
-
-- **Version Info:** Check the [Releases page](https://github.com/IFKabir/CPPX/releases) for version-specific notes and changes.
-
-## Tree Visualization
-
-CPPX includes built-in visualization tools on every tree type to help with debugging and understanding tree structures.
-
-### Console Printing (`print_tree`)
-
-Prints a **sideways/rotated** tree to `std::cout` using box-drawing characters. The right subtree appears on top, and the left subtree on the bottom.
+### Quick Start
 
 ```cpp
 #include "cppx.h"
@@ -109,11 +43,15 @@ int main() {
     for (int v : {10, 20, 30, 40, 50})
         tree.insert(v);
 
-    tree.print_tree();
+    tree.contains(30);  // true
+    tree.get_min();     // 10
+    tree.print_tree();  // visual debug
 }
 ```
 
-**Output:**
+### Tree Visualization
+
+**Console** — `print_tree()` renders a sideways tree:
 ```
         ┌── 50
     ┌── 40
@@ -122,26 +60,61 @@ int main() {
 └── 20
 ```
 
-### Graphviz Export (`dump_to_dot`)
-
-Exports the tree to a `.dot` file that can be rendered with [Graphviz](https://graphviz.org/).
-
-```cpp
-tree.dump_to_dot("tree.dot");
-```
-
-Then render with:
+**Graphviz** — `dump_to_dot("tree.dot")` exports a `.dot` file:
 ```bash
 dot -Tpng tree.dot -o tree.png
 ```
 
-**Generated `tree.dot`:**
-```dot
-digraph BST {
-    node [shape=circle];
-    "20" -> "10";
-    "20" -> "40";
-    "40" -> "30";
-    "40" -> "50";
-}
+---
+
+## For Developers
+
+### Build & Test
+
+```bash
+mkdir build && cd build
+cmake ..
+cmake --build .
 ```
+
+> Build succeeds = all tests pass. Failures stop the build with details.
+
+### Run Benchmarks
+
+```bash
+cmake --build build --target run_benchmark
+```
+
+Compiles with `-O2`, runs the suite, and outputs `docs/benchmark_results.csv` + `docs/benchmark_chart.svg`. No scripts or external tools.
+
+### Code Style
+
+- `clang-format` runs automatically on every build.
+- All code lives in `namespace stl_ext`.
+
+---
+
+## Performance
+
+Benchmarks compare `stl_ext::AVLTree`, `stl_ext::BST`, and `std::set` (Red-Black Tree).
+
+| Structure | N | Insert (ms) | Lookup (ms) | Delete (ms) |
+|---|---:|---:|---:|---:|
+| `std::set` | 10K | 0.63 | 0.29 | 0.09 |
+| `stl_ext::AVLTree` | 10K | 1.53 | 0.29 | 0.16 |
+| `stl_ext::BST` | 10K | 1.86 | 0.33 | 0.12 |
+| `std::set` | 100K | 11.68 | 7.10 | 1.61 |
+| `stl_ext::AVLTree` | 100K | 33.55 | 7.61 | 3.68 |
+| `stl_ext::BST` | 100K | 33.18 | 7.49 | 2.90 |
+| `std::set` | 1M | 477.55 | 260.82 | 61.08 |
+| `stl_ext::AVLTree` | 1M | 860.29 | 241.79 | 92.53 |
+
+> `stl_ext::BST` skipped at 1M — unbalanced tree causes deep recursion.
+
+![Benchmark Chart](benchmark_chart.svg)
+
+### Key Takeaways
+
+- **`std::set`** wins on insert/delete due to stdlib optimisations.
+- **`AVLTree` beats `std::set` on lookups** at 1M (~7% faster) — stricter balancing = shorter tree.
+- **`BST`** matches `AVLTree` on random data but degrades to O(n) on sorted input.
