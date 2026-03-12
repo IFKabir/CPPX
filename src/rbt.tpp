@@ -1,6 +1,3 @@
-#include <algorithm>
-#include <stack>
-
 namespace stl_ext
 {
 

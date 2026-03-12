@@ -1,6 +1,7 @@
 #ifndef CPPX_H
 #define CPPX_H
 
+#include <algorithm>
 #include <cstddef>
 #include <cstdint>
 #include <fstream>
@@ -42,73 +43,26 @@ template <typename T> class Node
     Color m_color = Color::RED;
 
   public:
-    explicit Node(T val) : m_data(std::move(val))
-    {
-    }
+    explicit Node(T val);
+    Node(T val, Node<T> *left, Node<T> *right);
 
-    Node(T val, Node<T> *left, Node<T> *right) : m_data(std::move(val)), p_left(left), p_right(right)
-    {
-    }
+    int get_height_val() const;
+    void set_height_val(int h);
 
-    int get_height_val() const
-    {
-        return m_height;
-    }
+    const T &get_data() const;
+    void set_data(const T &val);
 
-    void set_height_val(int h)
-    {
-        m_height = static_cast<std::int8_t>(h);
-    }
+    Node<T> *get_left() const;
+    void set_left(Node<T> *node);
 
-    const T &get_data() const
-    {
-        return m_data;
-    }
+    Node<T> *get_right() const;
+    void set_right(Node<T> *node);
 
-    void set_data(const T &val)
-    {
-        m_data = val;
-    }
+    Color get_color() const;
+    void set_color(Color c);
 
-    Node<T> *get_left() const
-    {
-        return p_left;
-    }
-
-    void set_left(Node<T> *node)
-    {
-        p_left = node;
-    }
-
-    Node<T> *get_right() const
-    {
-        return p_right;
-    }
-
-    void set_right(Node<T> *node)
-    {
-        p_right = node;
-    }
-
-    Color get_color() const
-    {
-        return m_color;
-    }
-
-    void set_color(Color c)
-    {
-        m_color = c;
-    }
-
-    Node<T> *get_parent() const
-    {
-        return p_parent;
-    }
-
-    void set_parent(Node<T> *parent)
-    {
-        p_parent = parent;
-    }
+    Node<T> *get_parent() const;
+    void set_parent(Node<T> *parent);
 };
 
 template <typename T> class NodePool
@@ -126,74 +80,20 @@ template <typename T> class NodePool
 
   public:
     NodePool() = default;
-
-    ~NodePool()
-    {
-        destroy_all();
-    }
+    ~NodePool();
 
     NodePool(const NodePool &) = delete;
     NodePool &operator=(const NodePool &) = delete;
 
-    NodePool(NodePool &&other) noexcept : m_blocks(std::move(other.m_blocks)), m_free_list(std::move(other.m_free_list))
-    {
-        other.m_blocks.clear();
-        other.m_free_list.clear();
-    }
+    NodePool(NodePool &&other) noexcept;
+    NodePool &operator=(NodePool &&other) noexcept;
 
-    NodePool &operator=(NodePool &&other) noexcept
-    {
-        if (this != &other)
-        {
-            destroy_all();
-            m_blocks = std::move(other.m_blocks);
-            m_free_list = std::move(other.m_free_list);
-            other.m_blocks.clear();
-            other.m_free_list.clear();
-        }
-        return *this;
-    }
-
-    template <typename... Args> Node<T> *allocate(Args &&...args)
-    {
-        void *ptr = get_slot();
-        return new (ptr) Node<T>(std::forward<Args>(args)...);
-    }
-
-    void deallocate(Node<T> *node)
-    {
-        if (!node)
-            return;
-        node->~Node();
-        m_free_list.push_back(static_cast<void *>(node));
-    }
-
-    void destroy_all()
-    {
-        for (auto *blk : m_blocks)
-            delete blk;
-        m_blocks.clear();
-        m_free_list.clear();
-    }
+    template <typename... Args> Node<T> *allocate(Args &&...args);
+    void deallocate(Node<T> *node);
+    void destroy_all();
 
   private:
-    void *get_slot()
-    {
-        if (!m_free_list.empty())
-        {
-            void *ptr = m_free_list.back();
-            m_free_list.pop_back();
-            return ptr;
-        }
-        if (m_blocks.empty() || m_blocks.back()->used >= Block::CAPACITY)
-        {
-            m_blocks.push_back(new Block());
-        }
-        auto &blk = *m_blocks.back();
-        void *ptr = blk.data + blk.used * sizeof(Node<T>);
-        ++blk.used;
-        return ptr;
-    }
+    void *get_slot();
 };
 
 template <typename T> class BinaryTree
@@ -308,6 +208,7 @@ template <typename T> class RBTree : public BST<T>
 #include "../src/avl.tpp"
 #include "../src/binary_tree.tpp"
 #include "../src/bst.tpp"
+#include "../src/node.tpp"
 #include "../src/rbt.tpp"
 
 #endif

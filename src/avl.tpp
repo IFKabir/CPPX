@@ -1,6 +1,3 @@
-#include <algorithm>
-#include <vector>
-
 namespace stl_ext
 {
 
