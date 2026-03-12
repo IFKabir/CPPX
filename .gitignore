@@ -58,6 +58,8 @@ Doxyfile
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
+.cache/
+.clangd/
 # Qt Creator
 *.pro.user
 *.pro.user.*

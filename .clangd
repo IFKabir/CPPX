@@ -1,0 +1,5 @@
+If:
+  PathMatch: .*\.tpp
+
+CompileFlags:
+  Add: [-xc++-header, -Iinclude, -Isrc, -std=c++17]

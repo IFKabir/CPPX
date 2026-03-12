@@ -1,9 +1,8 @@
 #include <gtest/gtest.h>
 #include <string>
 #include <utility>
-#include <vector>
 
-#include "cppx.h"
+#include "../include/cppx.h"
 
 using namespace std;
 using namespace stl_ext;
@@ -42,7 +41,7 @@ TEST(BinaryTreeTest, MakeNodeFactory)
 
     auto left = BinaryTree<int>::make_node(1);
     auto right = BinaryTree<int>::make_node(2);
-    auto root = BinaryTree<int>::make_node(3, move(left), move(right));
+    auto root = BinaryTree<int>::make_node(3, std::move(left), std::move(right));
 
     EXPECT_EQ(root->get_data(), 3);
     ASSERT_NE(root->get_left(), nullptr);
@@ -126,7 +125,7 @@ TEST(BinaryTreeTest, OverwriteSubtreeUpdateSize)
     left_child->set_left(BinaryTree<int>::make_node(3));
     left_child->set_right(BinaryTree<int>::make_node(4));
 
-    tree.set_left(root, move(left_child));
+    tree.set_left(root, std::move(left_child));
     EXPECT_EQ(tree.size(), 4);
 
     tree.set_left(root, BinaryTree<int>::make_node(99));
@@ -184,7 +183,7 @@ TEST(BinaryTreeTest, MoveConstructor)
     BinaryTree<int> original;
     original.set_root(BinaryTree<int>::make_node(10));
 
-    BinaryTree<int> moved_to(move(original));
+    BinaryTree<int> moved_to(std::move(original));
 
     EXPECT_TRUE(original.is_empty());
     EXPECT_EQ(original.get_root(), nullptr);
@@ -201,7 +200,7 @@ TEST(BinaryTreeTest, MoveAssignment)
     BinaryTree<int> target;
     target.set_root(BinaryTree<int>::make_node(1));
 
-    target = move(original);
+    target = std::move(original);
 
     EXPECT_TRUE(original.is_empty());
     EXPECT_EQ(target.size(), 1);
@@ -213,7 +212,7 @@ TEST(BinaryTreeTest, MoveSelfAssignment)
     BinaryTree<int> tree;
     tree.set_root(BinaryTree<int>::make_node(10));
 
-    tree = move(tree);
+    tree = std::move(tree);
 
     EXPECT_FALSE(tree.is_empty());
     if (!tree.is_empty())

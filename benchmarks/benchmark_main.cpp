@@ -468,8 +468,7 @@ static void generate_svg(const std::vector<BenchmarkResult> &results, const std:
     }
 
     f << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-    f << "<svg xmlns=\"http:
-      << "\" viewBox=\"0 0 " << total_w << " " << total_h << "\">\n";
+    f << "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 " << total_w << " " << total_h << "\">\n";
     f << "<style>text { font-family: 'Segoe UI', Roboto, Arial, sans-serif; }</style>\n";
 
     // ── Full background ──
