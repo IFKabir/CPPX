@@ -1,7 +1,8 @@
 namespace stl_ext
 {
 
-template <typename T> Node<T>::Node(const Node &other) : m_data(other.m_data), m_height(other.m_height)
+template <typename T>
+Node<T>::Node(const Node &other) : m_data(other.m_data), m_height(other.m_height), m_color(other.m_color)
 {
     if (other.p_left)
         p_left = std::make_unique<Node<T>>(*other.p_left);
@@ -15,6 +16,7 @@ template <typename T> Node<T> &Node<T>::operator=(const Node<T> &other)
         return *this;
     m_data = other.m_data;
     m_height = other.m_height;
+    m_color = other.m_color;
 
     p_left = other.p_left ? std::make_unique<Node<T>>(*other.p_left) : nullptr;
     p_right = other.p_right ? std::make_unique<Node<T>>(*other.p_right) : nullptr;
@@ -70,6 +72,26 @@ template <typename T> Node<T> *Node<T>::get_right() const
 template <typename T> void Node<T>::set_right(std::unique_ptr<Node<T>> node)
 {
     p_right = std::move(node);
+}
+
+template <typename T> Color Node<T>::get_color() const
+{
+    return m_color;
+}
+
+template <typename T> void Node<T>::set_color(Color c)
+{
+    m_color = c;
+}
+
+template <typename T> Node<T> *Node<T>::get_parent() const
+{
+    return p_parent;
+}
+
+template <typename T> void Node<T>::set_parent(Node<T> *parent)
+{
+    p_parent = parent;
 }
 
 } // namespace stl_ext

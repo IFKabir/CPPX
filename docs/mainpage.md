@@ -8,6 +8,7 @@
 |---|---|---|
 | Binary Search Tree | Standard unbalanced BST | stl_ext::BST |
 | AVL Tree | Self-balancing BST (strict balance) | stl_ext::AVLTree |
+| Red-Black Tree | Self-balancing BST (red-black properties) | stl_ext::RBTree |
 | Binary Tree | Base class with traversals | stl_ext::BinaryTree |
 | Node | Building block using smart pointers | stl_ext::Node |
 

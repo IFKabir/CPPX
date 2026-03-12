@@ -3,7 +3,7 @@
 #include <string>
 #include <utility>
 
-#include "cppx.h"
+#include "../include/cppx.h"
 
 using namespace stl_ext;
 using namespace std;
@@ -23,7 +23,7 @@ TEST(NodeTest, ConstructorWithChildren)
     auto left = make_unique<Node<int>>(10);
     auto right = make_unique<Node<int>>(20);
 
-    auto root = make_unique<Node<int>>(30, move(left), move(right));
+    auto root = make_unique<Node<int>>(30, std::move(left), std::move(right));
 
     EXPECT_EQ(root->get_data(), 30);
     ASSERT_NE(root->get_left(), nullptr);
@@ -188,7 +188,7 @@ TEST(NodeTest, MoveConstructor)
     node->set_left(make_unique<Node<int>>(5));
     node->set_height_val(4);
 
-    Node<int> moved_node = move(*node);
+    Node<int> moved_node = std::move(*node);
 
     EXPECT_EQ(moved_node.get_data(), 10);
     EXPECT_EQ(moved_node.get_height_val(), 4);
@@ -202,7 +202,7 @@ TEST(NodeTest, MoveAssignment)
     source.set_left(make_unique<Node<int>>(5));
 
     Node<int> dest(99);
-    dest = move(source);
+    dest = std::move(source);
 
     EXPECT_EQ(dest.get_data(), 10);
     ASSERT_NE(dest.get_left(), nullptr);
@@ -214,7 +214,7 @@ TEST(NodeTest, MoveSelfAssignment)
     Node<int> node(10);
     node.set_right(make_unique<Node<int>>(20));
 
-    node = move(node);
+    node = std::move(node);
 
     EXPECT_EQ(node.get_data(), 10);
     ASSERT_NE(node.get_right(), nullptr);
