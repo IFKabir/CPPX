@@ -1,7 +1,121 @@
-#include <algorithm>
+#pragma once
+#include "../include/cppx.h"
 
 namespace stl_ext
 {
+
+template <typename T> void BinaryTree<T>::destroy_subtree(Node<T> *node)
+{
+    if (!node)
+        return;
+    std::stack<Node<T> *> s;
+    s.push(node);
+    while (!s.empty())
+    {
+        Node<T> *curr = s.top();
+        s.pop();
+        if (curr->p_left)
+            s.push(curr->p_left);
+        if (curr->p_right)
+            s.push(curr->p_right);
+        m_pool.deallocate(curr);
+    }
+}
+
+template <typename T> Node<T> *BinaryTree<T>::clone_subtree(const Node<T> *node)
+{
+    if (!node)
+        return nullptr;
+
+    struct StackEntry
+    {
+        const Node<T> *src;
+        Node<T> *dest;
+        int stage;
+    };
+
+    Node<T> *new_root = m_pool.allocate(node->m_data);
+    new_root->m_height = node->m_height;
+    new_root->m_color = node->m_color;
+
+    std::stack<StackEntry> s;
+    s.push({node, new_root, 0});
+
+    while (!s.empty())
+    {
+        auto &top = s.top();
+        if (top.stage == 0)
+        {
+            top.stage = 1;
+            if (top.src->p_left)
+            {
+                Node<T> *child = m_pool.allocate(top.src->p_left->m_data);
+                child->m_height = top.src->p_left->m_height;
+                child->m_color = top.src->p_left->m_color;
+                child->p_parent = top.dest;
+                top.dest->p_left = child;
+                s.push({top.src->p_left, child, 0});
+            }
+        }
+        else if (top.stage == 1)
+        {
+            top.stage = 2;
+            if (top.src->p_right)
+            {
+                Node<T> *child = m_pool.allocate(top.src->p_right->m_data);
+                child->m_height = top.src->p_right->m_height;
+                child->m_color = top.src->p_right->m_color;
+                child->p_parent = top.dest;
+                top.dest->p_right = child;
+                s.push({top.src->p_right, child, 0});
+            }
+        }
+        else
+        {
+            s.pop();
+        }
+    }
+
+    return new_root;
+}
+
+template <typename T> BinaryTree<T>::BinaryTree(const BinaryTree &other) : p_head(nullptr)
+{
+    p_head = clone_subtree(other.p_head);
+}
+
+template <typename T> BinaryTree<T> &BinaryTree<T>::operator=(const BinaryTree<T> &other)
+{
+    if (this == &other)
+        return *this;
+    destroy_subtree(p_head);
+    p_head = nullptr;
+    m_pool.destroy_all();
+    p_head = clone_subtree(other.p_head);
+    return *this;
+}
+
+template <typename T>
+BinaryTree<T>::BinaryTree(BinaryTree &&other) noexcept : p_head(other.p_head), m_pool(std::move(other.m_pool))
+{
+    other.p_head = nullptr;
+}
+
+template <typename T> BinaryTree<T> &BinaryTree<T>::operator=(BinaryTree &&other) noexcept
+{
+    if (this == &other)
+        return *this;
+    destroy_subtree(p_head);
+    p_head = other.p_head;
+    m_pool = std::move(other.m_pool);
+    other.p_head = nullptr;
+    return *this;
+}
+
+template <typename T> BinaryTree<T>::~BinaryTree()
+{
+    p_head = nullptr;
+}
 
 template <typename T> void BinaryTree<T>::preorder(const Node<T> *node) const
 {
@@ -13,11 +127,11 @@ template <typename T> void BinaryTree<T>::preorder(const Node<T> *node) const
     {
         const Node<T> *curr = s.top();
         s.pop();
-        std::cout << curr->get_data() << " ";
-        if (curr->get_right())
-            s.push(curr->get_right());
-        if (curr->get_left())
-            s.push(curr->get_left());
+        std::cout << curr->m_data << " ";
+        if (curr->p_right)
+            s.push(curr->p_right);
+        if (curr->p_left)
+            s.push(curr->p_left);
     }
 }
 
@@ -30,12 +144,12 @@ template <typename T> void BinaryTree<T>::inorder(const Node<T> *node) const
         while (curr)
         {
             s.push(curr);
-            curr = curr->get_left();
+            curr = curr->p_left;
         }
         curr = s.top();
         s.pop();
-        std::cout << curr->get_data() << " ";
-        curr = curr->get_right();
+        std::cout << curr->m_data << " ";
+        curr = curr->p_right;
     }
 }
 
@@ -51,16 +165,16 @@ template <typename T> void BinaryTree<T>::postorder(const Node<T> *node) const
         if (curr)
         {
             s.push(curr);
-            curr = curr->get_left();
+            curr = curr->p_left;
         }
         else
         {
             const Node<T> *peek = s.top();
-            if (peek->get_right() && last != peek->get_right())
-                curr = peek->get_right();
+            if (peek->p_right && last != peek->p_right)
+                curr = peek->p_right;
             else
             {
-                std::cout << peek->get_data() << " ";
+                std::cout << peek->m_data << " ";
                 last = peek;
                 s.pop();
             }
@@ -78,11 +192,11 @@ template <typename T> void BinaryTree<T>::levelorder(const Node<T> *node) const
     {
         const Node<T> *cur = q.front();
         q.pop();
-        std::cout << cur->get_data() << " ";
-        if (cur->get_left())
-            q.push(cur->get_left());
-        if (cur->get_right())
-            q.push(cur->get_right());
+        std::cout << cur->m_data << " ";
+        if (cur->p_left)
+            q.push(cur->p_left);
+        if (cur->p_right)
+            q.push(cur->p_right);
     }
 }
 
@@ -98,36 +212,26 @@ template <typename T> int BinaryTree<T>::compute_size(const Node<T> *node) const
         const Node<T> *curr = q.front();
         q.pop();
         c++;
-        if (curr->get_left())
-            q.push(curr->get_left());
-        if (curr->get_right())
-            q.push(curr->get_right());
+        if (curr->p_left)
+            q.push(curr->p_left);
+        if (curr->p_right)
+            q.push(curr->p_right);
     }
     return c;
 }
 
-template <typename T> BinaryTree<T>::BinaryTree(const BinaryTree &other)
-{
-    if (other.p_head)
-        p_head = std::make_unique<Node<T>>(*other.p_head);
-}
-
-template <typename T> BinaryTree<T> &BinaryTree<T>::operator=(const BinaryTree<T> &other)
-{
-    if (this == &other)
-        return *this;
-    p_head = other.p_head ? std::make_unique<Node<T>>(*other.p_head) : nullptr;
-    return *this;
-}
-
 template <typename T> Node<T> *BinaryTree<T>::get_root() const
 {
-    return p_head.get();
+    return p_head;
 }
 
-template <typename T> void BinaryTree<T>::set_root(std::unique_ptr<Node<T>> root)
+template <typename T> void BinaryTree<T>::set_root(Node<T> *root)
 {
-    p_head = std::move(root);
+    if (p_head && root != p_head)
+    {
+        destroy_subtree(p_head);
+    }
+    p_head = root;
 }
 
 template <typename T> bool BinaryTree<T>::is_empty() const
@@ -137,63 +241,66 @@ template <typename T> bool BinaryTree<T>::is_empty() const
 
 template <typename T> int BinaryTree<T>::size() const
 {
-    return compute_size(p_head.get());
+    return compute_size(p_head);
 }
 
-template <typename T> void BinaryTree<T>::set_left(Node<T> *p, std::unique_ptr<Node<T>> l)
+template <typename T> void BinaryTree<T>::set_left(Node<T> *p, Node<T> *l)
 {
     if (p)
     {
-        p->set_left(std::move(l));
+        if (p->p_left)
+            destroy_subtree(p->p_left);
+        p->p_left = l;
 
-        int h_left = p->get_left() ? p->get_left()->get_height_val() : 0;
-        int h_right = p->get_right() ? p->get_right()->get_height_val() : 0;
-        p->set_height_val(1 + std::max(h_left, h_right));
+        int h_left = p->p_left ? p->p_left->m_height : 0;
+        int h_right = p->p_right ? p->p_right->m_height : 0;
+        p->m_height = static_cast<std::int8_t>(1 + std::max(h_left, h_right));
     }
 }
 
-template <typename T> void BinaryTree<T>::set_right(Node<T> *p, std::unique_ptr<Node<T>> r)
+template <typename T> void BinaryTree<T>::set_right(Node<T> *p, Node<T> *r)
 {
     if (p)
     {
-        p->set_right(std::move(r));
+        if (p->p_right)
+            destroy_subtree(p->p_right);
+        p->p_right = r;
 
-        int h_left = p->get_left() ? p->get_left()->get_height_val() : 0;
-        int h_right = p->get_right() ? p->get_right()->get_height_val() : 0;
-        p->set_height_val(1 + std::max(h_left, h_right));
+        int h_left = p->p_left ? p->p_left->m_height : 0;
+        int h_right = p->p_right ? p->p_right->m_height : 0;
+        p->m_height = static_cast<std::int8_t>(1 + std::max(h_left, h_right));
     }
 }
 
 template <typename T> void BinaryTree<T>::print_preorder() const
 {
-    preorder(p_head.get());
+    preorder(p_head);
     std::cout << std::endl;
 }
 template <typename T> void BinaryTree<T>::print_inorder() const
 {
-    inorder(p_head.get());
+    inorder(p_head);
     std::cout << std::endl;
 }
 template <typename T> void BinaryTree<T>::print_postorder() const
 {
-    postorder(p_head.get());
+    postorder(p_head);
     std::cout << std::endl;
 }
 template <typename T> void BinaryTree<T>::print_levelorder() const
 {
-    levelorder(p_head.get());
+    levelorder(p_head);
     std::cout << std::endl;
 }
 
-template <typename T> std::unique_ptr<Node<T>> BinaryTree<T>::make_node(const T &val)
+template <typename T> Node<T> *BinaryTree<T>::make_node(const T &val)
 {
-    return std::make_unique<Node<T>>(val);
+    return m_pool.allocate(val);
 }
 
-template <typename T>
-std::unique_ptr<Node<T>> BinaryTree<T>::make_node(const T &val, std::unique_ptr<Node<T>> l, std::unique_ptr<Node<T>> r)
+template <typename T> Node<T> *BinaryTree<T>::make_node(const T &val, Node<T> *l, Node<T> *r)
 {
-    return std::make_unique<Node<T>>(val, std::move(l), std::move(r));
+    return m_pool.allocate(val, l, r);
 }
 
 template <typename T>
@@ -202,11 +309,11 @@ void BinaryTree<T>::print_tree_helper(const Node<T> *node, const std::string &pr
     if (!node)
         return;
 
-    print_tree_helper(node->get_right(), prefix + (is_left ? "\u2502   " : "    "), false);
+    print_tree_helper(node->p_right, prefix + (is_left ? "\u2502   " : "    "), false);
 
-    std::cout << prefix << (is_left ? "\u2514\u2500\u2500 " : "\u250c\u2500\u2500 ") << node->get_data() << "\n";
+    std::cout << prefix << (is_left ? "\u2514\u2500\u2500 " : "\u250c\u2500\u2500 ") << node->m_data << "\n";
 
-    print_tree_helper(node->get_left(), prefix + (is_left ? "    " : "\u2502   "), true);
+    print_tree_helper(node->p_left, prefix + (is_left ? "    " : "\u2502   "), true);
 }
 
 template <typename T> void BinaryTree<T>::print_tree() const
@@ -217,11 +324,11 @@ template <typename T> void BinaryTree<T>::print_tree() const
         return;
     }
 
-    print_tree_helper(p_head->get_right(), "    ", false);
+    print_tree_helper(p_head->p_right, "    ", false);
 
-    std::cout << p_head->get_data() << "\n";
+    std::cout << p_head->m_data << "\n";
 
-    print_tree_helper(p_head->get_left(), "    ", true);
+    print_tree_helper(p_head->p_left, "    ", true);
 
     std::cout << std::flush;
 }
@@ -231,27 +338,27 @@ template <typename T> void BinaryTree<T>::dot_helper(const Node<T> *node, std::o
     if (!node)
         return;
 
-    if (node->get_left())
+    if (node->p_left)
     {
-        out << "    \"" << node->get_data() << "\" -> \"" << node->get_left()->get_data() << "\";\n";
-        dot_helper(node->get_left(), out, null_count);
+        out << "    \"" << node->m_data << "\" -> \"" << node->p_left->m_data << "\";\n";
+        dot_helper(node->p_left, out, null_count);
     }
     else
     {
         out << "    null" << null_count << " [shape=point];\n";
-        out << "    \"" << node->get_data() << "\" -> null" << null_count << ";\n";
+        out << "    \"" << node->m_data << "\" -> null" << null_count << ";\n";
         ++null_count;
     }
 
-    if (node->get_right())
+    if (node->p_right)
     {
-        out << "    \"" << node->get_data() << "\" -> \"" << node->get_right()->get_data() << "\";\n";
-        dot_helper(node->get_right(), out, null_count);
+        out << "    \"" << node->m_data << "\" -> \"" << node->p_right->m_data << "\";\n";
+        dot_helper(node->p_right, out, null_count);
     }
     else
     {
         out << "    null" << null_count << " [shape=point];\n";
-        out << "    \"" << node->get_data() << "\" -> null" << null_count << ";\n";
+        out << "    \"" << node->m_data << "\" -> null" << null_count << ";\n";
         ++null_count;
     }
 }
@@ -270,7 +377,7 @@ template <typename T> void BinaryTree<T>::dump_to_dot(const std::string &filenam
     if (p_head)
     {
         int null_count = 0;
-        dot_helper(p_head.get(), out, null_count);
+        dot_helper(p_head, out, null_count);
     }
 
     out << "}\n";

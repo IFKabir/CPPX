@@ -20,7 +20,7 @@
 class Benchmark
 {
   public:
-    using Clock = std::chrono::high_resolution_clock;
+    using Clock = std::chrono::steady_clock;
     using TimePoint = Clock::time_point;
     using Duration = std::chrono::duration<double, std::milli>;
 
@@ -49,7 +49,8 @@ class Benchmark
 static std::vector<int> generate_unique_random(std::size_t count, unsigned seed = 42)
 {
     std::mt19937 rng(seed);
-    std::set<int> unique_set;
+    std::unordered_set<int> unique_set;
+    unique_set.reserve(static_cast<std::size_t>(count * 1.3));
     while (unique_set.size() < count)
         unique_set.insert(static_cast<int>(rng()));
     return {unique_set.begin(), unique_set.end()};
@@ -73,33 +74,72 @@ struct BenchmarkResult
     double delete_ms;
 };
 
+static const int WARMUP_RUNS = 1;
+static const int BENCH_RUNS = 3;
+
+template <typename SetupFn, typename BenchFn> static double run_timed(SetupFn setup, BenchFn bench, int runs)
+{
+    setup();
+    Benchmark bm;
+
+    std::vector<double> times;
+    times.reserve(static_cast<std::size_t>(runs));
+    for (int i = 0; i < runs; ++i)
+    {
+        setup();
+        bm.start();
+        bench();
+        bm.stop();
+        times.push_back(bm.elapsed_ms());
+    }
+    std::sort(times.begin(), times.end());
+    return times[static_cast<std::size_t>(runs / 2)];
+}
+
 static BenchmarkResult bench_std_set(std::size_t n, const std::vector<int> &data, const std::vector<int> &lookup_data,
                                      const std::vector<int> &delete_data)
 {
     Benchmark bm;
     std::set<int> s;
 
-    bm.start();
-    for (int v : data)
-        s.insert(v);
-    bm.stop();
-    double ins = bm.elapsed_ms();
+    for (int i = 0; i < WARMUP_RUNS; ++i)
+    {
+        s.clear();
+        for (int v : data)
+            s.insert(v);
+    }
 
-    bm.start();
-    volatile bool sink = false;
-    for (int v : lookup_data)
-        sink = (s.find(v) != s.end());
-    bm.stop();
-    double lkp = bm.elapsed_ms();
-    (void)sink;
+    std::vector<double> ins_times, lkp_times, del_times;
 
-    bm.start();
-    for (int v : delete_data)
-        s.erase(v);
-    bm.stop();
-    double del = bm.elapsed_ms();
+    for (int i = 0; i < BENCH_RUNS; ++i)
+    {
+        s.clear();
+        bm.start();
+        for (int v : data)
+            s.insert(v);
+        bm.stop();
+        ins_times.push_back(bm.elapsed_ms());
 
-    return {"std::set", n, ins, lkp, del};
+        bm.start();
+        volatile bool sink = false;
+        for (int v : lookup_data)
+            sink = (s.find(v) != s.end());
+        bm.stop();
+        lkp_times.push_back(bm.elapsed_ms());
+        (void)sink;
+
+        bm.start();
+        for (int v : delete_data)
+            s.erase(v);
+        bm.stop();
+        del_times.push_back(bm.elapsed_ms());
+    }
+
+    std::sort(ins_times.begin(), ins_times.end());
+    std::sort(lkp_times.begin(), lkp_times.end());
+    std::sort(del_times.begin(), del_times.end());
+
+    return {"std::set", n, ins_times[BENCH_RUNS / 2], lkp_times[BENCH_RUNS / 2], del_times[BENCH_RUNS / 2]};
 }
 
 static BenchmarkResult bench_std_map(std::size_t n, const std::vector<int> &data, const std::vector<int> &lookup_data,
@@ -108,27 +148,44 @@ static BenchmarkResult bench_std_map(std::size_t n, const std::vector<int> &data
     Benchmark bm;
     std::map<int, int> m;
 
-    bm.start();
-    for (int v : data)
-        m[v] = v;
-    bm.stop();
-    double ins = bm.elapsed_ms();
+    for (int i = 0; i < WARMUP_RUNS; ++i)
+    {
+        m.clear();
+        for (int v : data)
+            m[v] = v;
+    }
 
-    bm.start();
-    volatile bool sink = false;
-    for (int v : lookup_data)
-        sink = (m.find(v) != m.end());
-    bm.stop();
-    double lkp = bm.elapsed_ms();
-    (void)sink;
+    std::vector<double> ins_times, lkp_times, del_times;
 
-    bm.start();
-    for (int v : delete_data)
-        m.erase(v);
-    bm.stop();
-    double del = bm.elapsed_ms();
+    for (int i = 0; i < BENCH_RUNS; ++i)
+    {
+        m.clear();
+        bm.start();
+        for (int v : data)
+            m[v] = v;
+        bm.stop();
+        ins_times.push_back(bm.elapsed_ms());
 
-    return {"std::map", n, ins, lkp, del};
+        bm.start();
+        volatile bool sink = false;
+        for (int v : lookup_data)
+            sink = (m.find(v) != m.end());
+        bm.stop();
+        lkp_times.push_back(bm.elapsed_ms());
+        (void)sink;
+
+        bm.start();
+        for (int v : delete_data)
+            m.erase(v);
+        bm.stop();
+        del_times.push_back(bm.elapsed_ms());
+    }
+
+    std::sort(ins_times.begin(), ins_times.end());
+    std::sort(lkp_times.begin(), lkp_times.end());
+    std::sort(del_times.begin(), del_times.end());
+
+    return {"std::map", n, ins_times[BENCH_RUNS / 2], lkp_times[BENCH_RUNS / 2], del_times[BENCH_RUNS / 2]};
 }
 
 static BenchmarkResult bench_std_unordered_set(std::size_t n, const std::vector<int> &data,
@@ -138,114 +195,178 @@ static BenchmarkResult bench_std_unordered_set(std::size_t n, const std::vector<
     std::unordered_set<int> s;
     s.reserve(n);
 
-    bm.start();
-    for (int v : data)
-        s.insert(v);
-    bm.stop();
-    double ins = bm.elapsed_ms();
+    for (int i = 0; i < WARMUP_RUNS; ++i)
+    {
+        s.clear();
+        s.reserve(n);
+        for (int v : data)
+            s.insert(v);
+    }
 
-    bm.start();
-    volatile bool sink = false;
-    for (int v : lookup_data)
-        sink = (s.find(v) != s.end());
-    bm.stop();
-    double lkp = bm.elapsed_ms();
-    (void)sink;
+    std::vector<double> ins_times, lkp_times, del_times;
 
-    bm.start();
-    for (int v : delete_data)
-        s.erase(v);
-    bm.stop();
-    double del = bm.elapsed_ms();
+    for (int i = 0; i < BENCH_RUNS; ++i)
+    {
+        s.clear();
+        s.reserve(n);
+        bm.start();
+        for (int v : data)
+            s.insert(v);
+        bm.stop();
+        ins_times.push_back(bm.elapsed_ms());
 
-    return {"std::unordered_set", n, ins, lkp, del};
+        bm.start();
+        volatile bool sink = false;
+        for (int v : lookup_data)
+            sink = (s.find(v) != s.end());
+        bm.stop();
+        lkp_times.push_back(bm.elapsed_ms());
+        (void)sink;
+
+        bm.start();
+        for (int v : delete_data)
+            s.erase(v);
+        bm.stop();
+        del_times.push_back(bm.elapsed_ms());
+    }
+
+    std::sort(ins_times.begin(), ins_times.end());
+    std::sort(lkp_times.begin(), lkp_times.end());
+    std::sort(del_times.begin(), del_times.end());
+
+    return {"std::unordered_set", n, ins_times[BENCH_RUNS / 2], lkp_times[BENCH_RUNS / 2], del_times[BENCH_RUNS / 2]};
 }
 
 static BenchmarkResult bench_avl(std::size_t n, const std::vector<int> &data, const std::vector<int> &lookup_data,
                                  const std::vector<int> &delete_data)
 {
     Benchmark bm;
-    stl_ext::AVLTree<int> tree;
+    std::vector<double> ins_times, lkp_times, del_times;
 
-    bm.start();
-    for (int v : data)
-        tree.insert(v);
-    bm.stop();
-    double ins = bm.elapsed_ms();
+    for (int i = 0; i < WARMUP_RUNS; ++i)
+    {
+        stl_ext::AVLTree<int> warmup;
+        for (int v : data)
+            warmup.insert(v);
+    }
 
-    bm.start();
-    volatile bool sink = false;
-    for (int v : lookup_data)
-        sink = tree.contains(v);
-    bm.stop();
-    double lkp = bm.elapsed_ms();
-    (void)sink;
+    for (int i = 0; i < BENCH_RUNS; ++i)
+    {
+        stl_ext::AVLTree<int> tree;
+        bm.start();
+        for (int v : data)
+            tree.insert(v);
+        bm.stop();
+        ins_times.push_back(bm.elapsed_ms());
 
-    bm.start();
-    for (int v : delete_data)
-        tree.remove(v);
-    bm.stop();
-    double del = bm.elapsed_ms();
+        bm.start();
+        volatile bool sink = false;
+        for (int v : lookup_data)
+            sink = tree.contains(v);
+        bm.stop();
+        lkp_times.push_back(bm.elapsed_ms());
+        (void)sink;
 
-    return {"stl_ext::AVLTree", n, ins, lkp, del};
+        bm.start();
+        for (int v : delete_data)
+            tree.remove(v);
+        bm.stop();
+        del_times.push_back(bm.elapsed_ms());
+    }
+
+    std::sort(ins_times.begin(), ins_times.end());
+    std::sort(lkp_times.begin(), lkp_times.end());
+    std::sort(del_times.begin(), del_times.end());
+
+    return {"stl_ext::AVLTree", n, ins_times[BENCH_RUNS / 2], lkp_times[BENCH_RUNS / 2], del_times[BENCH_RUNS / 2]};
 }
 
 static BenchmarkResult bench_rbt(std::size_t n, const std::vector<int> &data, const std::vector<int> &lookup_data,
                                  const std::vector<int> &delete_data)
 {
     Benchmark bm;
-    stl_ext::RBTree<int> tree;
+    std::vector<double> ins_times, lkp_times, del_times;
 
-    bm.start();
-    for (int v : data)
-        tree.insert(v);
-    bm.stop();
-    double ins = bm.elapsed_ms();
+    for (int i = 0; i < WARMUP_RUNS; ++i)
+    {
+        stl_ext::RBTree<int> warmup;
+        for (int v : data)
+            warmup.insert(v);
+    }
 
-    bm.start();
-    volatile bool sink = false;
-    for (int v : lookup_data)
-        sink = tree.contains(v);
-    bm.stop();
-    double lkp = bm.elapsed_ms();
-    (void)sink;
+    for (int i = 0; i < BENCH_RUNS; ++i)
+    {
+        stl_ext::RBTree<int> tree;
+        bm.start();
+        for (int v : data)
+            tree.insert(v);
+        bm.stop();
+        ins_times.push_back(bm.elapsed_ms());
 
-    bm.start();
-    for (int v : delete_data)
-        tree.remove(v);
-    bm.stop();
-    double del = bm.elapsed_ms();
+        bm.start();
+        volatile bool sink = false;
+        for (int v : lookup_data)
+            sink = tree.contains(v);
+        bm.stop();
+        lkp_times.push_back(bm.elapsed_ms());
+        (void)sink;
 
-    return {"stl_ext::RBTree", n, ins, lkp, del};
+        bm.start();
+        for (int v : delete_data)
+            tree.remove(v);
+        bm.stop();
+        del_times.push_back(bm.elapsed_ms());
+    }
+
+    std::sort(ins_times.begin(), ins_times.end());
+    std::sort(lkp_times.begin(), lkp_times.end());
+    std::sort(del_times.begin(), del_times.end());
+
+    return {"stl_ext::RBTree", n, ins_times[BENCH_RUNS / 2], lkp_times[BENCH_RUNS / 2], del_times[BENCH_RUNS / 2]};
 }
 
 static BenchmarkResult bench_bst(std::size_t n, const std::vector<int> &data, const std::vector<int> &lookup_data,
                                  const std::vector<int> &delete_data)
 {
     Benchmark bm;
-    stl_ext::BST<int> tree;
+    std::vector<double> ins_times, lkp_times, del_times;
 
-    bm.start();
-    for (int v : data)
-        tree.insert(v);
-    bm.stop();
-    double ins = bm.elapsed_ms();
+    for (int i = 0; i < WARMUP_RUNS; ++i)
+    {
+        stl_ext::BST<int> warmup;
+        for (int v : data)
+            warmup.insert(v);
+    }
 
-    bm.start();
-    volatile bool sink = false;
-    for (int v : lookup_data)
-        sink = tree.contains(v);
-    bm.stop();
-    double lkp = bm.elapsed_ms();
-    (void)sink;
+    for (int i = 0; i < BENCH_RUNS; ++i)
+    {
+        stl_ext::BST<int> tree;
+        bm.start();
+        for (int v : data)
+            tree.insert(v);
+        bm.stop();
+        ins_times.push_back(bm.elapsed_ms());
 
-    bm.start();
-    for (int v : delete_data)
-        tree.remove(v);
-    bm.stop();
-    double del = bm.elapsed_ms();
+        bm.start();
+        volatile bool sink = false;
+        for (int v : lookup_data)
+            sink = tree.contains(v);
+        bm.stop();
+        lkp_times.push_back(bm.elapsed_ms());
+        (void)sink;
 
-    return {"stl_ext::BST", n, ins, lkp, del};
+        bm.start();
+        for (int v : delete_data)
+            tree.remove(v);
+        bm.stop();
+        del_times.push_back(bm.elapsed_ms());
+    }
+
+    std::sort(ins_times.begin(), ins_times.end());
+    std::sort(lkp_times.begin(), lkp_times.end());
+    std::sort(del_times.begin(), del_times.end());
+
+    return {"stl_ext::BST", n, ins_times[BENCH_RUNS / 2], lkp_times[BENCH_RUNS / 2], del_times[BENCH_RUNS / 2]};
 }
 
 static std::string format_n(std::size_t n)
@@ -471,14 +592,11 @@ static void generate_svg(const std::vector<BenchmarkResult> &results, const std:
     f << "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 " << total_w << " " << total_h << "\">\n";
     f << "<style>text { font-family: 'Segoe UI', Roboto, Arial, sans-serif; }</style>\n";
 
-    // ── Full background ──
     f << "<rect width=\"100%\" height=\"100%\" rx=\"12\" fill=\"#0f172a\"/>\n";
 
-    // ── Main title ──
     f << "<text x=\"" << total_w / 2 << "\" y=\"28\" text-anchor=\"middle\" font-size=\"20\" "
       << "font-weight=\"bold\" fill=\"white\">CPPX Benchmark Results</text>\n";
 
-    // ── Three sub-charts ──
     auto insert_fn = [](const BenchmarkResult &r) -> double { return r.insert_ms; };
     auto lookup_fn = [](const BenchmarkResult &r) -> double { return r.lookup_ms; };
     auto delete_fn = [](const BenchmarkResult &r) -> double { return r.delete_ms; };
@@ -490,7 +608,6 @@ static void generate_svg(const std::vector<BenchmarkResult> &results, const std:
     emit_subchart(f, "Delete Time", results, structures, sizes, delete_fn, pad + 2 * (chart_w + pad), y_charts, chart_w,
                   chart_h);
 
-    // ── Legend ──
     double ly = y_charts + chart_h + 18;
     double item_w = 170;
     double lx_start = total_w / 2 - (structures.size() * item_w) / 2.0;
@@ -507,13 +624,8 @@ static void generate_svg(const std::vector<BenchmarkResult> &results, const std:
     std::cout << "[info] SVG chart saved to " << filename << "\n";
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  Main
-// ─────────────────────────────────────────────────────────────────────────────
-
 int main(int argc, char *argv[])
 {
-    // Accept optional output directory (set by CMake)
     std::string out_dir = ".";
     if (argc > 1)
         out_dir = argv[1];
@@ -524,7 +636,8 @@ int main(int argc, char *argv[])
     all_results.reserve(sizes.size() * 6);
 
     std::cout << "╔══════════════════════════════════════════════════════════════╗\n";
-    std::cout << "║            CPPX  Benchmark  Suite  v2.0                    ║\n";
+    std::cout << "║            CPPX  Benchmark  Suite  v3.0                    ║\n";
+    std::cout << "║  Arena allocator · Iterative AVL · Raw pointers            ║\n";
     std::cout << "╚══════════════════════════════════════════════════════════════╝\n";
 
     for (std::size_t n : sizes)
@@ -577,7 +690,6 @@ int main(int argc, char *argv[])
         all_results.push_back(r_rbt);
     }
 
-    // Sort: group by N, then by structure name
     std::sort(all_results.begin(), all_results.end(), [](const BenchmarkResult &a, const BenchmarkResult &b) {
         if (a.n != b.n)
             return a.n < b.n;

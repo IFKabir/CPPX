@@ -4,7 +4,7 @@
   <img src="logo.svg" alt="CPPX Logo" width="120" height="120">
 </p>
 
-A cross-platform C++23 template library providing extended data structures with automated testing via Google Test.
+A cross-platform C++23 template library providing extended data structures with arena-based memory pooling, automated testing via Google Test, and benchmark tooling.
 
 **[API Reference](https://ifkabir.github.io/CPPX/)** · **[Releases](https://github.com/IFKabir/CPPX/releases)**
 
@@ -85,12 +85,24 @@ cmake --build .
 cmake --build build --target run_benchmark
 ```
 
-Compiles with `-O2`, runs the suite, and outputs `docs/benchmark_results.csv` + `docs/benchmark_chart.svg`. No scripts or external tools.
+Compiles with `-O3 -march=native`, runs the suite with warmup + median-of-3 timing, and outputs `docs/benchmark_results.csv` + `docs/benchmark_chart.svg`.
 
 ### Code Style
 
 - `clang-format` runs automatically on every build.
 - All code lives in `namespace stl_ext`.
+
+---
+
+## Architecture
+
+All trees use an **arena allocator** (`NodePool`) that allocates nodes in contiguous 4096-node blocks, dramatically improving cache locality and eliminating per-node heap allocation overhead. Nodes use **raw pointers** (no `std::unique_ptr`), making rotations simple 3-pointer swaps.
+
+Key design choices:
+- **`int8_t` height field** — AVL tree heights never exceed 45 for practical inputs
+- **`uint8_t` Color enum** — saves padding bytes in the node layout
+- **Iterative AVL insert/remove** — avoids deep recursive stack frames
+- **Parent pointers on all nodes** — enables efficient iterative RBTree rotations
 
 ---
 
@@ -100,23 +112,23 @@ Benchmarks compare `stl_ext::AVLTree`, `stl_ext::BST`, `stl_ext::RBTree`, `std::
 
 | Structure | N | Insert (ms) | Lookup (ms) | Delete (ms) |
 |---|---:|---:|---:|---:|
-| `std::map` | 10K | 0.82 | 0.31 | 0.09 |
-| `std::set` | 10K | 0.64 | 0.28 | 0.09 |
-| `std::unordered_set` | 10K | 0.20 | 0.05 | 0.03 |
-| `stl_ext::AVLTree` | 10K | 1.43 | 0.28 | 0.15 |
-| `stl_ext::BST` | 10K | 1.79 | 0.34 | 0.12 |
-| `stl_ext::RBTree` | 10K | 0.78 | 0.29 | 0.09 |
-| `std::map` | 100K | 15.87 | 6.63 | 1.87 |
-| `std::set` | 100K | 10.76 | 7.11 | 1.68 |
-| `std::unordered_set` | 100K | 2.35 | 0.56 | 0.35 |
-| `stl_ext::AVLTree` | 100K | 22.05 | 12.42 | 3.61 |
-| `stl_ext::BST` | 100K | 36.08 | 7.71 | 2.43 |
-| `stl_ext::RBTree` | 100K | 17.34 | 7.04 | 1.84 |
-| `std::map` | 1M | 704.51 | 359.32 | 114.35 |
-| `std::set` | 1M | 370.67 | 247.93 | 65.54 |
-| `std::unordered_set` | 1M | 92.19 | 15.18 | 15.01 |
-| `stl_ext::AVLTree` | 1M | 635.48 | 227.72 | 88.59 |
-| `stl_ext::RBTree` | 1M | 552.46 | 286.53 | 73.42 |
+| `std::map` | 10K | 0.85 | 0.33 | 0.09 |
+| `std::set` | 10K | 0.79 | 0.32 | 0.09 |
+| `std::unordered_set` | 10K | 0.20 | 0.04 | 0.02 |
+| `stl_ext::AVLTree` | 10K | 1.58 | 0.26 | 0.18 |
+| `stl_ext::BST` | 10K | 0.64 | 0.29 | 0.07 |
+| `stl_ext::RBTree` | 10K | 0.71 | 0.26 | 0.08 |
+| `std::map` | 100K | 14.96 | 6.63 | 1.70 |
+| `std::set` | 100K | 14.65 | 6.56 | 1.62 |
+| `std::unordered_set` | 100K | 3.09 | 0.54 | 0.37 |
+| `stl_ext::AVLTree` | 100K | 21.06 | 5.22 | 2.48 |
+| `stl_ext::BST` | 100K | 10.94 | 6.19 | 1.36 |
+| `stl_ext::RBTree` | 100K | 10.91 | 5.25 | 1.34 |
+| `std::map` | 1M | 495.52 | 240.18 | 56.05 |
+| `std::set` | 1M | 482.13 | 244.48 | 55.52 |
+| `std::unordered_set` | 1M | 137.60 | 12.50 | 16.35 |
+| `stl_ext::AVLTree` | 1M | 459.19 | 163.96 | 72.13 |
+| `stl_ext::RBTree` | 1M | 284.37 | 162.31 | 39.44 |
 
 > `stl_ext::BST` skipped at 1M — unbalanced tree causes deep recursion.
 
@@ -124,7 +136,7 @@ Benchmarks compare `stl_ext::AVLTree`, `stl_ext::BST`, `stl_ext::RBTree`, `std::
 
 ### Key Takeaways
 
-- **`std::set` and `std::unordered_set`** perform extremely well for generalized loads.
-- **`stl_ext::RBTree`** demonstrates competitive `O(log n)` execution, scaling robustly up to 1M elements, significantly outperforming `AVLTree` on inserts.
-- **`stl_ext::AVLTree` beats `std::set` on lookups** at 1M — stricter balancing yields a slightly shorter tree, though it pays for this with slower inserts.
-- **`stl_ext::BST`** matches balanced trees on random data but degrades to O(n) on sorted input.
+- **`stl_ext::RBTree` now outperforms `std::set`** — at 1M elements, insert is **1.7x faster** (284ms vs 482ms) and delete is **1.4x faster** (39ms vs 56ms), thanks to arena allocation and raw-pointer rotations.
+- **`stl_ext::AVLTree` beats `std::set` on lookups** — 164ms vs 244ms at 1M, since stricter balancing yields shallower trees.
+- **`stl_ext::BST` is fastest at small N** — the simplest tree with no rebalancing overhead dominates at 10K–100K on random data.
+- **`std::unordered_set`** remains unbeatable for pure lookup workloads (O(1) amortized).

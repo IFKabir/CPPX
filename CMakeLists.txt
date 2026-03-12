@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
-project(CPPX VERSION 2.0.0 LANGUAGES CXX)
+project(CPPX VERSION 2.1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -55,7 +55,7 @@ add_executable(benchmark benchmarks/benchmark_main.cpp)
 target_link_libraries(benchmark PRIVATE ${PROJECT_NAME}_lib)
 target_include_directories(benchmark PRIVATE include)
 target_compile_options(benchmark PRIVATE
-    $<$<CXX_COMPILER_ID:GNU,Clang>:-O2>
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-O3 -march=native>
     $<$<CXX_COMPILER_ID:MSVC>:/O2>
 )
 

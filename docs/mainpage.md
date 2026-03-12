@@ -1,6 +1,6 @@
 # {#mainpage}
 
-**CPPX** — a C++23 template library for memory-safe data structures.
+**CPPX** — a C++23 template library for high-performance data structures with arena-based memory pooling.
 
 ## Available Structures
 
@@ -10,7 +10,8 @@
 | AVL Tree | Self-balancing BST (strict balance) | stl_ext::AVLTree |
 | Red-Black Tree | Self-balancing BST (red-black properties) | stl_ext::RBTree |
 | Binary Tree | Base class with traversals | stl_ext::BinaryTree |
-| Node | Building block using smart pointers | stl_ext::Node |
+| Node | Tree node with raw-pointer children | stl_ext::Node |
+| Node Pool | Arena allocator for cache-friendly allocation | stl_ext::NodePool |
 
 ## Example
 

@@ -1,47 +1,28 @@
+#pragma once
+#include "../include/cppx.h"
+
 namespace stl_ext
 {
 
+// ─── Node implementation ───────────────────────────────────────────────────────
+
+template <typename T> Node<T>::Node(T val) : m_data(std::move(val))
+{
+}
+
 template <typename T>
-Node<T>::Node(const Node &other) : m_data(other.m_data), m_height(other.m_height), m_color(other.m_color)
+Node<T>::Node(T val, Node<T> *left, Node<T> *right) : m_data(std::move(val)), p_left(left), p_right(right)
 {
-    if (other.p_left)
-        p_left = std::make_unique<Node<T>>(*other.p_left);
-    if (other.p_right)
-        p_right = std::make_unique<Node<T>>(*other.p_right);
 }
 
-template <typename T> Node<T> &Node<T>::operator=(const Node<T> &other)
-{
-    if (this == &other)
-        return *this;
-    m_data = other.m_data;
-    m_height = other.m_height;
-    m_color = other.m_color;
-
-    p_left = other.p_left ? std::make_unique<Node<T>>(*other.p_left) : nullptr;
-    p_right = other.p_right ? std::make_unique<Node<T>>(*other.p_right) : nullptr;
-
-    return *this;
-}
-
-template <typename T> inline int Node<T>::get_height_val() const
+template <typename T> int Node<T>::get_height_val() const
 {
     return m_height;
 }
 
-template <typename T> inline void Node<T>::set_height_val(int h)
+template <typename T> void Node<T>::set_height_val(int h)
 {
-    m_height = h;
-}
-
-template <typename T> inline std::unique_ptr<Node<T>> Node<T>::detach_left()
-{
-    return std::move(p_left);
-}
-
-template <typename T> inline std::unique_ptr<Node<T>> Node<T>::detach_right()
-{
-    return std::move(p_right);
+    m_height = static_cast<std::int8_t>(h);
 }
 
 template <typename T> const T &Node<T>::get_data() const
@@ -56,22 +37,22 @@ template <typename T> void Node<T>::set_data(const T &val)
 
 template <typename T> Node<T> *Node<T>::get_left() const
 {
-    return p_left.get();
+    return p_left;
 }
 
-template <typename T> void Node<T>::set_left(std::unique_ptr<Node<T>> node)
+template <typename T> void Node<T>::set_left(Node<T> *node)
 {
-    p_left = std::move(node);
+    p_left = node;
 }
 
 template <typename T> Node<T> *Node<T>::get_right() const
 {
-    return p_right.get();
+    return p_right;
 }
 
-template <typename T> void Node<T>::set_right(std::unique_ptr<Node<T>> node)
+template <typename T> void Node<T>::set_right(Node<T> *node)
 {
-    p_right = std::move(node);
+    p_right = node;
 }
 
 template <typename T> Color Node<T>::get_color() const
