@@ -1,21 +1,4 @@
-/**
- * @file benchmark_main.cpp
- * @brief Automated benchmark suite comparing stl_ext::AVLTree, stl_ext::BST,
- *        and std::set across insertion, lookup, and deletion workloads.
- *
- * Sizes tested: N = 10^4, 10^5, 10^6
- *  - Insertion : insert N random integers
- *  - Lookup    : search for N/2 random existing elements
- *  - Deletion  : remove 10% of the elements
- *
- * Outputs:
- *  - A formatted console table
- *  - benchmark_results.csv
- *  - docs/benchmark_chart.svg  (pure C++ – no external tools needed)
- *
- * Build & run in one step:
- *     cmake --build build --target run_benchmark
- */
+
 
 #include "../include/cppx.h"
 
@@ -26,15 +9,13 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <map>
 #include <random>
 #include <set>
 #include <sstream>
 #include <string>
+#include <unordered_set>
 #include <vector>
-
-// ─────────────────────────────────────────────────────────────────────────────
-//  Benchmark timer
-// ─────────────────────────────────────────────────────────────────────────────
 
 class Benchmark
 {
@@ -65,10 +46,6 @@ class Benchmark
     Duration m_elapsed{};
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  Data generators
-// ─────────────────────────────────────────────────────────────────────────────
-
 static std::vector<int> generate_unique_random(std::size_t count, unsigned seed = 42)
 {
     std::mt19937 rng(seed);
@@ -87,10 +64,6 @@ static std::vector<int> pick_random(const std::vector<int> &source, std::size_t 
     return copy;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  Result storage
-// ─────────────────────────────────────────────────────────────────────────────
-
 struct BenchmarkResult
 {
     std::string structure;
@@ -99,10 +72,6 @@ struct BenchmarkResult
     double lookup_ms;
     double delete_ms;
 };
-
-// ─────────────────────────────────────────────────────────────────────────────
-//  Benchmark runners
-// ─────────────────────────────────────────────────────────────────────────────
 
 static BenchmarkResult bench_std_set(std::size_t n, const std::vector<int> &data, const std::vector<int> &lookup_data,
                                      const std::vector<int> &delete_data)
@@ -131,6 +100,65 @@ static BenchmarkResult bench_std_set(std::size_t n, const std::vector<int> &data
     double del = bm.elapsed_ms();
 
     return {"std::set", n, ins, lkp, del};
+}
+
+static BenchmarkResult bench_std_map(std::size_t n, const std::vector<int> &data, const std::vector<int> &lookup_data,
+                                     const std::vector<int> &delete_data)
+{
+    Benchmark bm;
+    std::map<int, int> m;
+
+    bm.start();
+    for (int v : data)
+        m[v] = v;
+    bm.stop();
+    double ins = bm.elapsed_ms();
+
+    bm.start();
+    volatile bool sink = false;
+    for (int v : lookup_data)
+        sink = (m.find(v) != m.end());
+    bm.stop();
+    double lkp = bm.elapsed_ms();
+    (void)sink;
+
+    bm.start();
+    for (int v : delete_data)
+        m.erase(v);
+    bm.stop();
+    double del = bm.elapsed_ms();
+
+    return {"std::map", n, ins, lkp, del};
+}
+
+static BenchmarkResult bench_std_unordered_set(std::size_t n, const std::vector<int> &data,
+                                               const std::vector<int> &lookup_data, const std::vector<int> &delete_data)
+{
+    Benchmark bm;
+    std::unordered_set<int> s;
+    s.reserve(n);
+
+    bm.start();
+    for (int v : data)
+        s.insert(v);
+    bm.stop();
+    double ins = bm.elapsed_ms();
+
+    bm.start();
+    volatile bool sink = false;
+    for (int v : lookup_data)
+        sink = (s.find(v) != s.end());
+    bm.stop();
+    double lkp = bm.elapsed_ms();
+    (void)sink;
+
+    bm.start();
+    for (int v : delete_data)
+        s.erase(v);
+    bm.stop();
+    double del = bm.elapsed_ms();
+
+    return {"std::unordered_set", n, ins, lkp, del};
 }
 
 static BenchmarkResult bench_avl(std::size_t n, const std::vector<int> &data, const std::vector<int> &lookup_data,
@@ -162,6 +190,35 @@ static BenchmarkResult bench_avl(std::size_t n, const std::vector<int> &data, co
     return {"stl_ext::AVLTree", n, ins, lkp, del};
 }
 
+static BenchmarkResult bench_rbt(std::size_t n, const std::vector<int> &data, const std::vector<int> &lookup_data,
+                                 const std::vector<int> &delete_data)
+{
+    Benchmark bm;
+    stl_ext::RBTree<int> tree;
+
+    bm.start();
+    for (int v : data)
+        tree.insert(v);
+    bm.stop();
+    double ins = bm.elapsed_ms();
+
+    bm.start();
+    volatile bool sink = false;
+    for (int v : lookup_data)
+        sink = tree.contains(v);
+    bm.stop();
+    double lkp = bm.elapsed_ms();
+    (void)sink;
+
+    bm.start();
+    for (int v : delete_data)
+        tree.remove(v);
+    bm.stop();
+    double del = bm.elapsed_ms();
+
+    return {"stl_ext::RBTree", n, ins, lkp, del};
+}
+
 static BenchmarkResult bench_bst(std::size_t n, const std::vector<int> &data, const std::vector<int> &lookup_data,
                                  const std::vector<int> &delete_data)
 {
@@ -191,10 +248,6 @@ static BenchmarkResult bench_bst(std::size_t n, const std::vector<int> &data, co
     return {"stl_ext::BST", n, ins, lkp, del};
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  Formatting helpers
-// ─────────────────────────────────────────────────────────────────────────────
-
 static std::string format_n(std::size_t n)
 {
     if (n >= 1'000'000)
@@ -211,7 +264,7 @@ static void print_separator(int w)
 
 static void print_table(const std::vector<BenchmarkResult> &results)
 {
-    const int w_s = 20, w_n = 8, w_t = 16;
+    const int w_s = 22, w_n = 8, w_t = 16;
     const int w_total = w_s + w_n + w_t * 3 + 6;
 
     std::cout << "\n";
@@ -247,17 +300,19 @@ static void export_csv(const std::vector<BenchmarkResult> &results, const std::s
     std::cout << "[info] CSV exported to " << filename << "\n";
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  SVG chart generator (pure C++, no external dependencies)
-// ─────────────────────────────────────────────────────────────────────────────
-
 static std::string svg_color(const std::string &structure)
 {
     if (structure == "std::set")
         return "#6366f1";
+    if (structure == "std::map")
+        return "#8b5cf6";
+    if (structure == "std::unordered_set")
+        return "#a78bfa";
     if (structure == "stl_ext::AVLTree")
         return "#06b6d4";
-    return "#f59e0b"; // BST
+    if (structure == "stl_ext::RBTree")
+        return "#10b981";
+    return "#f59e0b";
 }
 
 static std::string svg_escape(const std::string &s)
@@ -293,19 +348,18 @@ static std::string to_str(double v, int prec = 1)
     return ss.str();
 }
 
-/// Emit one grouped-bar sub-chart at the given (ox, oy) origin within the SVG.
 static void emit_subchart(std::ostream &svg, const std::string &title, const std::vector<BenchmarkResult> &results,
                           const std::vector<std::string> &structures, const std::vector<std::size_t> &sizes,
                           double (*value_fn)(const BenchmarkResult &), double ox, double oy, double chart_w,
                           double chart_h)
 {
-    // ── Compute max value for Y-axis scaling ──
+
     double max_val = 0;
     for (auto &r : results)
         max_val = std::max(max_val, value_fn(r));
     if (max_val < 1e-9)
         max_val = 1;
-    max_val *= 1.15; // headroom for labels
+    max_val *= 1.15;
 
     const double margin_left = 60;
     const double margin_bottom = 40;
@@ -316,15 +370,12 @@ static void emit_subchart(std::ostream &svg, const std::string &title, const std
     double px = ox + margin_left;
     double py = oy + margin_top;
 
-    // ── Background ──
     svg << "<rect x=\"" << ox << "\" y=\"" << oy << "\" width=\"" << chart_w << "\" height=\"" << chart_h
         << "\" rx=\"8\" fill=\"#1e293b\"/>\n";
 
-    // ── Title ──
     svg << "<text x=\"" << ox + chart_w / 2 << "\" y=\"" << oy + 22
         << "\" text-anchor=\"middle\" font-size=\"14\" font-weight=\"bold\" fill=\"white\">" << title << "</text>\n";
 
-    // ── Y-axis gridlines (5 lines) ──
     for (int i = 0; i <= 4; ++i)
     {
         double frac = i / 4.0;
@@ -337,12 +388,10 @@ static void emit_subchart(std::ostream &svg, const std::string &title, const std
             << "</text>\n";
     }
 
-    // ── Y-axis label ──
     svg << "<text x=\"" << ox + 14 << "\" y=\"" << py + plot_h / 2
         << "\" text-anchor=\"middle\" font-size=\"10\" fill=\"#94a3b8\" " << "transform=\"rotate(-90," << ox + 14 << ","
         << py + plot_h / 2 << ")\">Time (ms)</text>\n";
 
-    // ── Bars ──
     std::size_t n_groups = sizes.size();
     std::size_t n_bars = structures.size();
     double group_w = plot_w / static_cast<double>(n_groups);
@@ -353,14 +402,13 @@ static void emit_subchart(std::ostream &svg, const std::string &title, const std
     {
         double gx = px + gi * group_w;
 
-        // X-axis label
         svg << "<text x=\"" << gx + group_w / 2 << "\" y=\"" << py + plot_h + 18
             << "\" text-anchor=\"middle\" font-size=\"11\" fill=\"#94a3b8\">" << format_n(sizes[gi]) << "</text>\n";
 
         std::size_t bar_idx = 0;
         for (std::size_t si = 0; si < n_bars; ++si)
         {
-            // Find matching result
+
             const BenchmarkResult *match = nullptr;
             for (auto &r : results)
             {
@@ -381,7 +429,6 @@ static void emit_subchart(std::ostream &svg, const std::string &title, const std
             svg << "<rect x=\"" << bx << "\" y=\"" << by << "\" width=\"" << bar_w << "\" height=\"" << bh
                 << "\" rx=\"2\" fill=\"" << svg_color(structures[si]) << "\" opacity=\"0.9\"/>\n";
 
-            // Value label above bar
             svg << "<text x=\"" << bx + bar_w / 2 << "\" y=\"" << by - 3
                 << "\" text-anchor=\"middle\" font-size=\"8\" font-weight=\"bold\" fill=\"white\">" << to_str(val)
                 << "</text>\n";
@@ -393,7 +440,7 @@ static void emit_subchart(std::ostream &svg, const std::string &title, const std
 
 static void generate_svg(const std::vector<BenchmarkResult> &results, const std::string &filename)
 {
-    // Collect unique structures & sizes
+
     std::vector<std::string> structures;
     std::vector<std::size_t> sizes;
     for (auto &r : results)
@@ -405,10 +452,10 @@ static void generate_svg(const std::vector<BenchmarkResult> &results, const std:
     }
     std::sort(sizes.begin(), sizes.end());
 
-    const double chart_w = 340;
-    const double chart_h = 280;
+    const double chart_w = 380;
+    const double chart_h = 300;
     const double pad = 20;
-    const double legend_h = 50;
+    const double legend_h = 60;
     const double title_h = 40;
     const double total_w = 3 * chart_w + 4 * pad;
     const double total_h = title_h + chart_h + legend_h + 2 * pad;
@@ -420,9 +467,8 @@ static void generate_svg(const std::vector<BenchmarkResult> &results, const std:
         return;
     }
 
-    // ── SVG header ──
     f << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-    f << "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"" << total_w << "\" height=\"" << total_h
+    f << "<svg xmlns=\"http:
       << "\" viewBox=\"0 0 " << total_w << " " << total_h << "\">\n";
     f << "<style>text { font-family: 'Segoe UI', Roboto, Arial, sans-serif; }</style>\n";
 
@@ -447,10 +493,11 @@ static void generate_svg(const std::vector<BenchmarkResult> &results, const std:
 
     // ── Legend ──
     double ly = y_charts + chart_h + 18;
-    double lx_start = total_w / 2 - (structures.size() * 150) / 2.0;
+    double item_w = 170;
+    double lx_start = total_w / 2 - (structures.size() * item_w) / 2.0;
     for (std::size_t i = 0; i < structures.size(); ++i)
     {
-        double lx = lx_start + i * 150;
+        double lx = lx_start + i * item_w;
         f << "<rect x=\"" << lx << "\" y=\"" << ly << "\" width=\"14\" height=\"14\" rx=\"3\" fill=\""
           << svg_color(structures[i]) << "\"/>\n";
         f << "<text x=\"" << lx + 20 << "\" y=\"" << ly + 12 << "\" font-size=\"12\" fill=\"white\">"
@@ -475,11 +522,11 @@ int main(int argc, char *argv[])
     const std::vector<std::size_t> sizes = {10'000, 100'000, 1'000'000};
 
     std::vector<BenchmarkResult> all_results;
-    all_results.reserve(sizes.size() * 3);
+    all_results.reserve(sizes.size() * 6);
 
-    std::cout << "╔══════════════════════════════════════════════════════╗\n";
-    std::cout << "║           CPPX  Benchmark  Suite  v1.0              ║\n";
-    std::cout << "╚══════════════════════════════════════════════════════╝\n";
+    std::cout << "╔══════════════════════════════════════════════════════════════╗\n";
+    std::cout << "║            CPPX  Benchmark  Suite  v2.0                    ║\n";
+    std::cout << "╚══════════════════════════════════════════════════════════════╝\n";
 
     for (std::size_t n : sizes)
     {
@@ -492,28 +539,43 @@ int main(int argc, char *argv[])
         std::mt19937 rng(99);
         std::shuffle(data.begin(), data.end(), rng);
 
-        std::cout << "  ├─ std::set         ... " << std::flush;
+        std::cout << "  ├─ std::set            ... " << std::flush;
         auto r1 = bench_std_set(n, data, lookup_data, delete_data);
         std::cout << "done\n";
 
-        std::cout << "  ├─ stl_ext::AVLTree ... " << std::flush;
+        std::cout << "  ├─ std::map            ... " << std::flush;
+        auto r_map = bench_std_map(n, data, lookup_data, delete_data);
+        std::cout << "done\n";
+
+        std::cout << "  ├─ std::unordered_set  ... " << std::flush;
+        auto r_uset = bench_std_unordered_set(n, data, lookup_data, delete_data);
+        std::cout << "done\n";
+
+        std::cout << "  ├─ stl_ext::AVLTree    ... " << std::flush;
         auto r2 = bench_avl(n, data, lookup_data, delete_data);
+        std::cout << "done\n";
+
+        std::cout << "  ├─ stl_ext::RBTree     ... " << std::flush;
+        auto r_rbt = bench_rbt(n, data, lookup_data, delete_data);
         std::cout << "done\n";
 
         if (n <= 100'000)
         {
-            std::cout << "  └─ stl_ext::BST     ... " << std::flush;
+            std::cout << "  └─ stl_ext::BST        ... " << std::flush;
             auto r3 = bench_bst(n, data, lookup_data, delete_data);
             std::cout << "done\n";
             all_results.push_back(r3);
         }
         else
         {
-            std::cout << "  └─ stl_ext::BST     ... skipped (N too large for unbalanced tree)\n";
+            std::cout << "  └─ stl_ext::BST        ... skipped (N too large for unbalanced tree)\n";
         }
 
         all_results.push_back(r1);
+        all_results.push_back(r_map);
+        all_results.push_back(r_uset);
         all_results.push_back(r2);
+        all_results.push_back(r_rbt);
     }
 
     // Sort: group by N, then by structure name

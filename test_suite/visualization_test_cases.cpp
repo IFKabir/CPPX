@@ -9,8 +9,6 @@
 using namespace std;
 using namespace stl_ext;
 
-// ─── Helper: capture std::cout output ───────────────────────────────
-
 static std::string capture_print_tree(const BinaryTree<int> &tree)
 {
     std::ostringstream oss;
@@ -27,8 +25,6 @@ static std::string read_file_contents(const std::string &path)
     oss << ifs.rdbuf();
     return oss.str();
 }
-
-// ─── print_tree Tests ───────────────────────────────────────────────
 
 TEST(VisualizationTest, PrintTreeEmptyTree)
 {
@@ -59,9 +55,8 @@ TEST(VisualizationTest, PrintTreeMultipleNodes)
     EXPECT_NE(out.find("5"), std::string::npos);
     EXPECT_NE(out.find("15"), std::string::npos);
 
-    // Box-drawing characters should be present
-    EXPECT_NE(out.find("\u2514"), std::string::npos); // └
-    EXPECT_NE(out.find("\u250c"), std::string::npos); // ┌
+    EXPECT_NE(out.find("\u2514"), std::string::npos);
+    EXPECT_NE(out.find("\u250c"), std::string::npos);
 }
 
 TEST(VisualizationTest, PrintTreeAVLAfterRotation)
@@ -69,17 +64,14 @@ TEST(VisualizationTest, PrintTreeAVLAfterRotation)
     AVLTree<int> tree;
     tree.insert(30);
     tree.insert(20);
-    tree.insert(10); // triggers LL rotation
+    tree.insert(10);
 
-    // After rotation root should be 20
     std::string out = capture_print_tree(tree);
 
     EXPECT_NE(out.find("20"), std::string::npos);
     EXPECT_NE(out.find("10"), std::string::npos);
     EXPECT_NE(out.find("30"), std::string::npos);
 }
-
-// ─── dump_to_dot Tests ──────────────────────────────────────────────
 
 TEST(VisualizationTest, DumpToDotEmptyTree)
 {
