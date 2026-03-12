@@ -1,9 +1,11 @@
 #ifndef CPPX_H
 #define CPPX_H
 
+#include <fstream>
 #include <iostream>
 #include <memory>
 #include <queue>
+#include <sstream>
 #include <stack>
 #include <stdexcept>
 #include <vector>
@@ -58,6 +60,8 @@ template <typename T> class BinaryTree
     void postorder(const Node<T> *node) const;
     void levelorder(const Node<T> *node) const;
     int compute_size(const Node<T> *node) const;
+    void print_tree_helper(const Node<T> *node, const std::string &prefix, bool is_left) const;
+    void dot_helper(const Node<T> *node, std::ostream &out, int &null_count) const;
 
   public:
     BinaryTree() : p_head(nullptr)
@@ -77,6 +81,8 @@ template <typename T> class BinaryTree
     void print_inorder() const;
     void print_postorder() const;
     void print_levelorder() const;
+    void print_tree() const;
+    void dump_to_dot(const std::string &filename) const;
 
     static std::unique_ptr<Node<T>> make_node(const T &val);
     static std::unique_ptr<Node<T>> make_node(const T &val, std::unique_ptr<Node<T>> left,
