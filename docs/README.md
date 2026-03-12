@@ -145,3 +145,50 @@ digraph BST {
     "40" -> "50";
 }
 ```
+
+## Performance
+
+CPPX includes an automated benchmark suite that compares `stl_ext::AVLTree`, `stl_ext::BST`, and `std::set` (Red-Black Tree) across three key operations.
+
+### Benchmark Results
+
+| Structure | N | Insert (ms) | Lookup (ms) | Delete (ms) |
+|---|---:|---:|---:|---:|
+| `std::set` | 10K | 0.63 | 0.29 | 0.09 |
+| `stl_ext::AVLTree` | 10K | 1.53 | 0.29 | 0.16 |
+| `stl_ext::BST` | 10K | 1.86 | 0.33 | 0.12 |
+| `std::set` | 100K | 11.68 | 7.10 | 1.61 |
+| `stl_ext::AVLTree` | 100K | 33.55 | 7.61 | 3.68 |
+| `stl_ext::BST` | 100K | 33.18 | 7.49 | 2.90 |
+| `std::set` | 1M | 477.55 | 260.82 | 61.08 |
+| `stl_ext::AVLTree` | 1M | 860.29 | 241.79 | 92.53 |
+
+> **Note:** `stl_ext::BST` is skipped at N=1M because an unbalanced BST with random data can produce very deep recursion.
+
+### Results Chart
+
+![Benchmark Chart](benchmark_chart.svg)
+
+### Analysis
+
+- **`std::set` (Red-Black Tree)** is the fastest overall. Its implementation benefits from decades of standard-library optimisation (cache-friendly allocators, intrusive nodes, etc.), giving it a ~2–3× advantage on insertion and deletion over the CPPX structures.
+
+- **`stl_ext::AVLTree` vs `std::set` on lookups**: At 1M elements the AVL tree is **~7% faster** on lookups (241.8 ms vs 260.8 ms). This demonstrates the core AVL trade-off: *stricter balancing produces a shorter tree, which pays off during search-heavy workloads*.
+
+- **`stl_ext::BST` vs `stl_ext::AVLTree`**: At 100K, the BST is slightly faster on insertion (no rotations) and deletion, but lookup performance is nearly identical because the random insertion order keeps the BST reasonably balanced. Worst-case (sorted input) would cause the BST to degrade to O(n).
+
+- **Insert cost**: AVL rotations add overhead during insertion (~1.8× slower than `std::set`), which is the expected cost of maintaining strict balance.
+
+### Running the Benchmark
+
+Build and run with a single command — no scripts or external tools required:
+
+```bash
+cmake --build build --target run_benchmark
+```
+
+This will:
+1. Compile the benchmark binary with `-O2` optimisations.
+2. Run it, printing a results table to the console.
+3. Export `docs/benchmark_results.csv`.
+4. Generate `docs/benchmark_chart.svg` (pure C++, no Python needed).

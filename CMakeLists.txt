@@ -48,6 +48,27 @@ endif()
 include(GoogleTest)
 gtest_discover_tests(unit_tests)
 
+# --- Benchmark Target ---
+add_executable(benchmark benchmarks/benchmark_main.cpp)
+target_link_libraries(benchmark PRIVATE ${PROJECT_NAME}_lib)
+target_include_directories(benchmark PRIVATE include)
+target_compile_options(benchmark PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-O2>
+    $<$<CXX_COMPILER_ID:MSVC>:/O2>
+)
+
+if(TARGET format_code)
+    add_dependencies(benchmark format_code)
+endif()
+
+# Build + run in one step:  cmake --build build --target run_benchmark
+add_custom_target(run_benchmark
+    COMMAND $<TARGET_FILE:benchmark> ${CMAKE_SOURCE_DIR}
+    DEPENDS benchmark
+    COMMENT "Running CPPX benchmark suite..."
+    VERBATIM
+)
+
 # --- Doxygen Awesome Theme ---
 FetchContent_Declare(
     doxygen-awesome-css
