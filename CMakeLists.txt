@@ -17,6 +17,7 @@ if(CLANG_FORMAT)
     file(GLOB_RECURSE ALL_SOURCE_FILES 
         "src/*.cpp" "src/*.tpp" "src/*.h" "src/*.hpp"
         "include/*.h" "include/*.hpp" "test_suite/*.cpp"
+        "benchmarks/*.cpp"
     )
     add_custom_target(format_code
         COMMAND ${CLANG_FORMAT} -i -style=file ${ALL_SOURCE_FILES}

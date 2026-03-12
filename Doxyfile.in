@@ -8,6 +8,7 @@ PROJECT_LOGO           = "@PROJECT_SOURCE_DIR@/docs/logo.svg"
 STRIP_FROM_PATH        = @PROJECT_SOURCE_DIR@ @PROJECT_BINARY_DIR@
 INPUT                  = @PROJECT_SOURCE_DIR@/include \
                          @PROJECT_SOURCE_DIR@/src \
+                         @PROJECT_SOURCE_DIR@/benchmarks \
                          @PROJECT_SOURCE_DIR@/docs/README.md \
                          @PROJECT_SOURCE_DIR@/docs
 FILE_PATTERNS          = *.h *.hpp *.cpp *.tpp *.md
