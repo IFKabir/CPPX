@@ -6,241 +6,110 @@ namespace stl_ext
 
 template <typename T> bool RBTree<T>::is_red(const Node<T> *node)
 {
-    return node != nullptr && node->get_color() == Color::RED;
+    return node != nullptr && node->m_color == Color::RED;
 }
 
 template <typename T> bool RBTree<T>::is_black(const Node<T> *node)
 {
-    return node == nullptr || node->get_color() == Color::BLACK;
+    return node == nullptr || node->m_color == Color::BLACK;
 }
 
 template <typename T> Color RBTree<T>::get_color(const Node<T> *node)
 {
-    return (node == nullptr) ? Color::BLACK : node->get_color();
+    return (node == nullptr) ? Color::BLACK : node->m_color;
 }
 
 template <typename T> Color RBTree<T>::node_color(const Node<T> *node) const
 {
-    return (node == nullptr) ? Color::BLACK : node->get_color();
+    return (node == nullptr) ? Color::BLACK : node->m_color;
 }
 
 template <typename T> Node<T> *RBTree<T>::tree_minimum(Node<T> *node) const
 {
-    while (node->get_left())
-        node = node->get_left();
+    while (node->p_left)
+        node = node->p_left;
     return node;
-}
-
-template <typename T> Node<T> *RBTree<T>::release_child(Node<T> *parent, Node<T> *child)
-{
-    (void)parent;
-    (void)child;
-
-    return child;
-}
-
-template <typename T> void RBTree<T>::attach_child(Node<T> *parent, std::unique_ptr<Node<T>> child, bool as_left)
-{
-    if (child)
-        child->p_parent = parent;
-
-    if (!parent)
-    {
-        this->p_head = std::move(child);
-    }
-    else if (as_left)
-    {
-        parent->p_left = std::move(child);
-    }
-    else
-    {
-        parent->p_right = std::move(child);
-    }
 }
 
 template <typename T> void RBTree<T>::rotate_left(Node<T> *x)
 {
+    Node<T> *y = x->p_right;
     Node<T> *p = x->p_parent;
-    bool x_is_left = (p && p->get_left() == x);
 
-    std::unique_ptr<Node<T>> y_owned = x->detach_right();
-    Node<T> *y = y_owned.get();
+    x->p_right = y->p_left;
+    if (y->p_left)
+        y->p_left->p_parent = x;
 
-    std::unique_ptr<Node<T>> beta = y->detach_left();
-    if (beta)
-        beta->p_parent = x;
-    x->p_right = std::move(beta);
-
-    std::unique_ptr<Node<T>> x_owned;
-    if (!p)
-    {
-        x_owned = std::move(this->p_head);
-    }
-    else if (x_is_left)
-    {
-        x_owned = p->detach_left();
-    }
-    else
-    {
-        x_owned = p->detach_right();
-    }
-
+    y->p_left = x;
     x->p_parent = y;
-    y->p_left = std::move(x_owned);
 
     y->p_parent = p;
     if (!p)
-    {
-        this->p_head = std::move(y_owned);
-    }
-    else if (x_is_left)
-    {
-        p->p_left = std::move(y_owned);
-    }
+        this->p_head = y;
+    else if (p->p_left == x)
+        p->p_left = y;
     else
-    {
-        p->p_right = std::move(y_owned);
-    }
+        p->p_right = y;
 }
 
 template <typename T> void RBTree<T>::rotate_right(Node<T> *x)
 {
+    Node<T> *y = x->p_left;
     Node<T> *p = x->p_parent;
-    bool x_is_left = (p && p->get_left() == x);
 
-    std::unique_ptr<Node<T>> y_owned = x->detach_left();
-    Node<T> *y = y_owned.get();
+    x->p_left = y->p_right;
+    if (y->p_right)
+        y->p_right->p_parent = x;
 
-    std::unique_ptr<Node<T>> beta = y->detach_right();
-    if (beta)
-        beta->p_parent = x;
-    x->p_left = std::move(beta);
-
-    std::unique_ptr<Node<T>> x_owned;
-    if (!p)
-    {
-        x_owned = std::move(this->p_head);
-    }
-    else if (x_is_left)
-    {
-        x_owned = p->detach_left();
-    }
-    else
-    {
-        x_owned = p->detach_right();
-    }
-
+    y->p_right = x;
     x->p_parent = y;
-    y->p_right = std::move(x_owned);
 
     y->p_parent = p;
     if (!p)
-    {
-        this->p_head = std::move(y_owned);
-    }
-    else if (x_is_left)
-    {
-        p->p_left = std::move(y_owned);
-    }
+        this->p_head = y;
+    else if (p->p_left == x)
+        p->p_left = y;
     else
-    {
-        p->p_right = std::move(y_owned);
-    }
-}
-
-template <typename T> void RBTree<T>::transplant(Node<T> *u, Node<T> *v)
-{
-    Node<T> *up = u->p_parent;
-
-    std::unique_ptr<Node<T>> v_owned;
-    if (v)
-    {
-        Node<T> *vp = v->p_parent;
-        if (vp)
-        {
-            if (vp->get_left() == v)
-                v_owned = vp->detach_left();
-            else
-                v_owned = vp->detach_right();
-        }
-    }
-
-    std::unique_ptr<Node<T>> u_owned;
-    if (!up)
-    {
-        u_owned = std::move(this->p_head);
-    }
-    else if (up->get_left() == u)
-    {
-        u_owned = up->detach_left();
-    }
-    else
-    {
-        u_owned = up->detach_right();
-    }
-
-    if (v)
-        v->p_parent = up;
-
-    if (!up)
-    {
-        if (v_owned)
-            this->p_head = std::move(v_owned);
-        else
-            this->p_head = nullptr;
-    }
-    else if (!u_owned || up->get_left() == nullptr)
-    {
-    }
-
-    (void)u_owned;
+        p->p_right = y;
 }
 
 template <typename T> void RBTree<T>::insert(const T &val)
 {
-
-    auto new_node = std::make_unique<Node<T>>(val);
-    new_node->m_color = Color::RED;
-    Node<T> *z = new_node.get();
+    Node<T> *z = this->m_pool.allocate(val);
+    z->m_color = Color::RED;
+    z->p_left = nullptr;
+    z->p_right = nullptr;
 
     if (!this->p_head)
     {
         z->m_color = Color::BLACK;
         z->p_parent = nullptr;
-        this->p_head = std::move(new_node);
+        this->p_head = z;
         return;
     }
 
-    Node<T> *curr = this->p_head.get();
+    Node<T> *curr = this->p_head;
     Node<T> *parent = nullptr;
 
     while (curr)
     {
         parent = curr;
         if (val < curr->m_data)
-        {
-            curr = curr->get_left();
-        }
+            curr = curr->p_left;
         else if (val > curr->m_data)
-        {
-            curr = curr->get_right();
-        }
+            curr = curr->p_right;
         else
         {
-
+            this->m_pool.deallocate(z);
             return;
         }
     }
 
     z->p_parent = parent;
     if (val < parent->m_data)
-    {
-        parent->p_left = std::move(new_node);
-    }
+        parent->p_left = z;
     else
-    {
-        parent->p_right = std::move(new_node);
-    }
+        parent->p_right = z;
 
     fix_insert_violation(z);
 }
@@ -255,13 +124,12 @@ template <typename T> void RBTree<T>::fix_insert_violation(Node<T> *z)
         if (!grandparent)
             break;
 
-        if (parent == grandparent->get_left())
+        if (parent == grandparent->p_left)
         {
-            Node<T> *uncle = grandparent->get_right();
+            Node<T> *uncle = grandparent->p_right;
 
             if (node_color(uncle) == Color::RED)
             {
-
                 parent->m_color = Color::BLACK;
                 uncle->m_color = Color::BLACK;
                 grandparent->m_color = Color::RED;
@@ -269,9 +137,8 @@ template <typename T> void RBTree<T>::fix_insert_violation(Node<T> *z)
             }
             else
             {
-                if (z == parent->get_right())
+                if (z == parent->p_right)
                 {
-
                     z = parent;
                     rotate_left(z);
                     parent = z->p_parent;
@@ -285,12 +152,10 @@ template <typename T> void RBTree<T>::fix_insert_violation(Node<T> *z)
         }
         else
         {
-
-            Node<T> *uncle = grandparent->get_left();
+            Node<T> *uncle = grandparent->p_left;
 
             if (node_color(uncle) == Color::RED)
             {
-
                 parent->m_color = Color::BLACK;
                 uncle->m_color = Color::BLACK;
                 grandparent->m_color = Color::RED;
@@ -298,9 +163,8 @@ template <typename T> void RBTree<T>::fix_insert_violation(Node<T> *z)
             }
             else
             {
-                if (z == parent->get_left())
+                if (z == parent->p_left)
                 {
-
                     z = parent;
                     rotate_right(z);
                     parent = z->p_parent;
@@ -319,14 +183,13 @@ template <typename T> void RBTree<T>::fix_insert_violation(Node<T> *z)
 
 template <typename T> void RBTree<T>::remove(const T &val)
 {
-
-    Node<T> *z = this->p_head.get();
+    Node<T> *z = this->p_head;
     while (z)
     {
         if (val < z->m_data)
-            z = z->get_left();
+            z = z->p_left;
         else if (val > z->m_data)
-            z = z->get_right();
+            z = z->p_right;
         else
             break;
     }
@@ -338,104 +201,98 @@ template <typename T> void RBTree<T>::remove(const T &val)
     Node<T> *x = nullptr;
     Node<T> *x_parent = nullptr;
 
-    if (!z->get_left())
+    if (!z->p_left)
     {
-
-        x = z->get_right();
+        x = z->p_right;
         x_parent = z->p_parent;
 
-        Node<T> *zp = z->p_parent;
-        std::unique_ptr<Node<T>> x_owned = z->detach_right();
         if (x)
-            x->p_parent = zp;
+            x->p_parent = z->p_parent;
 
-        if (!zp)
-        {
-
-            this->p_head.reset();
-            this->p_head = std::move(x_owned);
-        }
-        else if (zp->get_left() == z)
-        {
-            zp->p_left.reset();
-            zp->p_left = std::move(x_owned);
-        }
+        if (!z->p_parent)
+            this->p_head = x;
+        else if (z->p_parent->p_left == z)
+            z->p_parent->p_left = x;
         else
-        {
-            zp->p_right.reset();
-            zp->p_right = std::move(x_owned);
-        }
+            z->p_parent->p_right = x;
+
+        this->m_pool.deallocate(z);
     }
-    else if (!z->get_right())
+    else if (!z->p_right)
     {
-
-        x = z->get_left();
+        x = z->p_left;
         x_parent = z->p_parent;
 
-        Node<T> *zp = z->p_parent;
-        std::unique_ptr<Node<T>> x_owned = z->detach_left();
         if (x)
-            x->p_parent = zp;
+            x->p_parent = z->p_parent;
 
-        if (!zp)
-        {
-            this->p_head.reset();
-            this->p_head = std::move(x_owned);
-        }
-        else if (zp->get_left() == z)
-        {
-            zp->p_left.reset();
-            zp->p_left = std::move(x_owned);
-        }
+        if (!z->p_parent)
+            this->p_head = x;
+        else if (z->p_parent->p_left == z)
+            z->p_parent->p_left = x;
         else
-        {
-            zp->p_right.reset();
-            zp->p_right = std::move(x_owned);
-        }
+            z->p_parent->p_right = x;
+
+        this->m_pool.deallocate(z);
     }
     else
     {
-
-        y = tree_minimum(z->get_right());
+        y = tree_minimum(z->p_right);
         y_original_color = y->m_color;
-        x = y->get_right();
+        x = y->p_right;
 
         if (y->p_parent == z)
         {
+            x_parent = y;
 
-            x_parent = z;
-
-            z->m_data = y->m_data;
-
-            std::unique_ptr<Node<T>> x_owned = y->detach_right();
             if (x)
-                x->p_parent = z;
+                x->p_parent = y;
 
-            z->p_right.reset();
-            z->p_right = std::move(x_owned);
+            y->p_left = z->p_left;
+            if (z->p_left)
+                z->p_left->p_parent = y;
+
+            if (!z->p_parent)
+                this->p_head = y;
+            else if (z->p_parent->p_left == z)
+                z->p_parent->p_left = y;
+            else
+                z->p_parent->p_right = y;
+
+            y->p_parent = z->p_parent;
+            y->m_color = z->m_color;
+            this->m_pool.deallocate(z);
         }
         else
         {
-
             x_parent = y->p_parent;
 
-            z->m_data = y->m_data;
-
-            Node<T> *yp = y->p_parent;
-            std::unique_ptr<Node<T>> x_owned = y->detach_right();
             if (x)
-                x->p_parent = yp;
+                x->p_parent = y->p_parent;
 
-            if (yp->get_left() == y)
-            {
-                yp->p_left.reset();
-                yp->p_left = std::move(x_owned);
-            }
+            if (y->p_parent->p_left == y)
+                y->p_parent->p_left = x;
             else
-            {
-                yp->p_right.reset();
-                yp->p_right = std::move(x_owned);
-            }
+                y->p_parent->p_right = x;
+
+            y->p_left = z->p_left;
+            if (z->p_left)
+                z->p_left->p_parent = y;
+
+            y->p_right = z->p_right;
+            if (z->p_right)
+                z->p_right->p_parent = y;
+
+            if (!z->p_parent)
+                this->p_head = y;
+            else if (z->p_parent->p_left == z)
+                z->p_parent->p_left = y;
+            else
+                z->p_parent->p_right = y;
+
+            y->p_parent = z->p_parent;
+            y->m_color = z->m_color;
+            this->m_pool.deallocate(z);
         }
     }
 
@@ -447,14 +304,14 @@ template <typename T> void RBTree<T>::remove(const T &val)
 
 template <typename T> void RBTree<T>::fix_delete_violation(Node<T> *x, Node<T> *x_parent)
 {
-    while (x != this->p_head.get() && node_color(x) == Color::BLACK)
+    while (x != this->p_head && node_color(x) == Color::BLACK)
     {
         if (x_parent == nullptr)
             break;
 
-        if (x == x_parent->get_left())
+        if (x == x_parent->p_left)
         {
-            Node<T> *w = x_parent->get_right();
+            Node<T> *w = x_parent->p_right;
 
             if (!w)
                 break;
@@ -464,12 +321,12 @@ template <typename T> void RBTree<T>::fix_delete_violation(Node<T> *x, Node<T> *
                 w->m_color = Color::BLACK;
                 x_parent->m_color = Color::RED;
                 rotate_left(x_parent);
-                w = x_parent->get_right();
+                w = x_parent->p_right;
                 if (!w)
                     break;
             }
 
-            if (node_color(w->get_left()) == Color::BLACK && node_color(w->get_right()) == Color::BLACK)
+            if (node_color(w->p_left) == Color::BLACK && node_color(w->p_right) == Color::BLACK)
             {
                 w->m_color = Color::RED;
                 x = x_parent;
@@ -477,28 +334,26 @@ template <typename T> void RBTree<T>::fix_delete_violation(Node<T> *x, Node<T> *
             }
             else
             {
-
-                if (node_color(w->get_right()) == Color::BLACK)
+                if (node_color(w->p_right) == Color::BLACK)
                 {
-                    if (w->get_left())
-                        w->get_left()->m_color = Color::BLACK;
+                    if (w->p_left)
+                        w->p_left->m_color = Color::BLACK;
                     w->m_color = Color::RED;
                     rotate_right(w);
-                    w = x_parent->get_right();
+                    w = x_parent->p_right;
                 }
 
                 w->m_color = x_parent->m_color;
                 x_parent->m_color = Color::BLACK;
-                if (w->get_right())
-                    w->get_right()->m_color = Color::BLACK;
+                if (w->p_right)
+                    w->p_right->m_color = Color::BLACK;
                 rotate_left(x_parent);
-                x = this->p_head.get();
+                x = this->p_head;
             }
         }
         else
         {
-
-            Node<T> *w = x_parent->get_left();
+            Node<T> *w = x_parent->p_left;
 
             if (!w)
                 break;
@@ -508,12 +363,12 @@ template <typename T> void RBTree<T>::fix_delete_violation(Node<T> *x, Node<T> *
                 w->m_color = Color::BLACK;
                 x_parent->m_color = Color::RED;
                 rotate_right(x_parent);
-                w = x_parent->get_left();
+                w = x_parent->p_left;
                 if (!w)
                     break;
             }
 
-            if (node_color(w->get_left()) == Color::BLACK && node_color(w->get_right()) == Color::BLACK)
+            if (node_color(w->p_left) == Color::BLACK && node_color(w->p_right) == Color::BLACK)
             {
                 w->m_color = Color::RED;
                 x = x_parent;
@@ -521,22 +376,21 @@ template <typename T> void RBTree<T>::fix_delete_violation(Node<T> *x, Node<T> *
             }
             else
             {
-
-                if (node_color(w->get_left()) == Color::BLACK)
+                if (node_color(w->p_left) == Color::BLACK)
                 {
-                    if (w->get_right())
-                        w->get_right()->m_color = Color::BLACK;
+                    if (w->p_right)
+                        w->p_right->m_color = Color::BLACK;
                     w->m_color = Color::RED;
                     rotate_left(w);
-                    w = x_parent->get_left();
+                    w = x_parent->p_left;
                 }
 
                 w->m_color = x_parent->m_color;
                 x_parent->m_color = Color::BLACK;
-                if (w->get_left())
-                    w->get_left()->m_color = Color::BLACK;
+                if (w->p_left)
+                    w->p_left->m_color = Color::BLACK;
                 rotate_right(x_parent);
-                x = this->p_head.get();
+                x = this->p_head;
             }
         }
     }
@@ -547,7 +401,8 @@ template <typename T> void RBTree<T>::fix_delete_violation(Node<T> *x, Node<T> *
 
 template <typename T> void RBTree<T>::clear()
 {
-    this->p_head.reset();
+    this->destroy_subtree(this->p_head);
+    this->p_head = nullptr;
 }
 
 template <typename T> int RBTree<T>::compute_black_height(const Node<T> *node) const
@@ -555,8 +410,8 @@ template <typename T> int RBTree<T>::compute_black_height(const Node<T> *node) c
     if (!node)
         return 1;
 
-    int left_bh = compute_black_height(node->get_left());
-    int right_bh = compute_black_height(node->get_right());
+    int left_bh = compute_black_height(node->p_left);
+    int right_bh = compute_black_height(node->p_right);
 
     if (left_bh == -1 || right_bh == -1 || left_bh != right_bh)
         return -1;
@@ -566,7 +421,7 @@ template <typename T> int RBTree<T>::compute_black_height(const Node<T> *node) c
 
 template <typename T> int RBTree<T>::get_black_height() const
 {
-    return compute_black_height(this->p_head.get());
+    return compute_black_height(this->p_head);
 }
 
 template <typename T> bool RBTree<T>::validate_rb_helper(const Node<T> *node) const
@@ -576,18 +431,18 @@ template <typename T> bool RBTree<T>::validate_rb_helper(const Node<T> *node) co
 
     if (node->m_color == Color::RED)
     {
-        if (node_color(node->get_left()) == Color::RED || node_color(node->get_right()) == Color::RED)
+        if (node_color(node->p_left) == Color::RED || node_color(node->p_right) == Color::RED)
         {
             return false;
         }
     }
 
-    if (node->get_left() && node->get_left()->p_parent != node)
+    if (node->p_left && node->p_left->p_parent != node)
         return false;
-    if (node->get_right() && node->get_right()->p_parent != node)
+    if (node->p_right && node->p_right->p_parent != node)
         return false;
 
-    return validate_rb_helper(node->get_left()) && validate_rb_helper(node->get_right());
+    return validate_rb_helper(node->p_left) && validate_rb_helper(node->p_right);
 }
 
 template <typename T> bool RBTree<T>::validate_rb_properties() const
@@ -598,10 +453,10 @@ template <typename T> bool RBTree<T>::validate_rb_properties() const
     if (this->p_head->m_color != Color::BLACK)
         return false;
 
-    if (!validate_rb_helper(this->p_head.get()))
+    if (!validate_rb_helper(this->p_head))
         return false;
 
-    if (compute_black_height(this->p_head.get()) == -1)
+    if (compute_black_height(this->p_head) == -1)
         return false;
 
     if (this->p_head->p_parent != nullptr)
@@ -614,19 +469,19 @@ template <typename T> std::vector<T> RBTree<T>::to_sorted_vector() const
 {
     std::vector<T> result;
     std::stack<const Node<T> *> s;
-    const Node<T> *curr = this->p_head.get();
+    const Node<T> *curr = this->p_head;
 
     while (curr || !s.empty())
     {
         while (curr)
         {
             s.push(curr);
-            curr = curr->get_left();
+            curr = curr->p_left;
         }
         curr = s.top();
         s.pop();
-        result.push_back(curr->get_data());
-        curr = curr->get_right();
+        result.push_back(curr->m_data);
+        curr = curr->p_right;
     }
 
     return result;

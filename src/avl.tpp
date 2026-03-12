@@ -1,91 +1,65 @@
 #include <algorithm>
+#include <vector>
 
 namespace stl_ext
 {
 
 template <typename T> int AVLTree<T>::get_height(const Node<T> *node) const
 {
-    if (node == nullptr)
-    {
-        return 0;
-    }
-
-    return node->get_height_val();
+    return node ? node->m_height : 0;
 }
 
 template <typename T> int AVLTree<T>::get_balance_factor(const Node<T> *node) const
 {
-    if (node == nullptr)
-    {
-        return 0;
-    }
-
-    return get_height(node->get_left()) - get_height(node->get_right());
+    return node ? get_height(node->p_left) - get_height(node->p_right) : 0;
 }
 
 template <typename T> void AVLTree<T>::update_height(Node<T> *node)
 {
-    if (node == nullptr)
-    {
+    if (!node)
         return;
-    }
-
-    int left_h = get_height(node->get_left());
-    int right_h = get_height(node->get_right());
-
-    node->set_height_val(1 + std::max(left_h, right_h));
+    int left_h = get_height(node->p_left);
+    int right_h = get_height(node->p_right);
+    node->m_height = static_cast<std::int8_t>(1 + std::max(left_h, right_h));
 }
 
-template <typename T> std::unique_ptr<Node<T>> AVLTree<T>::rotate_left(std::unique_ptr<Node<T>> node)
+template <typename T> Node<T> *AVLTree<T>::rotate_left(Node<T> *x)
 {
-    std::unique_ptr<Node<T>> new_root = node->detach_right();
-
-    node->set_right(new_root->detach_left());
-
-    new_root->set_left(std::move(node));
-
-    update_height(new_root->get_left());
-    update_height(new_root.get());
-
-    return new_root;
+    Node<T> *y = x->p_right;
+    x->p_right = y->p_left;
+    y->p_left = x;
+    update_height(x);
+    update_height(y);
+    return y;
 }
 
-template <typename T> std::unique_ptr<Node<T>> AVLTree<T>::rotate_right(std::unique_ptr<Node<T>> node)
+template <typename T> Node<T> *AVLTree<T>::rotate_right(Node<T> *x)
 {
-    std::unique_ptr<Node<T>> new_root = node->detach_left();
-
-    node->set_left(new_root->detach_right());
-
-    new_root->set_right(std::move(node));
-
-    update_height(new_root->get_right());
-    update_height(new_root.get());
-
-    return new_root;
+    Node<T> *y = x->p_left;
+    x->p_left = y->p_right;
+    y->p_right = x;
+    update_height(x);
+    update_height(y);
+    return y;
 }
 
-template <typename T> std::unique_ptr<Node<T>> AVLTree<T>::rebalance(std::unique_ptr<Node<T>> node)
+template <typename T> Node<T> *AVLTree<T>::rebalance(Node<T> *node)
 {
-    update_height(node.get());
-
-    int balance = get_balance_factor(node.get());
+    update_height(node);
+    int balance = get_balance_factor(node);
 
     if (balance > 1)
     {
-        if (get_balance_factor(node->get_left()) < 0)
-        {
-            node->set_left(rotate_left(node->detach_left()));
-        }
-        return rotate_right(std::move(node));
+        if (get_balance_factor(node->p_left) < 0)
+            node->p_left = rotate_left(node->p_left);
+        return rotate_right(node);
     }
 
     if (balance < -1)
     {
-        if (get_balance_factor(node->get_right()) > 0)
-        {
-            node->set_right(rotate_right(node->detach_right()));
-        }
-        return rotate_left(std::move(node));
+        if (get_balance_factor(node->p_right) > 0)
+            node->p_right = rotate_right(node->p_right);
+        return rotate_left(node);
     }
 
     return node;
@@ -93,74 +67,98 @@ template <typename T> std::unique_ptr<Node<T>> AVLTree<T>::rebalance(std::unique
 
 template <typename T> void AVLTree<T>::insert(const T &val)
 {
-    this->p_head = insert_helper(std::move(this->p_head), val);
-}
-
-template <typename T> std::unique_ptr<Node<T>> AVLTree<T>::insert_helper(std::unique_ptr<Node<T>> node, const T &val)
-{
-    if (node == nullptr)
+    if (!this->p_head)
     {
-        return BinaryTree<T>::make_node(val);
+        this->p_head = this->make_node(val);
+        return;
     }
 
-    if (val < node->get_data())
+    std::vector<Node<T> **> path;
+    Node<T> **link = &this->p_head;
+
+    while (*link)
     {
-        node->set_left(insert_helper(node->detach_left(), val));
-    }
-    else if (val > node->get_data())
-    {
-        node->set_right(insert_helper(node->detach_right(), val));
-    }
-    else
-    {
-        return node;
+        path.push_back(link);
+        if (val < (*link)->m_data)
+            link = &(*link)->p_left;
+        else if (val > (*link)->m_data)
+            link = &(*link)->p_right;
+        else
+            return;
     }
 
-    return rebalance(std::move(node));
+    *link = this->make_node(val);
+
+    for (auto it = path.rbegin(); it != path.rend(); ++it)
+    {
+        *(*it) = rebalance(*(*it));
+    }
 }
 
 template <typename T> void AVLTree<T>::remove(const T &val)
 {
-    this->p_head = remove_helper(std::move(this->p_head), val);
-}
+    struct Frame
+    {
+        Node<T> **link;
+    };
 
-template <typename T> std::unique_ptr<Node<T>> AVLTree<T>::remove_helper(std::unique_ptr<Node<T>> node, const T &val)
-{
-    if (node == nullptr)
-    {
-        return nullptr;
-    }
+    std::vector<Node<T> **> path;
+    Node<T> **link = &this->p_head;
 
-    if (val < node->get_data())
+    while (*link)
     {
-        node->set_left(remove_helper(node->detach_left(), val));
-    }
-    else if (val > node->get_data())
-    {
-        node->set_right(remove_helper(node->detach_right(), val));
-    }
-    else
-    {
-        if (node->get_left() == nullptr)
+        if (val < (*link)->m_data)
         {
-            return node->detach_right();
+            path.push_back(link);
+            link = &(*link)->p_left;
         }
-        else if (node->get_right() == nullptr)
+        else if (val > (*link)->m_data)
         {
-            return node->detach_left();
+            path.push_back(link);
+            link = &(*link)->p_right;
         }
-        Node<T> *temp = node->get_right();
-        while (temp->get_left() != nullptr)
+        else
         {
-            temp = temp->get_left();
+            Node<T> *node = *link;
+            if (!node->p_left)
+            {
+                *link = node->p_right;
+                this->m_pool.deallocate(node);
+            }
+            else if (!node->p_right)
+            {
+                *link = node->p_left;
+                this->m_pool.deallocate(node);
+            }
+            else
+            {
+                Node<T> **succ_link = &node->p_right;
+                std::vector<Node<T> **> succ_path;
+                while ((*succ_link)->p_left)
+                {
+                    succ_path.push_back(succ_link);
+                    succ_link = &(*succ_link)->p_left;
+                }
+
+                Node<T> *succ = *succ_link;
+                node->m_data = succ->m_data;
+                *succ_link = succ->p_right;
+                this->m_pool.deallocate(succ);
+
+                for (auto it = succ_path.rbegin(); it != succ_path.rend(); ++it)
+                {
+                    *(*it) = rebalance(*(*it));
+                }
+                *link = rebalance(node);
+            }
+
+            for (auto it = path.rbegin(); it != path.rend(); ++it)
+            {
+                *(*it) = rebalance(*(*it));
+            }
+            return;
         }
-
-        node->set_data(temp->get_data());
-
-        node->set_right(remove_helper(node->detach_right(), temp->get_data()));
     }
-
-    return rebalance(std::move(node));
 }
 
 } // namespace stl_ext

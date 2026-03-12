@@ -1,6 +1,8 @@
 #ifndef CPPX_H
 #define CPPX_H
 
+#include <cstddef>
+#include <cstdint>
 #include <fstream>
 #include <iostream>
 #include <memory>
@@ -13,66 +15,193 @@
 namespace stl_ext
 {
 
-enum class Color
+enum class Color : std::uint8_t
 {
     RED,
     BLACK
 };
 
 template <typename T> class BST;
+template <typename T> class AVLTree;
 template <typename T> class RBTree;
+template <typename T> class BinaryTree;
 
 template <typename T> class Node
 {
-
     friend class BST<T>;
+    friend class AVLTree<T>;
     friend class RBTree<T>;
+    friend class BinaryTree<T>;
 
   private:
     T m_data;
-    std::unique_ptr<Node<T>> p_left;
-    std::unique_ptr<Node<T>> p_right;
-    int m_height = 1;
-    Color m_color = Color::RED;
+    Node<T> *p_left = nullptr;
+    Node<T> *p_right = nullptr;
     Node<T> *p_parent = nullptr;
+    std::int8_t m_height = 1;
+    Color m_color = Color::RED;
 
   public:
-    explicit Node(T val) : m_data(val), p_left(nullptr), p_right(nullptr), m_height(1)
-    {
-    }
-    Node(T val, std::unique_ptr<Node<T>> left, std::unique_ptr<Node<T>> right)
-        : m_data(val), p_left(std::move(left)), p_right(std::move(right)), m_height(1)
+    explicit Node(T val) : m_data(std::move(val))
     {
     }
 
-    Node(const Node &other);
-    Node &operator=(const Node &other);
-    Node(Node &&other) noexcept = default;
-    Node &operator=(Node &&other) noexcept = default;
-    int get_height_val() const;
-    void set_height_val(int h);
-    std::unique_ptr<Node<T>> detach_left();
-    std::unique_ptr<Node<T>> detach_right();
-    const T &get_data() const;
-    void set_data(const T &val);
-    Node<T> *get_left() const;
-    void set_left(std::unique_ptr<Node<T>> node);
-    Node<T> *get_right() const;
-    void set_right(std::unique_ptr<Node<T>> node);
+    Node(T val, Node<T> *left, Node<T> *right) : m_data(std::move(val)), p_left(left), p_right(right)
+    {
+    }
 
-    Color get_color() const;
+    int get_height_val() const
+    {
+        return m_height;
+    }
 
-    void set_color(Color c);
+    void set_height_val(int h)
+    {
+        m_height = static_cast<std::int8_t>(h);
+    }
 
-    Node<T> *get_parent() const;
+    const T &get_data() const
+    {
+        return m_data;
+    }
 
-    void set_parent(Node<T> *parent);
+    void set_data(const T &val)
+    {
+        m_data = val;
+    }
+
+    Node<T> *get_left() const
+    {
+        return p_left;
+    }
+
+    void set_left(Node<T> *node)
+    {
+        p_left = node;
+    }
+
+    Node<T> *get_right() const
+    {
+        return p_right;
+    }
+
+    void set_right(Node<T> *node)
+    {
+        p_right = node;
+    }
+
+    Color get_color() const
+    {
+        return m_color;
+    }
+
+    void set_color(Color c)
+    {
+        m_color = c;
+    }
+
+    Node<T> *get_parent() const
+    {
+        return p_parent;
+    }
+
+    void set_parent(Node<T> *parent)
+    {
+        p_parent = parent;
+    }
+};
+
+template <typename T> class NodePool
+{
+    struct Block
+    {
+        static constexpr std::size_t CAPACITY = 4096;
+        alignas(alignof(T) > alignof(void *) ? alignof(T)
+                                             : sizeof(void *)) unsigned char data[CAPACITY * sizeof(Node<T>)];
+        std::size_t used = 0;
+    };
+
+    std::vector<Block *> m_blocks;
+    std::vector<void *> m_free_list;
+
+  public:
+    NodePool() = default;
+
+    ~NodePool()
+    {
+        destroy_all();
+    }
+
+    NodePool(const NodePool &) = delete;
+    NodePool &operator=(const NodePool &) = delete;
+
+    NodePool(NodePool &&other) noexcept : m_blocks(std::move(other.m_blocks)), m_free_list(std::move(other.m_free_list))
+    {
+        other.m_blocks.clear();
+        other.m_free_list.clear();
+    }
+
+    NodePool &operator=(NodePool &&other) noexcept
+    {
+        if (this != &other)
+        {
+            destroy_all();
+            m_blocks = std::move(other.m_blocks);
+            m_free_list = std::move(other.m_free_list);
+            other.m_blocks.clear();
+            other.m_free_list.clear();
+        }
+        return *this;
+    }
+
+    template <typename... Args> Node<T> *allocate(Args &&...args)
+    {
+        void *ptr = get_slot();
+        return new (ptr) Node<T>(std::forward<Args>(args)...);
+    }
+
+    void deallocate(Node<T> *node)
+    {
+        if (!node)
+            return;
+        node->~Node();
+        m_free_list.push_back(static_cast<void *>(node));
+    }
+
+    void destroy_all()
+    {
+        for (auto *blk : m_blocks)
+            delete blk;
+        m_blocks.clear();
+        m_free_list.clear();
+    }
+
+  private:
+    void *get_slot()
+    {
+        if (!m_free_list.empty())
+        {
+            void *ptr = m_free_list.back();
+            m_free_list.pop_back();
+            return ptr;
+        }
+        if (m_blocks.empty() || m_blocks.back()->used >= Block::CAPACITY)
+        {
+            m_blocks.push_back(new Block());
+        }
+        auto &blk = *m_blocks.back();
+        void *ptr = blk.data + blk.used * sizeof(Node<T>);
+        ++blk.used;
+        return ptr;
+    }
 };
 
 template <typename T> class BinaryTree
 {
   protected:
-    std::unique_ptr<Node<T>> p_head;
+    Node<T> *p_head = nullptr;
+    NodePool<T> m_pool;
+
     void preorder(const Node<T> *node) const;
     void inorder(const Node<T> *node) const;
     void postorder(const Node<T> *node) const;
@@ -80,19 +209,22 @@ template <typename T> class BinaryTree
     int compute_size(const Node<T> *node) const;
     void print_tree_helper(const Node<T> *node, const std::string &prefix, bool is_left) const;
     void dot_helper(const Node<T> *node, std::ostream &out, int &null_count) const;
+    void destroy_subtree(Node<T> *node);
+    Node<T> *clone_subtree(const Node<T> *node);
 
   public:
-    BinaryTree() : p_head(nullptr)
-    {
-    }
+    BinaryTree() = default;
+
     BinaryTree(const BinaryTree &other);
     BinaryTree &operator=(const BinaryTree &other);
-    BinaryTree(BinaryTree &&other) noexcept = default;
-    BinaryTree &operator=(BinaryTree &&other) noexcept = default;
-    virtual ~BinaryTree() = default;
+
+    BinaryTree(BinaryTree &&other) noexcept;
+    BinaryTree &operator=(BinaryTree &&other) noexcept;
+
+    virtual ~BinaryTree();
 
     Node<T> *get_root() const;
-    void set_root(std::unique_ptr<Node<T>> root);
+    void set_root(Node<T> *root);
     bool is_empty() const;
     int size() const;
     void print_preorder() const;
@@ -102,21 +234,21 @@ template <typename T> class BinaryTree
     void print_tree() const;
     void dump_to_dot(const std::string &filename) const;
 
-    static std::unique_ptr<Node<T>> make_node(const T &val);
-    static std::unique_ptr<Node<T>> make_node(const T &val, std::unique_ptr<Node<T>> left,
-                                              std::unique_ptr<Node<T>> right);
-    void set_left(Node<T> *parent, std::unique_ptr<Node<T>> left_child);
-    void set_right(Node<T> *parent, std::unique_ptr<Node<T>> right_child);
+    Node<T> *make_node(const T &val);
+    Node<T> *make_node(const T &val, Node<T> *left, Node<T> *right);
+    void set_left(Node<T> *parent, Node<T> *left_child);
+    void set_right(Node<T> *parent, Node<T> *right_child);
 };
 
 template <typename T> class BST : public BinaryTree<T>
 {
   private:
     void insert_iterative(Node<T> *node, const T &val);
-    std::unique_ptr<Node<T>> remove_impl(std::unique_ptr<Node<T>> node, const T &val);
+    void remove_impl(const T &val);
 
   public:
     using BinaryTree<T>::p_head;
+    using BinaryTree<T>::m_pool;
     virtual void insert(const T &val);
     bool contains(const T &val) const;
     virtual void remove(const T &val);
@@ -134,12 +266,9 @@ template <typename T> class AVLTree : public BST<T>
     int get_balance_factor(const Node<T> *node) const;
     void update_height(Node<T> *node);
 
-    std::unique_ptr<Node<T>> rotate_left(std::unique_ptr<Node<T>> node);
-    std::unique_ptr<Node<T>> rotate_right(std::unique_ptr<Node<T>> node);
-    std::unique_ptr<Node<T>> rebalance(std::unique_ptr<Node<T>> node);
-
-    std::unique_ptr<Node<T>> insert_helper(std::unique_ptr<Node<T>> node, const T &val);
-    std::unique_ptr<Node<T>> remove_helper(std::unique_ptr<Node<T>> node, const T &val);
+    Node<T> *rotate_left(Node<T> *node);
+    Node<T> *rotate_right(Node<T> *node);
+    Node<T> *rebalance(Node<T> *node);
 
   public:
     void insert(const T &val) override;
@@ -150,46 +279,27 @@ template <typename T> class RBTree : public BST<T>
 {
   private:
     void rotate_left(Node<T> *node);
-
     void rotate_right(Node<T> *node);
-
-    void transplant(Node<T> *u, Node<T> *v);
-
     void fix_insert_violation(Node<T> *node);
-
     void fix_delete_violation(Node<T> *node, Node<T> *parent);
-
     Node<T> *tree_minimum(Node<T> *node) const;
-
     Color node_color(const Node<T> *node) const;
-
-    Node<T> *release_child(Node<T> *parent, Node<T> *child);
-
-    void attach_child(Node<T> *parent, std::unique_ptr<Node<T>> child, bool as_left);
-
     int compute_black_height(const Node<T> *node) const;
-
     bool validate_rb_helper(const Node<T> *node) const;
 
   public:
     using BST<T>::p_head;
+    using BST<T>::m_pool;
 
     void insert(const T &val) override;
-
     void remove(const T &val) override;
-
     void clear();
 
     static bool is_red(const Node<T> *node);
-
     static bool is_black(const Node<T> *node);
-
     static Color get_color(const Node<T> *node);
-
     int get_black_height() const;
-
     bool validate_rb_properties() const;
-
     std::vector<T> to_sorted_vector() const;
 };
 
@@ -198,7 +308,6 @@ template <typename T> class RBTree : public BST<T>
 #include "../src/avl.tpp"
 #include "../src/binary_tree.tpp"
 #include "../src/bst.tpp"
-#include "../src/node.tpp"
 #include "../src/rbt.tpp"
 
 #endif

@@ -36,7 +36,7 @@ TEST(VisualizationTest, PrintTreeEmptyTree)
 TEST(VisualizationTest, PrintTreeSingleNode)
 {
     BinaryTree<int> tree;
-    tree.set_root(BinaryTree<int>::make_node(42));
+    tree.set_root(tree.make_node(42));
 
     std::string out = capture_print_tree(tree);
     EXPECT_NE(out.find("42"), std::string::npos);
@@ -45,9 +45,9 @@ TEST(VisualizationTest, PrintTreeSingleNode)
 TEST(VisualizationTest, PrintTreeMultipleNodes)
 {
     BinaryTree<int> tree;
-    tree.set_root(BinaryTree<int>::make_node(10));
-    tree.set_left(tree.get_root(), BinaryTree<int>::make_node(5));
-    tree.set_right(tree.get_root(), BinaryTree<int>::make_node(15));
+    tree.set_root(tree.make_node(10));
+    tree.set_left(tree.get_root(), tree.make_node(5));
+    tree.set_right(tree.get_root(), tree.make_node(15));
 
     std::string out = capture_print_tree(tree);
 
@@ -90,7 +90,7 @@ TEST(VisualizationTest, DumpToDotEmptyTree)
 TEST(VisualizationTest, DumpToDotSingleNode)
 {
     BinaryTree<int> tree;
-    tree.set_root(BinaryTree<int>::make_node(42));
+    tree.set_root(tree.make_node(42));
     std::string path = "/tmp/cppx_test_single.dot";
 
     tree.dump_to_dot(path);
@@ -121,7 +121,7 @@ TEST(VisualizationTest, DumpToDotMultipleNodes)
 TEST(VisualizationTest, DumpToDotInvalidPath)
 {
     BinaryTree<int> tree;
-    tree.set_root(BinaryTree<int>::make_node(1));
+    tree.set_root(tree.make_node(1));
 
     EXPECT_THROW(tree.dump_to_dot("/nonexistent_dir/file.dot"), std::runtime_error);
 }

@@ -55,7 +55,7 @@ add_executable(benchmark benchmarks/benchmark_main.cpp)
 target_link_libraries(benchmark PRIVATE ${PROJECT_NAME}_lib)
 target_include_directories(benchmark PRIVATE include)
 target_compile_options(benchmark PRIVATE
-    $<$<CXX_COMPILER_ID:GNU,Clang>:-O2>
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-O3 -march=native>
     $<$<CXX_COMPILER_ID:MSVC>:/O2>
 )
 

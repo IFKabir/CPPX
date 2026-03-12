@@ -7,152 +7,158 @@ template <typename T> void BST<T>::insert(const T &val)
 {
     if (!this->p_head)
     {
-        this->p_head = BinaryTree<T>::make_node(val);
+        this->p_head = this->make_node(val);
         return;
     }
-    insert_iterative(this->p_head.get(), val);
+    insert_iterative(this->p_head, val);
 }
 
 template <typename T> void BST<T>::insert_iterative(Node<T> *node, const T &val)
 {
     Node<T> *curr = node;
-    std::vector<Node<T> *> path;
 
     while (true)
     {
-        path.push_back(curr);
-
-        if (val <= curr->get_data())
+        if (val <= curr->m_data)
         {
-            if (!curr->get_left())
+            if (!curr->p_left)
             {
-                curr->set_left(BinaryTree<T>::make_node(val));
+                curr->p_left = this->make_node(val);
                 break;
             }
-            curr = curr->get_left();
+            curr = curr->p_left;
         }
         else
         {
-            if (!curr->get_right())
+            if (!curr->p_right)
             {
-                curr->set_right(BinaryTree<T>::make_node(val));
+                curr->p_right = this->make_node(val);
                 break;
             }
-            curr = curr->get_right();
+            curr = curr->p_right;
         }
-    }
-    for (auto it = path.rbegin(); it != path.rend(); ++it)
-    {
-        Node<T> *ancestor = *it;
-        int h_left = ancestor->get_left() ? ancestor->get_left()->get_height_val() : 0;
-        int h_right = ancestor->get_right() ? ancestor->get_right()->get_height_val() : 0;
-
-        ancestor->set_height_val(1 + std::max(h_left, h_right));
     }
 }
 
-template <typename T> inline std::unique_ptr<Node<T>> BST<T>::remove_impl(std::unique_ptr<Node<T>> node, const T &val)
+template <typename T> void BST<T>::remove_impl(const T &val)
 {
-    if (!node)
-        return nullptr;
-
-    if (val < node->m_data)
+    struct Frame
     {
-        node->p_left = remove_impl(std::move(node->p_left), val);
-    }
-    else if (val > node->m_data)
-    {
-        node->p_right = remove_impl(std::move(node->p_right), val);
-    }
-    else
-    {
-        if (!node->p_left)
-            return std::move(node->p_right);
+        Node<T> **link;
+        Node<T> *node;
+    };
 
-        if (!node->p_right)
-            return std::move(node->p_left);
+    Node<T> **link = &this->p_head;
+    Node<T> *node = this->p_head;
 
-        Node<T> *temp = node->p_right.get();
-        while (temp->p_left)
+    while (node)
+    {
+        if (val < node->m_data)
         {
-            temp = temp->p_left.get();
+            link = &node->p_left;
+            node = node->p_left;
         }
+        else if (val > node->m_data)
+        {
+            link = &node->p_right;
+            node = node->p_right;
+        }
+        else
+        {
+            if (!node->p_left)
+            {
+                *link = node->p_right;
+                this->m_pool.deallocate(node);
+                return;
+            }
+            if (!node->p_right)
+            {
+                *link = node->p_left;
+                this->m_pool.deallocate(node);
+                return;
+            }
 
-        node->m_data = temp->m_data;
+            Node<T> *succ = node->p_right;
+            Node<T> **succ_link = &node->p_right;
+            while (succ->p_left)
+            {
+                succ_link = &succ->p_left;
+                succ = succ->p_left;
+            }
 
-        node->p_right = remove_impl(std::move(node->p_right), temp->m_data);
+            node->m_data = succ->m_data;
+            *succ_link = succ->p_right;
+            this->m_pool.deallocate(succ);
+            return;
+        }
     }
-    return node;
 }
 
 template <typename T> bool BST<T>::contains(const T &val) const
 {
-    Node<T> *curr = this->p_head.get();
+    const Node<T> *curr = this->p_head;
     while (curr)
     {
-        if (val == curr->get_data())
+        if (val == curr->m_data)
             return true;
-        if (val < curr->get_data())
-            curr = curr->get_left();
-        else
-            curr = curr->get_right();
+        curr = (val < curr->m_data) ? curr->p_left : curr->p_right;
     }
     return false;
 }
 
 template <typename T> void BST<T>::remove(const T &val)
 {
-    this->p_head = remove_impl(std::move(this->p_head), val);
+    remove_impl(val);
 }
 
 template <typename T> T BST<T>::get_min() const
 {
-    Node<T> *r = this->p_head.get();
+    Node<T> *r = this->p_head;
     if (!r)
         throw std::runtime_error("Empty");
-    while (r->get_left())
-        r = r->get_left();
-    return r->get_data();
+    while (r->p_left)
+        r = r->p_left;
+    return r->m_data;
 }
 
 template <typename T> T BST<T>::get_max() const
 {
-    Node<T> *r = this->p_head.get();
+    Node<T> *r = this->p_head;
     if (!r)
         throw std::runtime_error("Empty");
-    while (r->get_right())
-        r = r->get_right();
-    return r->get_data();
+    while (r->p_right)
+        r = r->p_right;
+    return r->m_data;
 }
 
 template <typename T> T BST<T>::get_successor(const T &val) const
 {
-    Node<T> *curr = this->get_root();
-    Node<T> *ancestor_succ = nullptr;
+    const Node<T> *curr = this->p_head;
+    const Node<T> *ancestor_succ = nullptr;
 
     while (curr)
     {
-        if (val < curr->get_data())
+        if (val < curr->m_data)
         {
             ancestor_succ = curr;
-            curr = curr->get_left();
+            curr = curr->p_left;
         }
-        else if (val > curr->get_data())
+        else if (val > curr->m_data)
         {
-            curr = curr->get_right();
+            curr = curr->p_right;
         }
         else
         {
-            if (curr->get_right())
+            if (curr->p_right)
             {
-                Node<T> *temp = curr->get_right();
-                while (temp->get_left())
-                    temp = temp->get_left();
-                return temp->get_data();
+                const Node<T> *temp = curr->p_right;
+                while (temp->p_left)
+                    temp = temp->p_left;
+                return temp->m_data;
             }
 
             if (ancestor_succ)
-                return ancestor_succ->get_data();
+                return ancestor_succ->m_data;
 
             throw std::runtime_error("No successor");
         }
@@ -163,32 +169,32 @@ template <typename T> T BST<T>::get_successor(const T &val) const
 
 template <typename T> T BST<T>::get_predecessor(const T &val) const
 {
-    Node<T> *curr = this->get_root();
-    Node<T> *ancestor_pred = nullptr;
+    const Node<T> *curr = this->p_head;
+    const Node<T> *ancestor_pred = nullptr;
 
     while (curr)
     {
-        if (val < curr->get_data())
+        if (val < curr->m_data)
         {
-            curr = curr->get_left();
+            curr = curr->p_left;
         }
-        else if (val > curr->get_data())
+        else if (val > curr->m_data)
         {
             ancestor_pred = curr;
-            curr = curr->get_right();
+            curr = curr->p_right;
         }
         else
         {
-            if (curr->get_left())
+            if (curr->p_left)
             {
-                Node<T> *temp = curr->get_left();
-                while (temp->get_right())
-                    temp = temp->get_right();
-                return temp->get_data();
+                const Node<T> *temp = curr->p_left;
+                while (temp->p_right)
+                    temp = temp->p_right;
+                return temp->m_data;
             }
 
             if (ancestor_pred)
-                return ancestor_pred->get_data();
+                return ancestor_pred->m_data;
 
             throw std::runtime_error("No predecessor");
         }
