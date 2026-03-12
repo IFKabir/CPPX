@@ -91,3 +91,57 @@ To use this library in any of your existing projects:
 - **API Reference:** **[Online Documentation](https://ifkabir.github.io/CPPX/)** (Recommended)
 
 - **Version Info:** Check the [Releases page](https://github.com/IFKabir/CPPX/releases) for version-specific notes and changes.
+
+## Tree Visualization
+
+CPPX includes built-in visualization tools on every tree type to help with debugging and understanding tree structures.
+
+### Console Printing (`print_tree`)
+
+Prints a **sideways/rotated** tree to `std::cout` using box-drawing characters. The right subtree appears on top, and the left subtree on the bottom.
+
+```cpp
+#include "cppx.h"
+using namespace stl_ext;
+
+int main() {
+    AVLTree<int> tree;
+    for (int v : {10, 20, 30, 40, 50})
+        tree.insert(v);
+
+    tree.print_tree();
+}
+```
+
+**Output:**
+```
+        ┌── 50
+    ┌── 40
+10
+    └── 30
+└── 20
+```
+
+### Graphviz Export (`dump_to_dot`)
+
+Exports the tree to a `.dot` file that can be rendered with [Graphviz](https://graphviz.org/).
+
+```cpp
+tree.dump_to_dot("tree.dot");
+```
+
+Then render with:
+```bash
+dot -Tpng tree.dot -o tree.png
+```
+
+**Generated `tree.dot`:**
+```dot
+digraph BST {
+    node [shape=circle];
+    "20" -> "10";
+    "20" -> "40";
+    "40" -> "30";
+    "40" -> "50";
+}
+```

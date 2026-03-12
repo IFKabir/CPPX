@@ -196,4 +196,85 @@ std::unique_ptr<Node<T>> BinaryTree<T>::make_node(const T &val, std::unique_ptr<
     return std::make_unique<Node<T>>(val, std::move(l), std::move(r));
 }
 
+template <typename T>
+void BinaryTree<T>::print_tree_helper(const Node<T> *node, const std::string &prefix, bool is_left) const
+{
+    if (!node)
+        return;
+
+    print_tree_helper(node->get_right(), prefix + (is_left ? "\u2502   " : "    "), false);
+
+    std::cout << prefix << (is_left ? "\u2514\u2500\u2500 " : "\u250c\u2500\u2500 ") << node->get_data() << "\n";
+
+    print_tree_helper(node->get_left(), prefix + (is_left ? "    " : "\u2502   "), true);
+}
+
+template <typename T> void BinaryTree<T>::print_tree() const
+{
+    if (!p_head)
+    {
+        std::cout << "(empty tree)" << std::endl;
+        return;
+    }
+
+    print_tree_helper(p_head->get_right(), "    ", false);
+
+    std::cout << p_head->get_data() << "\n";
+
+    print_tree_helper(p_head->get_left(), "    ", true);
+
+    std::cout << std::flush;
+}
+
+template <typename T> void BinaryTree<T>::dot_helper(const Node<T> *node, std::ostream &out, int &null_count) const
+{
+    if (!node)
+        return;
+
+    if (node->get_left())
+    {
+        out << "    \"" << node->get_data() << "\" -> \"" << node->get_left()->get_data() << "\";\n";
+        dot_helper(node->get_left(), out, null_count);
+    }
+    else
+    {
+        out << "    null" << null_count << " [shape=point];\n";
+        out << "    \"" << node->get_data() << "\" -> null" << null_count << ";\n";
+        ++null_count;
+    }
+
+    if (node->get_right())
+    {
+        out << "    \"" << node->get_data() << "\" -> \"" << node->get_right()->get_data() << "\";\n";
+        dot_helper(node->get_right(), out, null_count);
+    }
+    else
+    {
+        out << "    null" << null_count << " [shape=point];\n";
+        out << "    \"" << node->get_data() << "\" -> null" << null_count << ";\n";
+        ++null_count;
+    }
+}
+
+template <typename T> void BinaryTree<T>::dump_to_dot(const std::string &filename) const
+{
+    std::ofstream out(filename);
+    if (!out.is_open())
+    {
+        throw std::runtime_error("Could not open file: " + filename);
+    }
+
+    out << "digraph BST {\n";
+    out << "    node [shape=circle];\n";
+
+    if (p_head)
+    {
+        int null_count = 0;
+        dot_helper(p_head.get(), out, null_count);
+    }
+
+    out << "}\n";
+    out.close();
+}
+
 } // namespace stl_ext
