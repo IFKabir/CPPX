@@ -1,3 +1,6 @@
+#pragma once
+#include "../include/cppx.h"
+
 namespace stl_ext
 {
 template <typename T> void BST<T>::insert(const T &val)
