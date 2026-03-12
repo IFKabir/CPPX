@@ -1,6 +1,6 @@
 # Project Settings
 PROJECT_NAME           = "CPPX"
-PROJECT_NUMBER         = "1.1.2"
+PROJECT_NUMBER         = "2.0.0"
 PROJECT_BRIEF          = "A Modern C++ Utility Library"
 PROJECT_LOGO           = "/home/ifkabir/Coading/CPPX/docs/logo.svg" 
 

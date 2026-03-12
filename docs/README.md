@@ -4,7 +4,7 @@
   <img src="logo.svg" alt="CPPX Logo" width="120" height="120">
 </p>
 
-A cross-platform C++17 template library providing extended data structures with automated testing via Google Test.
+A cross-platform C++23 template library providing extended data structures with automated testing via Google Test.
 
 **[API Reference](https://ifkabir.github.io/CPPX/)** · **[Releases](https://github.com/IFKabir/CPPX/releases)**
 
@@ -12,7 +12,7 @@ A cross-platform C++17 template library providing extended data structures with 
 
 ## Requirements
 
-- C++17 compiler (GCC / Clang / MSVC)
+- C++23 compiler (GCC / Clang / MSVC)
 - CMake 3.14+
 - clang-format
 - Internet (CMake fetches Google Test)

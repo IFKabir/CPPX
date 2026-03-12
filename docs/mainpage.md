@@ -1,6 +1,6 @@
 # {#mainpage}
 
-**CPPX** — a C++17 template library for memory-safe data structures.
+**CPPX** — a C++23 template library for memory-safe data structures.
 
 ## Available Structures
 
