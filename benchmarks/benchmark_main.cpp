@@ -43,7 +43,10 @@ class Benchmark
     using TimePoint = Clock::time_point;
     using Duration = std::chrono::duration<double, std::milli>;
 
-    void start() { m_start = Clock::now(); }
+    void start()
+    {
+        m_start = Clock::now();
+    }
 
     void stop()
     {
@@ -51,7 +54,10 @@ class Benchmark
         m_elapsed = std::chrono::duration_cast<Duration>(m_end - m_start);
     }
 
-    double elapsed_ms() const { return m_elapsed.count(); }
+    double elapsed_ms() const
+    {
+        return m_elapsed.count();
+    }
 
   private:
     TimePoint m_start{};
@@ -98,8 +104,7 @@ struct BenchmarkResult
 //  Benchmark runners
 // ─────────────────────────────────────────────────────────────────────────────
 
-static BenchmarkResult bench_std_set(std::size_t n, const std::vector<int> &data,
-                                     const std::vector<int> &lookup_data,
+static BenchmarkResult bench_std_set(std::size_t n, const std::vector<int> &data, const std::vector<int> &lookup_data,
                                      const std::vector<int> &delete_data)
 {
     Benchmark bm;
@@ -334,8 +339,8 @@ static void emit_subchart(std::ostream &svg, const std::string &title, const std
 
     // ── Y-axis label ──
     svg << "<text x=\"" << ox + 14 << "\" y=\"" << py + plot_h / 2
-        << "\" text-anchor=\"middle\" font-size=\"10\" fill=\"#94a3b8\" "
-        << "transform=\"rotate(-90," << ox + 14 << "," << py + plot_h / 2 << ")\">Time (ms)</text>\n";
+        << "\" text-anchor=\"middle\" font-size=\"10\" fill=\"#94a3b8\" " << "transform=\"rotate(-90," << ox + 14 << ","
+        << py + plot_h / 2 << ")\">Time (ms)</text>\n";
 
     // ── Bars ──
     std::size_t n_groups = sizes.size();
@@ -437,8 +442,8 @@ static void generate_svg(const std::vector<BenchmarkResult> &results, const std:
     emit_subchart(f, "Insert Time", results, structures, sizes, insert_fn, pad, y_charts, chart_w, chart_h);
     emit_subchart(f, "Lookup Time", results, structures, sizes, lookup_fn, pad + chart_w + pad, y_charts, chart_w,
                   chart_h);
-    emit_subchart(f, "Delete Time", results, structures, sizes, delete_fn, pad + 2 * (chart_w + pad), y_charts,
-                  chart_w, chart_h);
+    emit_subchart(f, "Delete Time", results, structures, sizes, delete_fn, pad + 2 * (chart_w + pad), y_charts, chart_w,
+                  chart_h);
 
     // ── Legend ──
     double ly = y_charts + chart_h + 18;
@@ -448,8 +453,8 @@ static void generate_svg(const std::vector<BenchmarkResult> &results, const std:
         double lx = lx_start + i * 150;
         f << "<rect x=\"" << lx << "\" y=\"" << ly << "\" width=\"14\" height=\"14\" rx=\"3\" fill=\""
           << svg_color(structures[i]) << "\"/>\n";
-        f << "<text x=\"" << lx + 20 << "\" y=\"" << ly + 12
-          << "\" font-size=\"12\" fill=\"white\">" << svg_escape(structures[i]) << "</text>\n";
+        f << "<text x=\"" << lx + 20 << "\" y=\"" << ly + 12 << "\" font-size=\"12\" fill=\"white\">"
+          << svg_escape(structures[i]) << "</text>\n";
     }
 
     f << "</svg>\n";
