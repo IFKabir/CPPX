@@ -209,6 +209,7 @@ template <typename T> class RBTree : public BST<T>
 #include "../src/binary_tree.tpp"
 #include "../src/bst.tpp"
 #include "../src/node.tpp"
+#include "../src/node_pool.tpp"
 #include "../src/rbt.tpp"
 
 #endif
