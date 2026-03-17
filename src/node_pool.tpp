@@ -4,8 +4,6 @@
 namespace stl_ext
 {
 
-// ─── NodePool implementation ───────────────────────────────────────────────────
-
 template <typename T> NodePool<T>::~NodePool()
 {
     destroy_all();
