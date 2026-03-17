@@ -4,8 +4,6 @@
 namespace stl_ext
 {
 
-// ─── Node implementation ───────────────────────────────────────────────────────
-
 template <typename T> Node<T>::Node(T val) : m_data(std::move(val))
 {
 }
