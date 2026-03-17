@@ -16,7 +16,7 @@ A cross-platform C++23 template library providing extended data structures with 
 - CMake 3.14+
 - clang-format
 - Internet (CMake fetches Google Test)
-- doxygen + graphviz *(optional, for API docs)*
+- doxygen + graphviz _(optional, for API docs)_
 
 ---
 
@@ -52,15 +52,18 @@ int main() {
 ### Tree Visualization
 
 **Console** — `print_tree()` renders a sideways tree:
+
 ```
-        ┌── 50
-    ┌── 40
+                ┌── 50
+            ┌── 40
+        ┌── 30
+        │   └── 25
+    ┌── 20
 10
-    └── 30
-└── 20
 ```
 
 **Graphviz** — `dump_to_dot("tree.dot")` exports a `.dot` file:
+
 ```bash
 dot -Tpng tree.dot -o tree.png
 ```
@@ -99,6 +102,7 @@ Compiles with `-O3 -march=native`, runs the suite with warmup + median-of-3 timi
 All trees use an **arena allocator** (`NodePool`) that allocates nodes in contiguous 4096-node blocks, dramatically improving cache locality and eliminating per-node heap allocation overhead. Nodes use **raw pointers** (no `std::unique_ptr`), making rotations simple 3-pointer swaps.
 
 Key design choices:
+
 - **`int8_t` height field** — AVL tree heights never exceed 45 for practical inputs
 - **`uint8_t` Color enum** — saves padding bytes in the node layout
 - **Iterative AVL insert/remove** — avoids deep recursive stack frames
@@ -110,25 +114,25 @@ Key design choices:
 
 Benchmarks compare `stl_ext::AVLTree`, `stl_ext::BST`, `stl_ext::RBTree`, `std::map`, `std::set`, and `std::unordered_set`.
 
-| Structure | N | Insert (ms) | Lookup (ms) | Delete (ms) |
-|---|---:|---:|---:|---:|
-| `std::map` | 10K | 0.85 | 0.33 | 0.09 |
-| `std::set` | 10K | 0.79 | 0.32 | 0.09 |
-| `std::unordered_set` | 10K | 0.20 | 0.04 | 0.02 |
-| `stl_ext::AVLTree` | 10K | 1.58 | 0.26 | 0.18 |
-| `stl_ext::BST` | 10K | 0.64 | 0.29 | 0.07 |
-| `stl_ext::RBTree` | 10K | 0.71 | 0.26 | 0.08 |
-| `std::map` | 100K | 14.96 | 6.63 | 1.70 |
-| `std::set` | 100K | 14.65 | 6.56 | 1.62 |
-| `std::unordered_set` | 100K | 3.09 | 0.54 | 0.37 |
-| `stl_ext::AVLTree` | 100K | 21.06 | 5.22 | 2.48 |
-| `stl_ext::BST` | 100K | 10.94 | 6.19 | 1.36 |
-| `stl_ext::RBTree` | 100K | 10.91 | 5.25 | 1.34 |
-| `std::map` | 1M | 495.52 | 240.18 | 56.05 |
-| `std::set` | 1M | 482.13 | 244.48 | 55.52 |
-| `std::unordered_set` | 1M | 137.60 | 12.50 | 16.35 |
-| `stl_ext::AVLTree` | 1M | 459.19 | 163.96 | 72.13 |
-| `stl_ext::RBTree` | 1M | 284.37 | 162.31 | 39.44 |
+| Structure            |    N | Insert (ms) | Lookup (ms) | Delete (ms) |
+| -------------------- | ---: | ----------: | ----------: | ----------: |
+| `std::map`           |  10K |        0.85 |        0.33 |        0.09 |
+| `std::set`           |  10K |        0.79 |        0.32 |        0.09 |
+| `std::unordered_set` |  10K |        0.20 |        0.04 |        0.02 |
+| `stl_ext::AVLTree`   |  10K |        1.58 |        0.26 |        0.18 |
+| `stl_ext::BST`       |  10K |        0.64 |        0.29 |        0.07 |
+| `stl_ext::RBTree`    |  10K |        0.71 |        0.26 |        0.08 |
+| `std::map`           | 100K |       14.96 |        6.63 |        1.70 |
+| `std::set`           | 100K |       14.65 |        6.56 |        1.62 |
+| `std::unordered_set` | 100K |        3.09 |        0.54 |        0.37 |
+| `stl_ext::AVLTree`   | 100K |       21.06 |        5.22 |        2.48 |
+| `stl_ext::BST`       | 100K |       10.94 |        6.19 |        1.36 |
+| `stl_ext::RBTree`    | 100K |       10.91 |        5.25 |        1.34 |
+| `std::map`           |   1M |      495.52 |      240.18 |       56.05 |
+| `std::set`           |   1M |      482.13 |      244.48 |       55.52 |
+| `std::unordered_set` |   1M |      137.60 |       12.50 |       16.35 |
+| `stl_ext::AVLTree`   |   1M |      459.19 |      163.96 |       72.13 |
+| `stl_ext::RBTree`    |   1M |      284.37 |      162.31 |       39.44 |
 
 > `stl_ext::BST` skipped at 1M — unbalanced tree causes deep recursion.
 
