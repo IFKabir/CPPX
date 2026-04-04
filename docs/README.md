@@ -6,7 +6,7 @@
 
 A cross-platform C++23 template library providing extended data structures with arena-based memory pooling, automated testing via Google Test, and benchmark tooling.
 
-**[API Reference](https://ifkabir.github.io/CPPX/)** · **[Releases](https://github.com/IFKabir/CPPX/releases)**
+**[API Reference](https://cppx.vercel.app/)** · **[Releases](https://github.com/IFKabir/CPPX/releases)**
 
 ---
 
