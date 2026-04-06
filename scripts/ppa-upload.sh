@@ -114,7 +114,7 @@ info "Package: ${BOLD}${PACKAGE_NAME}${NC}  Version: ${BOLD}${CURRENT_VERSION}${
 if [[ "${SKIP_BUMP}" == false ]]; then
     echo ""
     echo -e "${BOLD}Current version:${NC} ${CURRENT_VERSION}"
-    read -rp "$(echo -e "${CYAN}Enter new version${NC} (e.g. 2.2.0-1, or leave blank to keep current): ")" NEW_VERSION
+    read -rp "$(echo -e "${CYAN}Enter new version${NC} (e.g. 3.1.0, or leave blank to keep current): ")" NEW_VERSION
 
     if [[ -n "${NEW_VERSION}" ]]; then
         info "Bumping changelog → ${NEW_VERSION} for ${DISTRO}…"
@@ -144,7 +144,8 @@ fi
 
 # ── Clean previous builds ────────────────────────────────────
 info "Cleaning previous build artefacts…"
-rm -rf obj-x86_64-linux-gnu/ debian/.debhelper/ debian/cppx-dev/
+rm -rf build/ obj-x86_64-linux-gnu/ .cache/
+rm -rf debian/.debhelper/ debian/cppx-dev/
 rm -f  debian/cppx-dev.debhelper.log debian/cppx-dev.substvars \
        debian/debhelper-build-stamp debian/files
 rm -f  ../${PACKAGE_NAME}_*.dsc ../${PACKAGE_NAME}_*.tar.* \
