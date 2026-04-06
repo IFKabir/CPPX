@@ -1,0 +1,13 @@
+Source: cppx
+Section: devel
+Priority: optional
+Maintainer: Ishan Falak Kabir <ifk.ishanfalak@gmail.com>
+Build-Depends: debhelper (>= 12), cmake
+Standards-Version: 4.5.0
+
+Package: cppx-dev
+Architecture: all
+Depends: ${misc:Depends}
+Description: High-performance C++23 extended data structures library.
+  Header-only template library extending the C++ standard library with
+  arena-allocated data structures, automated testing, and benchmark tooling.

@@ -1,0 +1,7 @@
+cppx (3.0.0-1) noble; urgency=medium
+
+  * Major version bump — broadened library scope beyond tree structures.
+  * Updated package descriptions and documentation.
+  * Added PPA upload automation script.
+
+ -- Ishan Falak Kabir <ifk.ishanfalak@gmail.com>  Sun, 06 Apr 2026 16:11:00 +0530

@@ -6,6 +6,16 @@ out/
 bin/
 lib/
 
+# --- Debian Packaging ---
+# Build artifacts only — keep source files (changelog, control, rules, etc.)
+debian/.debhelper/
+debian/cppx-dev/
+debian/*.debhelper.log
+debian/*.substvars
+debian/debhelper-build-stamp
+debian/files
+obj-x86_64-linux-gnu/
+
 # --- CMake Artifacts ---
 CMakeCache.txt
 CMakeFiles/

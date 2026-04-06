@@ -4,9 +4,22 @@
   <img src="logo.svg" alt="CPPX Logo" width="120" height="120">
 </p>
 
-A cross-platform C++23 template library providing extended data structures with arena-based memory pooling, automated testing via Google Test, and benchmark tooling.
+A cross-platform, header-only C++23 template library that extends the C++ standard library with high-performance data structures, arena-based memory pooling, automated testing via Google Test, and benchmark tooling — all living in `namespace stl_ext`.
 
-**[API Reference](https://cppx.vercel.app/)** · **[Releases](https://github.com/IFKabir/CPPX/releases)**
+**[API Reference](https://cppx.vercel.app/)** · **[Releases](https://github.com/IFKabir/CPPX/releases)** · **[PPA](https://launchpad.net/~ifkabir/+archive/ubuntu/cppx)**
+
+---
+
+## What's Inside
+
+CPPX currently ships the following data structures, with more planned:
+
+| Category | Structures | Highlights |
+|---|---|---|
+| **Trees** | `BST<T>`, `AVLTree<T>`, `RBTree<T>`, `BinaryTree<T>` | Self-balancing, arena-allocated, Graphviz export |
+| **Core** | `Node<T>`, `NodePool<T>` | Arena allocator with 4096-node blocks, free-list recycling |
+
+> **Roadmap:** Heaps, Tries, Graphs, and more extended containers are planned for future releases.
 
 ---
 
@@ -20,9 +33,9 @@ A cross-platform C++23 template library providing extended data structures with 
 
 ---
 
-## For Users
+## Installation
 
-### Installation
+### Option 1 — Header-only (copy into your project)
 
 Copy the `src/` and `include/` folders into your project, then:
 
@@ -32,24 +45,120 @@ Copy the `src/` and `include/` folders into your project, then:
 
 Add `src/` and `include/` to your compiler's include paths.
 
-### Quick Start
+### Option 2 — Ubuntu PPA
+
+```bash
+sudo add-apt-repository ppa:ifkabir/cppx
+sudo apt update
+sudo apt install cppx-dev
+```
+
+Headers are installed to `/usr/include/cppx/`. Use in your code:
+
+```cpp
+#include <cppx/cppx.h>
+```
+
+### Option 3 — CMake FetchContent
+
+```cmake
+include(FetchContent)
+FetchContent_Declare(
+  cppx
+  GIT_REPOSITORY https://github.com/IFKabir/CPPX.git
+  GIT_TAG        v3.0.0
+)
+FetchContent_MakeAvailable(cppx)
+
+target_link_libraries(your_target PRIVATE CPPX_lib)
+```
+
+---
+
+## Quick Start
+
+### Self-Balancing Trees
 
 ```cpp
 #include "cppx.h"
 using namespace stl_ext;
 
 int main() {
-    AVLTree<int> tree;
+    // AVL Tree — strict height-balancing for fast lookups
+    AVLTree<int> avl;
     for (int v : {10, 20, 30, 40, 50})
-        tree.insert(v);
+        avl.insert(v);
 
-    tree.contains(30);  // true
-    tree.get_min();     // 10
-    tree.print_tree();  // visual debug
+    avl.contains(30);   // true
+    avl.get_min();      // 10
+    avl.get_max();      // 50
+    avl.print_tree();   // visual debug to stdout
 }
 ```
 
-### Tree Visualization
+### Red-Black Tree
+
+```cpp
+#include "cppx.h"
+using namespace stl_ext;
+
+int main() {
+    RBTree<int> rb;
+    for (int v : {15, 5, 25, 3, 10, 20, 30})
+        rb.insert(v);
+
+    // Validate red-black invariants
+    rb.validate_rb_properties();  // true
+    rb.get_black_height();        // consistent black-height
+
+    // Extract sorted data
+    auto sorted = rb.to_sorted_vector();
+    // sorted = {3, 5, 10, 15, 20, 25, 30}
+}
+```
+
+### Binary Search Tree
+
+```cpp
+#include "cppx.h"
+using namespace stl_ext;
+
+int main() {
+    BST<int> bst;
+    for (int v : {50, 30, 70, 20, 40})
+        bst.insert(v);
+
+    bst.get_successor(30);    // 40
+    bst.get_predecessor(50);  // 40
+    bst.remove(30);
+    bst.contains(30);         // false
+}
+```
+
+### Manual Tree Construction
+
+```cpp
+#include "cppx.h"
+using namespace stl_ext;
+
+int main() {
+    BinaryTree<std::string> tree;
+    auto* root = tree.make_node("root");
+    tree.set_root(root);
+
+    auto* left  = tree.make_node("left");
+    auto* right = tree.make_node("right");
+    tree.set_left(root, left);
+    tree.set_right(root, right);
+
+    tree.print_tree();
+    tree.dump_to_dot("my_tree.dot");
+}
+```
+
+---
+
+## Tree Visualization
 
 **Console** — `print_tree()` renders a sideways tree:
 
@@ -95,11 +204,21 @@ Compiles with `-O3 -march=native`, runs the suite with warmup + median-of-3 timi
 - `clang-format` runs automatically on every build.
 - All code lives in `namespace stl_ext`.
 
+### PPA Release Workflow
+
+When you've added new structures and pushed to `main`:
+
+```bash
+./scripts/ppa-upload.sh
+```
+
+The script handles everything: version bump, source package build, GPG signing, lintian check, and upload to Launchpad. See `./scripts/ppa-upload.sh --help` for options.
+
 ---
 
 ## Architecture
 
-All trees use an **arena allocator** (`NodePool`) that allocates nodes in contiguous 4096-node blocks, dramatically improving cache locality and eliminating per-node heap allocation overhead. Nodes use **raw pointers** (no `std::unique_ptr`), making rotations simple 3-pointer swaps.
+All data structures use an **arena allocator** (`NodePool`) that allocates nodes in contiguous 4096-node blocks, dramatically improving cache locality and eliminating per-node heap allocation overhead. Nodes use **raw pointers** (no `std::unique_ptr`), making pointer surgery (rotations, splices) simple 3-pointer swaps.
 
 Key design choices:
 
@@ -107,6 +226,7 @@ Key design choices:
 - **`uint8_t` Color enum** — saves padding bytes in the node layout
 - **Iterative AVL insert/remove** — avoids deep recursive stack frames
 - **Parent pointers on all nodes** — enables efficient iterative RBTree rotations
+- **Extensible architecture** — new data structures inherit from common base classes and reuse `NodePool`
 
 ---
 
