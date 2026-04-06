@@ -2,7 +2,7 @@ Source: cppx
 Section: devel
 Priority: optional
 Maintainer: Ishan Falak Kabir <ifk.ishanfalak@gmail.com>
-Build-Depends: debhelper (>= 12), cmake
+Build-Depends: debhelper (>= 12), cmake, git, ca-certificates
 Standards-Version: 4.5.0
 
 Package: cppx-dev
