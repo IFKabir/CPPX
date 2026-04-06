@@ -1,0 +1,4 @@
+tar-ignore = "build"
+tar-ignore = ".cache"
+tar-ignore = ".git"
+tar-ignore = "obj-x86_64-linux-gnu"

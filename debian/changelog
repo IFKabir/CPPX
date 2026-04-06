@@ -1,4 +1,18 @@
-cppx (3.0.0-1) noble; urgency=medium
+cppx (3.1.1) noble; urgency=medium
+
+  * New upstream release.
+
+ -- Ishan Falak Kabir <ifk.ishanfalak@gmail.com>  Mon, 06 Apr 2026 16:42:00 +0530
+
+cppx (3.0.1) noble; urgency=medium
+
+  * New upstream release.
+  * Added debian/copyright and debian/source/options.
+  * Fixed source tarball to exclude build artifacts.
+
+ -- Ishan Falak Kabir <ifk.ishanfalak@gmail.com>  Mon, 06 Apr 2026 16:29:58 +0530
+
+cppx (3.0.0) noble; urgency=medium
 
   * Major version bump — broadened library scope beyond tree structures.
   * Updated package descriptions and documentation.
