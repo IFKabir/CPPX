@@ -15,6 +15,17 @@
 
 Keep PRs focused on one thing.
 
+## Adding a New Data Structure
+
+CPPX is designed to grow. To add a new structure:
+
+1. **Header** — declare the class in `include/cppx.h` (or a new header)
+2. **Implementation** — add a `.tpp` file in `src/` and `#include` it at the bottom of the header
+3. **Tests** — add `test_suite/<structure>_test_cases.cpp` with Google Test cases
+4. **Benchmarks** — add benchmarks to `benchmarks/benchmark_main.cpp`
+5. **Build** — the CMake globs pick up new files automatically
+6. **Release** — push to `main`, then run `./scripts/ppa-upload.sh`
+
 ## Code Guidelines
 
 ### Structure
@@ -37,8 +48,8 @@ Keep PRs focused on one thing.
 ### Rules
 
 - All code in `namespace stl_ext`
-- Use `std::unique_ptr` for ownership — no raw `new`/`delete`
-- Use `std::move` for node transfers
+- Memory is managed by `NodePool` (arena allocator) — no raw `new`/`delete`
+- Use raw pointers for node links (not `std::unique_ptr`) — the arena owns all memory
 - No `using namespace std;` in headers
 - Template definitions go in `.tpp` files, not `.cpp`
 

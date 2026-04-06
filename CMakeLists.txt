@@ -1,21 +1,17 @@
 cmake_minimum_required(VERSION 3.14)
-project(CPPX VERSION 2.1.0 LANGUAGES CXX)
+project(CPPX VERSION 3.0.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-file(GLOB_RECURSE SRC_FILES "src/*.cpp" "src/*.tpp")
-file(GLOB_RECURSE HEADER_FILES "include/*.h" "include/*.hpp")
 
-# FIX 1: Make this an INTERFACE library since it relies on templates
 add_library(${PROJECT_NAME}_lib INTERFACE)
 target_include_directories(${PROJECT_NAME}_lib INTERFACE include src)
 
-# --- Auto-Format ---
 find_program(CLANG_FORMAT "clang-format")
 if(CLANG_FORMAT)
-    file(GLOB_RECURSE ALL_SOURCE_FILES 
+    file(GLOB_RECURSE ALL_SOURCE_FILES CONFIGURE_DEPENDS
         "src/*.cpp" "src/*.tpp" "src/*.h" "src/*.hpp"
         "include/*.h" "include/*.hpp" "test_suite/*.cpp"
         "benchmarks/*.cpp"
@@ -26,7 +22,6 @@ if(CLANG_FORMAT)
     )
 endif()
 
-# --- Google Test ---
 include(FetchContent)
 FetchContent_Declare(
   googletest
@@ -34,15 +29,15 @@ FetchContent_Declare(
   GIT_TAG        v1.14.0 
 )
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 enable_testing()
-file(GLOB_RECURSE TEST_FILES "test_suite/*.cpp")
+file(GLOB_RECURSE TEST_FILES CONFIGURE_DEPENDS "test_suite/*.cpp")
 add_executable(unit_tests ${TEST_FILES})
 target_link_libraries(unit_tests PRIVATE ${PROJECT_NAME}_lib GTest::gtest_main)
 target_include_directories(unit_tests PRIVATE include)
 
-# FIX 2: Attach the formatter directly to the executable target
 if(TARGET format_code)
     add_dependencies(unit_tests format_code)
 endif()
@@ -50,7 +45,6 @@ endif()
 include(GoogleTest)
 gtest_discover_tests(unit_tests)
 
-# --- Benchmark Target ---
 add_executable(benchmark benchmarks/benchmark_main.cpp)
 target_link_libraries(benchmark PRIVATE ${PROJECT_NAME}_lib)
 target_include_directories(benchmark PRIVATE include)
@@ -63,7 +57,6 @@ if(TARGET format_code)
     add_dependencies(benchmark format_code)
 endif()
 
-# Build + run in one step:  cmake --build build --target run_benchmark
 add_custom_target(run_benchmark
     COMMAND $<TARGET_FILE:benchmark> ${CMAKE_SOURCE_DIR}
     DEPENDS benchmark
@@ -71,7 +64,6 @@ add_custom_target(run_benchmark
     VERBATIM
 )
 
-# --- Doxygen Awesome Theme ---
 FetchContent_Declare(
     doxygen-awesome-css
     URL https://github.com/jothepro/doxygen-awesome-css/archive/refs/heads/main.zip
@@ -81,7 +73,6 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(doxygen-awesome-css)
 set(AWESOME_CSS_DIR ${doxygen-awesome-css_SOURCE_DIR})
 
-# --- Doxygen Generation ---
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
     set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in)
@@ -105,3 +96,18 @@ if(DOXYGEN_FOUND)
 else()
     message(WARNING "Doxygen not found!")
 endif()
+
+include(GNUInstallDirs)
+
+install(DIRECTORY include/ src/
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/cppx
+        FILES_MATCHING PATTERN "*.h" PATTERN "*.tpp")
+
+set(CPACK_GENERATOR "DEB")
+set(CPACK_PACKAGE_NAME "cppx")
+set(CPACK_PACKAGE_CONTACT "IFKabir <ifk.ishanfalak@gmail.com>")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "High-performance C++23 extended data structures library with arena allocation.")
+
+set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "all") 
+set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
+include(CPack)
