@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['s_20inside_0',['What&apos;s Inside',['../md_docs_2README.html#autotoc_md2',1,'']]],
+  ['search_20tree_1',['Binary Search Tree',['../md_docs_2README.html#autotoc_md14',1,'']]],
+  ['security_20policy_2',['Security Policy',['../md_docs_2SECURITY.html',1,'']]],
+  ['security_2emd_3',['SECURITY.md',['../SECURITY_8md.html',1,'']]],
+  ['self_20balancing_20avl_20tree_4',['Self-Balancing AVL Tree',['../index.html#autotoc_md50',1,'']]],
+  ['self_20balancing_20trees_5',['Self-Balancing Trees',['../md_docs_2README.html#autotoc_md12',1,'']]],
+  ['set_5fcolor_6',['set_color',['../classstl__ext_1_1Node.html#a00c14b85700258f68ee589cb25d28d80',1,'stl_ext::Node']]],
+  ['set_5fdata_7',['set_data',['../classstl__ext_1_1Node.html#ad231b618f1c64ec93e03f8d42087a308',1,'stl_ext::Node']]],
+  ['set_5fheight_5fval_8',['set_height_val',['../classstl__ext_1_1Node.html#af2bc0b0de490c16ad53486b237c2995f',1,'stl_ext::Node']]],
+  ['set_5fleft_9',['set_left',['../classstl__ext_1_1Node.html#aaac82d432ab5cd5ac2d99c853c861e4a',1,'stl_ext::Node::set_left()'],['../classstl__ext_1_1BinaryTree.html#a4f2c1c24182483d22582a95bfba5e6ff',1,'stl_ext::BinaryTree::set_left()']]],
+  ['set_5fparent_10',['set_parent',['../classstl__ext_1_1Node.html#abc1232ffc6c4dab5c0750bd2160186fe',1,'stl_ext::Node']]],
+  ['set_5fright_11',['set_right',['../classstl__ext_1_1BinaryTree.html#a49433c0d159dee21f61252a38e825a32',1,'stl_ext::BinaryTree::set_right()'],['../classstl__ext_1_1Node.html#a7bf2dea0c90f0f97bfcd3a76bc54a0f5',1,'stl_ext::Node::set_right()']]],
+  ['set_5froot_12',['set_root',['../classstl__ext_1_1BinaryTree.html#aec0a25960fbc6013e26f7d748c75db42',1,'stl_ext::BinaryTree']]],
+  ['size_13',['size',['../classstl__ext_1_1BinaryTree.html#a7de03f614ceff79e0c00fb1047d7e0f7',1,'stl_ext::BinaryTree']]],
+  ['start_14',['start',['../index.html#autotoc_md49',1,'Quick Start'],['../md_docs_2README.html#autotoc_md11',1,'Quick Start'],['../classBenchmark.html#a7b4af5d507d31572b3648bb09de9b78b',1,'Benchmark::start()']]],
+  ['stl_5fext_15',['stl_ext',['../namespacestl__ext.html',1,'']]],
+  ['stop_16',['stop',['../classBenchmark.html#a6a9188857371d79c5f9bb9bd75b387c7',1,'Benchmark']]],
+  ['structure_17',['structure',['../md_docs_2CONTRIBUTING.html#autotoc_md35',1,'Adding a New Data Structure'],['../md_docs_2CONTRIBUTING.html#autotoc_md37',1,'Structure'],['../structBenchmarkResult.html#a7c5b6dafd906e913e3a41aecbe2f0570',1,'BenchmarkResult::structure']]],
+  ['structures_18',['Current Data Structures',['../index.html#autotoc_md55',1,'']]],
+  ['structures_20library_19',['CPPX — C++23 Extended Data Structures Library',['../index.html',1,'']]],
+  ['style_20',['Code Style',['../md_docs_2README.html#autotoc_md22',1,'']]],
+  ['successor_20predecessor_20queries_21',['BST — Successor &amp; Predecessor Queries',['../index.html#autotoc_md52',1,'']]],
+  ['summary_22',['Summary',['../md_docs_2CODE__OF__CONDUCT.html#autotoc_md30',1,'']]],
+  ['supported_20versions_23',['Supported Versions',['../md_docs_2SECURITY.html#autotoc_md75',1,'']]]
+];

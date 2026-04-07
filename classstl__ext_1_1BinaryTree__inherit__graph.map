@@ -1,0 +1,9 @@
+<map id="stl_ext::BinaryTree&lt; T &gt;" name="stl_ext::BinaryTree&lt; T &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="93,5,267,471"/>
+<area shape="rect" id="Node000002" href="$classstl__ext_1_1BST.html" title=" " alt="" coords="107,519,253,704"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="183,484,183,518,177,518,177,484"/>
+<area shape="rect" id="Node000003" href="$classstl__ext_1_1AVLTree.html" title=" " alt="" coords="5,822,160,907"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="142,718,101,823,96,821,137,716"/>
+<area shape="rect" id="Node000004" href="$classstl__ext_1_1RBTree.html" title=" " alt="" coords="185,752,370,977"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="223,716,237,751,232,753,218,718"/>
+</map>
