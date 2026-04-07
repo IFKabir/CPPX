@@ -2,7 +2,7 @@
 #include <string>
 #include <utility>
 
-#include "../include/cppx.h"
+#include "cppx/cppx.h"
 
 using namespace stl_ext;
 using namespace std;

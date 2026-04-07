@@ -4,7 +4,7 @@
 #include <sstream>
 #include <string>
 
-#include "../include/cppx.h"
+#include "cppx/cppx.h"
 
 using namespace std;
 using namespace stl_ext;

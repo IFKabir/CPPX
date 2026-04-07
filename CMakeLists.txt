@@ -7,7 +7,31 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 
 add_library(${PROJECT_NAME}_lib INTERFACE)
-target_include_directories(${PROJECT_NAME}_lib INTERFACE include src)
+
+# Create a build-tree include layout that mirrors the installed layout:
+#   <prefix>/cppx/cppx.h          (the main header)
+#   <prefix>/cppx/detail/*.tpp    (template implementations)
+# This lets the same #include "cppx/detail/foo.tpp" work everywhere.
+
+set(CPPX_INCLUDE_STAGING_DIR "${CMAKE_CURRENT_BINARY_DIR}/staging_include")
+file(MAKE_DIRECTORY "${CPPX_INCLUDE_STAGING_DIR}/cppx/detail")
+
+# Symlink (or copy) header and .tpp files into the staging layout
+file(GLOB TPP_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.tpp")
+foreach(tpp ${TPP_FILES})
+    get_filename_component(tpp_name "${tpp}" NAME)
+    file(CREATE_LINK "${tpp}" "${CPPX_INCLUDE_STAGING_DIR}/cppx/detail/${tpp_name}" SYMBOLIC)
+endforeach()
+
+file(CREATE_LINK
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/cppx.h"
+    "${CPPX_INCLUDE_STAGING_DIR}/cppx/cppx.h"
+    SYMBOLIC)
+
+target_include_directories(${PROJECT_NAME}_lib INTERFACE
+    $<BUILD_INTERFACE:${CPPX_INCLUDE_STAGING_DIR}>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
 
 option(CPPX_BUILD_TESTS "Build the GoogleTest suite" ON)
 option(CPPX_BUILD_DOCS "Build the Doxygen documentation" ON)
@@ -41,7 +65,7 @@ if(CPPX_BUILD_TESTS)
     file(GLOB_RECURSE TEST_FILES CONFIGURE_DEPENDS "test_suite/*.cpp")
     add_executable(unit_tests ${TEST_FILES})
     target_link_libraries(unit_tests PRIVATE ${PROJECT_NAME}_lib GTest::gtest_main)
-    target_include_directories(unit_tests PRIVATE include)
+
 
     if(TARGET format_code)
         add_dependencies(unit_tests format_code)
@@ -52,7 +76,7 @@ if(CPPX_BUILD_TESTS)
 
     add_executable(benchmark benchmarks/benchmark_main.cpp)
     target_link_libraries(benchmark PRIVATE ${PROJECT_NAME}_lib)
-    target_include_directories(benchmark PRIVATE include)
+
     target_compile_options(benchmark PRIVATE
         $<$<CXX_COMPILER_ID:GNU,Clang>:-O3 -march=native>
         $<$<CXX_COMPILER_ID:MSVC>:/O2>
@@ -109,9 +133,15 @@ endif()
 
 include(GNUInstallDirs)
 
-install(DIRECTORY include/ src/
+# Install the header into <prefix>/include/cppx/
+install(DIRECTORY include/
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/cppx
-        FILES_MATCHING PATTERN "*.h" PATTERN "*.tpp")
+        FILES_MATCHING PATTERN "*.h")
+
+# Install .tpp implementation files into <prefix>/include/cppx/detail/
+install(DIRECTORY src/
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/cppx/detail
+        FILES_MATCHING PATTERN "*.tpp")
 
 set(CPACK_GENERATOR "DEB")
 set(CPACK_PACKAGE_NAME "cppx")
