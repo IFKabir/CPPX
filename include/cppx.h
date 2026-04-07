@@ -205,11 +205,11 @@ template <typename T> class RBTree : public BST<T>
 
 } // namespace stl_ext
 
-#include "../src/avl.tpp"
-#include "../src/binary_tree.tpp"
-#include "../src/bst.tpp"
-#include "../src/node.tpp"
-#include "../src/node_pool.tpp"
-#include "../src/rbt.tpp"
+#include "cppx/detail/avl.tpp"
+#include "cppx/detail/binary_tree.tpp"
+#include "cppx/detail/bst.tpp"
+#include "cppx/detail/node.tpp"
+#include "cppx/detail/node_pool.tpp"
+#include "cppx/detail/rbt.tpp"
 
 #endif

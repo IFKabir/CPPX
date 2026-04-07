@@ -4,4 +4,4 @@
 	dh $@ --buildsystem=cmake
 
 override_dh_auto_configure:
-	dh_auto_configure -- -DFETCHCONTENT_FULLY_DISCONNECTED=OFF
+	dh_auto_configure -- -DCPPX_BUILD_TESTS=OFF -DCPPX_BUILD_DOCS=OFF

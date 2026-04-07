@@ -2,7 +2,7 @@ If:
   PathMatch: .*\.tpp
 
 CompileFlags:
-  Add: [-xc++-header, -Iinclude, -Isrc, -std=c++17]
+  Add: [-xc++-header, -Ibuild/staging_include, -std=c++17]
 
 Diagnostics:
   Suppress:
