@@ -19,7 +19,7 @@ CPPX currently ships the following data structures, with more planned:
 | **Trees** | `BST<T>`, `AVLTree<T>`, `RBTree<T>`, `BinaryTree<T>` | Self-balancing, arena-allocated, Graphviz export |
 | **Core** | `Node<T>`, `NodePool<T>` | Arena allocator with 4096-node blocks, free-list recycling |
 
-> **Roadmap:** Heaps, Tries, Graphs, and more extended containers are planned for future releases.
+**Roadmap:** Heaps, Tries, Graphs, and more extended containers are planned for future releases.
 
 ---
 
@@ -189,7 +189,7 @@ cmake ..
 cmake --build .
 ```
 
-> Build succeeds = all tests pass. Failures stop the build with details.
+Build succeeds = all tests pass. Failures stop the build with details.
 
 ### Run Benchmarks
 
@@ -254,7 +254,7 @@ Benchmarks compare `stl_ext::AVLTree`, `stl_ext::BST`, `stl_ext::RBTree`, `std::
 | `stl_ext::AVLTree`   |   1M |      459.19 |      163.96 |       72.13 |
 | `stl_ext::RBTree`    |   1M |      284.37 |      162.31 |       39.44 |
 
-> `stl_ext::BST` skipped at 1M — unbalanced tree causes deep recursion.
+*`stl_ext::BST` skipped at 1M — unbalanced tree causes deep recursion.*
 
 ![Benchmark Chart](benchmark_chart.svg)
 

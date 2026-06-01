@@ -1,7 +1,7 @@
 # CPPX Developer Guide {#developer_guide}
 
-> **Audience:** Contributors, maintainers, and anyone building CPPX from source.
-> This document covers everything you need to develop, test, benchmark, and release CPPX.
+**Audience:** Contributors, maintainers, and anyone building CPPX from source.
+This document covers everything you need to develop, test, benchmark, and release CPPX.
 
 ---
 
@@ -111,8 +111,7 @@ cmake ..
 cmake --build .
 ```
 
-> **Note:** A clean successful build means **all unit tests passed**. Test failures
-> halt the build and print the failing test names and assertions.
+**Note:** A clean successful build means **all unit tests passed**. Test failures halt the build and print the failing test names and assertions.
 
 ### Build Without Documentation
 
@@ -250,7 +249,7 @@ passing the repo root as the output directory.
 ./benchmark                  # writes to docs/ relative to CWD (may differ)
 ```
 
-> **Always pass the repo root path** when running directly so output files land in `docs/`.
+**Always pass the repo root path** when running directly so output files land in `docs/`.
 
 ### Benchmark Output
 
@@ -451,8 +450,7 @@ void MyStructure<T>::insert(const T& val)
 #include "cppx/detail/my_structure.tpp"
 ```
 
-> CMake automatically symlinks `src/*.tpp` into `build/staging_include/cppx/detail/`,
-> so no CMakeLists changes are needed.
+CMake automatically symlinks `src/*.tpp` into `build/staging_include/cppx/detail/`, so no CMakeLists changes are needed.
 
 ### Step 4 — Add tests in `test_suite/my_structure_test_cases.cpp`
 
