@@ -1,7 +1,7 @@
 # CPPX — C++23 Extended Data Structures Library {#mainpage}
 
-> A high-performance, header-only C++23 template library extending the standard library
-> with arena-allocated data structures — all living in `namespace stl_ext`.
+*A high-performance, header-only C++23 template library extending the standard library
+with arena-allocated data structures — all living in `namespace stl_ext`.*
 
 ---
 
@@ -157,7 +157,7 @@ int main() {
 | **AVL Tree** | `stl_ext::AVLTree<T>` | Self-balancing BST maintaining strict balance (|BF| ≤ 1) via iterative rotations |
 | **Red-Black Tree** | `stl_ext::RBTree<T>` | Self-balancing BST enforcing red-black properties; includes `validate_rb_properties()` and `to_sorted_vector()` |
 
-> **Coming soon:** Heaps, Tries, Graphs, and more extended containers.
+**Coming soon:** Heaps, Tries, Graphs, and more extended containers.
 
 ---
 
@@ -246,7 +246,7 @@ Benchmarks run with `-O3 -march=native` (median of 3 trials, 1 warmup).
 | `stl_ext::AVLTree` | 1M | 459.19 | 163.96 | 72.13 |
 | `stl_ext::RBTree` | 1M | 284.37 | 162.31 | 39.44 |
 
-> `stl_ext::BST` is skipped at 1M — unbalanced insertion causes excessive recursion depth.
+*`stl_ext::BST` is skipped at 1M — unbalanced insertion causes excessive recursion depth.*
 
 ### Key Takeaways
 
@@ -277,7 +277,7 @@ cmake ..
 cmake --build .
 ```
 
-> A successful build means **all tests pass**. Failures halt the build with details.
+A successful build means **all tests pass**. Failures halt the build with details.
 
 ### Run Benchmarks
 
