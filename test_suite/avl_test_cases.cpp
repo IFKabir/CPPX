@@ -35,6 +35,57 @@ template <typename T> bool validate_avl_property(const Node<T> *node)
     return validate_avl_property(node->get_left()) && validate_avl_property(node->get_right());
 }
 
+TEST(AVLTreeTest, HeightEmptyTree)
+{
+    AVLTree<int> tree;
+    EXPECT_EQ(tree.height(), 0);
+}
+
+TEST(AVLTreeTest, HeightSingleNode)
+{
+    AVLTree<int> tree;
+    tree.insert(42);
+    EXPECT_EQ(tree.height(), 1);
+}
+
+TEST(AVLTreeTest, HeightSequentialInsertion)
+{
+    AVLTree<int> tree;
+    // Sequential insertion stays balanced due to AVL rotations
+    for (int i = 0; i < 10; i++)
+        tree.insert(i);
+
+    // AVL tree with 10 nodes has height 4
+    EXPECT_EQ(tree.height(), 4);
+    EXPECT_TRUE(validate_avl_property(tree.get_root()));
+}
+
+TEST(AVLTreeTest, HeightThreeNodes)
+{
+    AVLTree<int> tree;
+    // Insert 3 nodes sequentially — triggers rotation to balanced h=2
+    tree.insert(1);
+    tree.insert(2);
+    tree.insert(3);
+    EXPECT_EQ(tree.height(), 2);
+}
+
+TEST(AVLTreeTest, HeightAfterRemoval)
+{
+    AVLTree<int> tree;
+    for (int v : {50, 30, 70, 20, 40, 60, 80})
+        tree.insert(v);
+    EXPECT_EQ(tree.height(), 3);
+
+    tree.remove(20);
+    tree.remove(40);
+    tree.remove(30);
+    // Tree rebalances after removals
+    EXPECT_LE(tree.height(), 3);
+    EXPECT_GE(tree.height(), 2);
+    EXPECT_TRUE(validate_avl_property(tree.get_root()));
+}
+
 TEST(AVLTreeTest, ClearTree)
 {
     AVLTree<int> tree;

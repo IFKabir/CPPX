@@ -164,4 +164,9 @@ template <typename T> void AVLTree<T>::remove(const T &val)
     }
 }
 
+template <typename T> int AVLTree<T>::height()
+{
+    return this->p_head ? static_cast<int>(this->p_head->m_height) : 0;
+}
+
 } // namespace stl_ext

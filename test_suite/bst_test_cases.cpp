@@ -19,6 +19,59 @@ template <typename T> void capture_inorder(const Node<T> *node, vector<T> &resul
     capture_inorder(node->get_right(), result);
 }
 
+TEST(BSTTest, HeightEmptyTree)
+{
+    BST<int> bst;
+    EXPECT_EQ(bst.height(), 0);
+}
+
+TEST(BSTTest, HeightSingleNode)
+{
+    BST<int> bst;
+    bst.insert(42);
+    EXPECT_EQ(bst.height(), 1);
+}
+
+TEST(BSTTest, HeightUnbalancedSequential)
+{
+    BST<int> bst;
+    // Sequential insertion creates a right-skewed chain
+    for (int i = 0; i < 10; i++)
+    {
+        bst.insert(i);
+    }
+    EXPECT_EQ(bst.height(), 10);
+}
+
+TEST(BSTTest, HeightBalancedInsertion)
+{
+    BST<int> bst;
+    // Insert in an order that produces a balanced BST
+    //       50
+    //      /  \
+    //    30    70
+    //   / \   / \
+    //  20 40 60 80
+    for (int v : {50, 30, 70, 20, 40, 60, 80})
+        bst.insert(v);
+    EXPECT_EQ(bst.height(), 3);
+}
+
+TEST(BSTTest, HeightAfterRemoval)
+{
+    BST<int> bst;
+    for (int v : {50, 30, 70, 20, 40, 60, 80})
+        bst.insert(v);
+    EXPECT_EQ(bst.height(), 3);
+
+    // Remove all leaves to reduce to height 2
+    bst.remove(20);
+    bst.remove(40);
+    bst.remove(60);
+    bst.remove(80);
+    EXPECT_EQ(bst.height(), 2);
+}
+
 TEST(BSTTest, ClearTree)
 {
     BST<int> bst;
