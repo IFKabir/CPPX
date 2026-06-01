@@ -321,3 +321,68 @@ TEST(BinaryTreeTest, TraversalSmokeTest)
     EXPECT_NO_THROW(tree.print_postorder());
     EXPECT_NO_THROW(tree.print_levelorder());
 }
+
+TEST(BinaryTreeTest, CountLeavesEmptyTree)
+{
+    BinaryTree<int> tree;
+    EXPECT_EQ(tree.count_leaves(), 0);
+}
+
+TEST(BinaryTreeTest, CountLeavesSingleNode)
+{
+    BinaryTree<int> tree;
+    tree.set_root(tree.make_node(1));
+    EXPECT_EQ(tree.count_leaves(), 1);
+}
+
+TEST(BinaryTreeTest, CountLeavesFullTree)
+{
+    //        1
+    //       / \
+    //      2   3
+    //     / \ / \
+    //    4  5 6  7
+    BinaryTree<int> tree;
+    tree.set_root(tree.make_node(1));
+    tree.set_left(tree.get_root(), tree.make_node(2));
+    tree.set_right(tree.get_root(), tree.make_node(3));
+    tree.set_left(tree.get_root()->get_left(), tree.make_node(4));
+    tree.set_right(tree.get_root()->get_left(), tree.make_node(5));
+    tree.set_left(tree.get_root()->get_right(), tree.make_node(6));
+    tree.set_right(tree.get_root()->get_right(), tree.make_node(7));
+    EXPECT_EQ(tree.count_leaves(), 4);
+}
+
+TEST(BinaryTreeTest, CountLeavesLeftSkewed)
+{
+    //  1
+    //  /
+    // 2
+    //  /
+    // 3
+    BinaryTree<int> tree;
+    tree.set_root(tree.make_node(1));
+    Node<int> *curr = tree.get_root();
+    for (int i = 2; i <= 5; ++i)
+    {
+        tree.set_left(curr, tree.make_node(i));
+        curr = curr->get_left();
+    }
+    EXPECT_EQ(tree.count_leaves(), 1);
+}
+
+TEST(BinaryTreeTest, CountLeavesGeneralTree)
+{
+    //      1
+    //     / \
+    //    2   3
+    //   /     \
+    //  4       5
+    BinaryTree<int> tree;
+    tree.set_root(tree.make_node(1));
+    tree.set_left(tree.get_root(), tree.make_node(2));
+    tree.set_right(tree.get_root(), tree.make_node(3));
+    tree.set_left(tree.get_root()->get_left(), tree.make_node(4));
+    tree.set_right(tree.get_root()->get_right(), tree.make_node(5));
+    EXPECT_EQ(tree.count_leaves(), 2);
+}

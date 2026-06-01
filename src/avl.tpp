@@ -164,7 +164,7 @@ template <typename T> void AVLTree<T>::remove(const T &val)
     }
 }
 
-template <typename T> int AVLTree<T>::height()
+template <typename T> int AVLTree<T>::height() const
 {
     return this->p_head ? static_cast<int>(this->p_head->m_height) : 0;
 }

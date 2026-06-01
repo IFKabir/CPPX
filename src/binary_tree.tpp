@@ -17,7 +17,7 @@ template <typename T> void BinaryTree<T>::clear()
     this->p_head = nullptr;
 }
 
-template <typename T> int BinaryTree<T>::height()
+template <typename T> int BinaryTree<T>::height() const
 {
     if (!p_head)
         return 0;
@@ -419,6 +419,30 @@ template <typename T> void BinaryTree<T>::dump_to_dot(const std::string &filenam
 
     out << "}\n";
     out.close();
+}
+
+template <typename T> int BinaryTree<T>::count_leaves() const
+{
+    if (!p_head)
+        return 0;
+    int count = 0;
+    std::queue<const Node<T> *> q;
+    q.push(p_head);
+    while (!q.empty())
+    {
+        const Node<T> *curr = q.front();
+        q.pop();
+        if (!curr->p_left && !curr->p_right)
+            ++count;
+        else
+        {
+            if (curr->p_left)
+                q.push(curr->p_left);
+            if (curr->p_right)
+                q.push(curr->p_right);
+        }
+    }
+    return count;
 }
 
 } // namespace stl_ext
