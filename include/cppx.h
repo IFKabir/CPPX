@@ -168,7 +168,6 @@ template <typename T> class AVLTree : public BST<T>
   public:
     void insert(const T &val) override;
     void remove(const T &val) override;
-    void clear();
 };
 
 template <typename T> class RBTree : public BST<T>

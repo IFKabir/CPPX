@@ -19,6 +19,31 @@ template <typename T> void capture_inorder(const Node<T> *node, vector<T> &resul
     capture_inorder(node->get_right(), result);
 }
 
+TEST(BSTTest, ClearTree)
+{
+    BST<int> bst;
+    for (int v : {50, 30, 70, 20, 40, 60, 80})
+        bst.insert(v);
+
+    EXPECT_EQ(bst.size(), 7);
+    bst.clear();
+
+    EXPECT_TRUE(bst.is_empty());
+    EXPECT_EQ(bst.size(), 0);
+    EXPECT_EQ(bst.get_root(), nullptr);
+
+    bst.insert(99);
+    EXPECT_EQ(bst.size(), 1);
+    EXPECT_TRUE(bst.contains(99));
+}
+
+TEST(BSTTest, ClearEmptyTree)
+{
+    BST<int> bst;
+    EXPECT_NO_THROW(bst.clear());
+    EXPECT_TRUE(bst.is_empty());
+}
+
 TEST(BSTTest, InsertAndSearch)
 {
     BST<int> bst;
