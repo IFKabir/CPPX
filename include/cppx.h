@@ -138,6 +138,7 @@ template <typename T> class BinaryTree
     Node<T> *make_node(const T &val, Node<T> *left, Node<T> *right);
     void set_left(Node<T> *parent, Node<T> *left_child);
     void set_right(Node<T> *parent, Node<T> *right_child);
+    void clear();
 };
 
 template <typename T> class BST : public BinaryTree<T>
@@ -174,6 +175,7 @@ template <typename T> class AVLTree : public BST<T>
   public:
     void insert(const T &val) override;
     void remove(const T &val) override;
+    void clear();
 };
 
 template <typename T> class RBTree : public BST<T>
@@ -194,7 +196,6 @@ template <typename T> class RBTree : public BST<T>
 
     void insert(const T &val) override;
     void remove(const T &val) override;
-    void clear();
 
     static bool is_red(const Node<T> *node);
     static bool is_black(const Node<T> *node);

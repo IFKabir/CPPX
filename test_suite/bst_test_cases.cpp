@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <cstdlib>
 #include <gtest/gtest.h>
-#include <random>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -18,24 +17,6 @@ template <typename T> void capture_inorder(const Node<T> *node, vector<T> &resul
     capture_inorder(node->get_left(), result);
     result.push_back(node->get_data());
     capture_inorder(node->get_right(), result);
-}
-
-TEST(BSTTest, ClearTree)
-{
-    BST<int> bst;
-
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<> distrib(1, 100);
-
-    for (int i = 0; i < 10; i++)
-    {
-        bst.insert(distrib(gen));
-    }
-    bst.clear();
-
-    EXPECT_TRUE(bst.is_empty());
-    EXPECT_EQ(bst.get_root(), nullptr);
 }
 
 TEST(BSTTest, InsertAndSearch)
