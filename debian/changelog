@@ -1,3 +1,9 @@
+cppx (3.2.1) noble; urgency=medium
+
+  * New upstream release.
+
+ -- Ishan Falak Kabir <ifk.ishanfalak@gmail.com>  Mon, 01 Jun 2026 20:05:17 +0530
+
 cppx (3.2.0) noble; urgency=medium
 
   * New upstream release.

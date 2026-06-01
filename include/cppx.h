@@ -133,7 +133,8 @@ template <typename T> class BinaryTree
     void set_left(Node<T> *parent, Node<T> *left_child);
     void set_right(Node<T> *parent, Node<T> *right_child);
     void clear();
-    virtual int height();
+    virtual int height() const;
+    int count_leaves() const;
 };
 
 template <typename T> class BST : public BinaryTree<T>
@@ -169,7 +170,7 @@ template <typename T> class AVLTree : public BST<T>
   public:
     void insert(const T &val) override;
     void remove(const T &val) override;
-    int height() override;
+    int height() const override;
 };
 
 template <typename T> class RBTree : public BST<T>
