@@ -1,6 +1,9 @@
 #pragma once
 #include "cppx/cppx.h"
 
+#include <memory>
+#include <stdexcept>
+
 namespace stl_ext
 {
 

@@ -1,16 +1,10 @@
 #ifndef CPPX_H
 #define CPPX_H
 
-#include <algorithm>
 #include <cstddef>
 #include <cstdint>
-#include <fstream>
 #include <iostream>
-#include <memory>
-#include <queue>
-#include <sstream>
-#include <stack>
-#include <stdexcept>
+#include <string>
 #include <vector>
 
 namespace stl_ext
@@ -157,7 +151,6 @@ template <typename T> class BST : public BinaryTree<T>
     T get_max() const;
     T get_successor(const T &val) const;
     T get_predecessor(const T &val) const;
-    void clear();
 };
 
 template <typename T> class AVLTree : public BST<T>

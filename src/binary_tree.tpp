@@ -1,6 +1,12 @@
 #pragma once
 #include "cppx/cppx.h"
-#include <cppx/cppx.h>
+
+#include <algorithm>
+#include <fstream>
+#include <queue>
+#include <sstream>
+#include <stack>
+#include <stdexcept>
 
 namespace stl_ext
 {

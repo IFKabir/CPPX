@@ -7,18 +7,18 @@
 
 ## Table of Contents
 
-1. [Prerequisites](#1-prerequisites)
-2. [Repository Layout](#2-repository-layout)
-3. [Building from Source](#3-building-from-source)
-4. [Running the Test Suite](#4-running-the-test-suite)
-5. [Running Benchmarks](#5-running-benchmarks)
-6. [Generating API Documentation](#6-generating-api-documentation)
-7. [Code Style & Formatting](#7-code-style--formatting)
-8. [CMake Options Reference](#8-cmake-options-reference)
-9. [Adding a New Data Structure](#9-adding-a-new-data-structure)
-10. [Architecture Deep-Dive](#10-architecture-deep-dive)
-11. [PPA Release Workflow](#11-ppa-release-workflow)
-12. [Troubleshooting](#12-troubleshooting)
+1. Prerequisites
+2. Repository Layout
+3. Building from Source
+4. Running the Test Suite
+5. Running Benchmarks
+6. Generating API Documentation
+7. Code Style & Formatting
+8. CMake Options Reference
+9. Adding a New Data Structure
+10. Architecture Deep-Dive
+11. PPA Release Workflow
+12. Troubleshooting
 
 ---
 
@@ -461,7 +461,7 @@ single node, duplicate values). See existing test files for patterns.
 
 ### Step 5 — Add benchmarks in `benchmarks/benchmark_main.cpp`
 
-Follow the `bench_avl()` pattern (see [§5](#5-running-benchmarks)).
+Follow the `bench_avl()` pattern (see **Section 5 — Running Benchmarks** above).
 
 ### Step 6 — Rebuild and verify
 
