@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['data_20structure_0',['data structure',['../developer_guide.html#autotoc_md79',1,'9. Adding a New Data Structure'],['../md_docs_2CONTRIBUTING.html#autotoc_md35',1,'Adding a New Data Structure']]],
+  ['data_20structures_1',['Current Data Structures',['../index.html#autotoc_md122',1,'']]],
+  ['data_20structures_20library_2',['CPPX — C++23 Extended Data Structures Library',['../index.html',1,'']]],
+  ['deallocate_3',['deallocate',['../classstl__ext_1_1NodePool.html#a262991c5ae214f6bacf4c9c258382156',1,'stl_ext::NodePool']]],
+  ['declare_20the_20class_20in_20tt_20include_20cppx_20h_20tt_4',['Step 1 — Declare the class in &lt;tt&gt;include/cppx.h&lt;/tt&gt;',['../developer_guide.html#autotoc_md80',1,'']]],
+  ['deep_20dive_5',['10. Architecture Deep-Dive',['../developer_guide.html#autotoc_md87',1,'']]],
+  ['delete_5fms_6',['delete_ms',['../structBenchmarkResult.html#a2fa2f07b7cf33c9ecb702b5041d5392a',1,'BenchmarkResult']]],
+  ['design_20choices_7',['Design Choices',['../index.html#autotoc_md125',1,'']]],
+  ['destroy_5fall_8',['destroy_all',['../classstl__ext_1_1NodePool.html#a5fa9439c03f7139567c6cd34cb0bf222',1,'stl_ext::NodePool']]],
+  ['destroy_5fsubtree_9',['destroy_subtree',['../classstl__ext_1_1BinaryTree.html#a421d6fdcb72caebd928f84f822ac43ab',1,'stl_ext::BinaryTree']]],
+  ['developer_20guide_10',['CPPX Developer Guide',['../developer_guide.html',1,'']]],
+  ['developer_5fguide_2emd_11',['DEVELOPER_GUIDE.md',['../DEVELOPER__GUIDE_8md.html',1,'']]],
+  ['developers_12',['For Developers',['../md_docs_2README.html#autotoc_md19',1,'']]],
+  ['directly_13',['directly',['../developer_guide.html#autotoc_md64',1,'Run the Binary Directly'],['../developer_guide.html#autotoc_md57',1,'Run the Test Binary Directly']]],
+  ['directly_20produces_20wrong_20output_20paths_14',['Running the &lt;tt&gt;benchmark&lt;/tt&gt; binary directly produces wrong output paths',['../developer_guide.html#autotoc_md104',1,'']]],
+  ['dive_15',['10. Architecture Deep-Dive',['../developer_guide.html#autotoc_md87',1,'']]],
+  ['docs_16',['Standard Build (tests + docs)',['../developer_guide.html#autotoc_md49',1,'']]],
+  ['documentation_17',['documentation',['../developer_guide.html#autotoc_md69',1,'6. Generating API Documentation'],['../developer_guide.html#autotoc_md50',1,'Build Without Documentation']]],
+  ['dot_20tt_20not_20found_18',['Doxygen warning: &lt;tt&gt;dot&lt;/tt&gt; not found',['../developer_guide.html#autotoc_md103',1,'']]],
+  ['dot_5fhelper_19',['dot_helper',['../classstl__ext_1_1BinaryTree.html#a9029188410b0495eaa95b579c001312c',1,'stl_ext::BinaryTree']]],
+  ['doxygen_20warning_3a_20tt_20dot_20tt_20not_20found_20',['Doxygen warning: &lt;tt&gt;dot&lt;/tt&gt; not found',['../developer_guide.html#autotoc_md103',1,'']]],
+  ['dump_5fto_5fdot_21',['dump_to_dot',['../classstl__ext_1_1BinaryTree.html#ae05d640e00b8dea5c5fe946486b3d669',1,'stl_ext::BinaryTree']]],
+  ['dump_5fto_5fdot_20tt_22',['Graphviz (&lt;tt&gt;dump_to_dot()&lt;/tt&gt;)',['../index.html#autotoc_md129',1,'']]],
+  ['duration_23',['Duration',['../classBenchmark.html#a0c3d3bca7a592e4806e0d80eaca281e3',1,'Benchmark']]]
+];

@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['p_5fhead_0',['p_head',['../classstl__ext_1_1BinaryTree.html#aa8e875b1a840c9ac3dea95776ef180ca',1,'stl_ext::BinaryTree']]],
+  ['parallel_20builds_20faster_1',['Parallel Builds (faster)',['../developer_guide.html#autotoc_md52',1,'']]],
+  ['pass_20but_20tt_20ctest_20tt_20says_20no_20tests_20found_2',['Tests pass but &lt;tt&gt;ctest&lt;/tt&gt; says &quot;no tests found&quot;',['../developer_guide.html#autotoc_md105',1,'']]],
+  ['paths_3',['Running the &lt;tt&gt;benchmark&lt;/tt&gt; binary directly produces wrong output paths',['../developer_guide.html#autotoc_md104',1,'']]],
+  ['performance_4',['performance',['../index.html#autotoc_md131',1,'Performance'],['../md_docs_2README.html#autotoc_md27',1,'Performance']]],
+  ['policy_5',['Security Policy',['../md_docs_2SECURITY.html',1,'']]],
+  ['postorder_6',['postorder',['../classstl__ext_1_1BinaryTree.html#a4d07e6051dad875495b04efcca9bcedc',1,'stl_ext::BinaryTree']]],
+  ['ppa_7',['ppa',['../md_docs_2README.html#autotoc_md8',1,'Option 2 — Ubuntu PPA'],['../index.html#autotoc_md113',1,'Ubuntu PPA']]],
+  ['ppa_20release_8',['PPA Release',['../index.html#autotoc_md138',1,'']]],
+  ['ppa_20release_20workflow_9',['ppa release workflow',['../developer_guide.html#autotoc_md93',1,'11. PPA Release Workflow'],['../md_docs_2README.html#autotoc_md23',1,'PPA Release Workflow']]],
+  ['predecessor_20queries_10',['BST — Successor &amp; Predecessor Queries',['../index.html#autotoc_md119',1,'']]],
+  ['preorder_11',['preorder',['../classstl__ext_1_1BinaryTree.html#aab12704c3c4b0a34d27c11b6ee7aae25',1,'stl_ext::BinaryTree']]],
+  ['prerequisites_12',['prerequisites',['../developer_guide.html#autotoc_md44',1,'1. Prerequisites'],['../developer_guide.html#autotoc_md94',1,'Prerequisites']]],
+  ['print_5finorder_13',['print_inorder',['../classstl__ext_1_1BinaryTree.html#ac0e0e7f9655f293bdefa0e5f91f44e8e',1,'stl_ext::BinaryTree']]],
+  ['print_5flevelorder_14',['print_levelorder',['../classstl__ext_1_1BinaryTree.html#a309be506f71137f42b72cb520272b7cf',1,'stl_ext::BinaryTree']]],
+  ['print_5fpostorder_15',['print_postorder',['../classstl__ext_1_1BinaryTree.html#ae5945174aace3ba334b2e4a0e4a153fe',1,'stl_ext::BinaryTree']]],
+  ['print_5fpreorder_16',['print_preorder',['../classstl__ext_1_1BinaryTree.html#a5be49ded2b610addc318d8d7c4c75661',1,'stl_ext::BinaryTree']]],
+  ['print_5ftree_17',['print_tree',['../classstl__ext_1_1BinaryTree.html#a5fea4405a477686b7be608060065ccaa',1,'stl_ext::BinaryTree']]],
+  ['print_5ftree_20tt_18',['Console (&lt;tt&gt;print_tree()&lt;/tt&gt;)',['../index.html#autotoc_md128',1,'']]],
+  ['print_5ftree_5fhelper_19',['print_tree_helper',['../classstl__ext_1_1BinaryTree.html#a98a526f9fbbaedac506de48846070e2f',1,'stl_ext::BinaryTree']]],
+  ['produces_20wrong_20output_20paths_20',['Running the &lt;tt&gt;benchmark&lt;/tt&gt; binary directly produces wrong output paths',['../developer_guide.html#autotoc_md104',1,'']]],
+  ['project_21',['Option 1 — Header-only (copy into your project)',['../md_docs_2README.html#autotoc_md7',1,'']]],
+  ['pull_20requests_22',['Pull Requests',['../md_docs_2CONTRIBUTING.html#autotoc_md34',1,'']]]
+];
