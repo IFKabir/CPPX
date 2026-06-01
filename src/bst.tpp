@@ -202,4 +202,10 @@ template <typename T> T BST<T>::get_predecessor(const T &val) const
     throw std::runtime_error("Value not found");
 }
 
+template <typename T> void BST<T>::clear()
+{
+    this->destroy_subtree(this->p_head);
+    this->p_head = nullptr;
+}
+
 } // namespace stl_ext

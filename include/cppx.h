@@ -156,6 +156,7 @@ template <typename T> class BST : public BinaryTree<T>
     T get_max() const;
     T get_successor(const T &val) const;
     T get_predecessor(const T &val) const;
+    void clear();
 };
 
 template <typename T> class AVLTree : public BST<T>
