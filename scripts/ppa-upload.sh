@@ -108,24 +108,36 @@ fi
 # ── Parse the current version ────────────────────────────────
 CURRENT_VERSION="$(dpkg-parsechangelog -S Version)"
 PACKAGE_NAME="$(dpkg-parsechangelog -S Source)"
-info "Package: ${BOLD}${PACKAGE_NAME}${NC}  Version: ${BOLD}${CURRENT_VERSION}${NC}"
+
+# Read the canonical version from CMakeLists.txt (single source of truth)
+CMAKE_VERSION="$(grep -oP 'project\(CPPX\s+VERSION\s+\K[0-9]+\.[0-9]+\.[0-9]+' CMakeLists.txt || true)"
+
+info "Package: ${BOLD}${PACKAGE_NAME}${NC}  Changelog: ${BOLD}${CURRENT_VERSION}${NC}  CMake: ${BOLD}${CMAKE_VERSION}${NC}"
 
 # ── Optional version bump ────────────────────────────────────
 if [[ "${SKIP_BUMP}" == false ]]; then
-    echo ""
-    echo -e "${BOLD}Current version:${NC} ${CURRENT_VERSION}"
-    read -rp "$(echo -e "${CYAN}Enter new version${NC} (e.g. 3.1.0, or leave blank to keep current): ")" NEW_VERSION
-
-    if [[ -n "${NEW_VERSION}" ]]; then
-        info "Bumping changelog → ${NEW_VERSION} for ${DISTRO}…"
-        DEBEMAIL="$(dpkg-parsechangelog -S Maintainer)" \
-        dch --newversion "${NEW_VERSION}" \
-            --distribution "${DISTRO}" \
-            --urgency medium \
-            "New upstream release."
-        ok "debian/changelog updated."
+    if [[ -n "${CMAKE_VERSION}" && "${CURRENT_VERSION}" == "${CMAKE_VERSION}" ]]; then
+        # bump-version.sh already synced the changelog — no duplicate entry needed
+        ok "Changelog already matches CMakeLists.txt version (${CMAKE_VERSION}). Skipping bump."
     else
-        info "Keeping current version ${CURRENT_VERSION}."
+        echo ""
+        echo -e "${BOLD}Current changelog version:${NC} ${CURRENT_VERSION}"
+        if [[ -n "${CMAKE_VERSION}" ]]; then
+            echo -e "${BOLD}CMakeLists.txt version:${NC}   ${CMAKE_VERSION}"
+        fi
+        read -rp "$(echo -e "${CYAN}Enter new version${NC} (e.g. 3.1.0, or leave blank to keep current): ")" NEW_VERSION
+
+        if [[ -n "${NEW_VERSION}" ]]; then
+            info "Bumping changelog → ${NEW_VERSION} for ${DISTRO}…"
+            DEBEMAIL="$(dpkg-parsechangelog -S Maintainer)" \
+            dch --newversion "${NEW_VERSION}" \
+                --distribution "${DISTRO}" \
+                --urgency medium \
+                "New upstream release."
+            ok "debian/changelog updated."
+        else
+            info "Keeping current version ${CURRENT_VERSION}."
+        fi
     fi
 else
     info "Skipping version bump (--no-bump)."
