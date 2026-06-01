@@ -1,3 +1,13 @@
+cppx (3.1.7) noble; urgency=medium
+
+  * New upstream release.
+  * Added BST::clear() and AVLTree::clear() via BinaryTree base class.
+  * Added ClearTree test cases for BST, AVLTree, and BinaryTree.
+  * Added DEVELOPER_GUIDE.md documentation.
+  * Resolved IWYU clangd warnings by moving standard headers to .tpp files.
+
+ -- Ishan Falak Kabir <ifk.ishanfalak@gmail.com>  Sun, 01 Jun 2026 10:05:00 +0530
+
 cppx (3.1.6) noble; urgency=medium
 
   * New upstream release.
