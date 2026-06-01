@@ -303,5 +303,6 @@ Automates version bump → source package build → GPG signing → lintian → 
 - 📚 [API Reference](https://cppx.vercel.app/)
 - 🐛 [Issue Tracker](https://github.com/IFKabir/CPPX/issues)
 - 📋 [Releases](https://github.com/IFKabir/CPPX/releases)
+- 🛠️ [Developer Guide](@ref developer_guide)
 - 🤝 [Contributing Guide](CONTRIBUTING.md)
 - 🔒 [Security Policy](SECURITY.md)
