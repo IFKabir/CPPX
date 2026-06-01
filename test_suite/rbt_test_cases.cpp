@@ -10,6 +10,58 @@
 using namespace std;
 using namespace stl_ext;
 
+TEST(RBTreeTest, HeightEmptyTree)
+{
+    RBTree<int> tree;
+    EXPECT_EQ(tree.height(), 0);
+}
+
+TEST(RBTreeTest, HeightSingleNode)
+{
+    RBTree<int> tree;
+    tree.insert(42);
+    EXPECT_EQ(tree.height(), 1);
+}
+
+TEST(RBTreeTest, HeightSequentialInsertion)
+{
+    RBTree<int> tree;
+    // Sequential insertion stays balanced due to RB rotations
+    for (int i = 0; i < 15; i++)
+        tree.insert(i);
+
+    // RB tree height is at most 2*log2(n+1), so <= 8 for 15 nodes
+    EXPECT_LE(tree.height(), static_cast<int>(2 * log2(15 + 1)));
+    EXPECT_GE(tree.height(), 1);
+    EXPECT_TRUE(tree.validate_rb_properties());
+}
+
+TEST(RBTreeTest, HeightThreeNodes)
+{
+    RBTree<int> tree;
+    tree.insert(1);
+    tree.insert(2);
+    tree.insert(3);
+    EXPECT_EQ(tree.height(), 2);
+    EXPECT_TRUE(tree.validate_rb_properties());
+}
+
+TEST(RBTreeTest, HeightAfterRemoval)
+{
+    RBTree<int> tree;
+    for (int v : {50, 30, 70, 20, 40, 60, 80})
+        tree.insert(v);
+
+    int h_before = tree.height();
+    tree.remove(20);
+    tree.remove(40);
+    tree.remove(30);
+
+    EXPECT_LE(tree.height(), h_before);
+    EXPECT_GE(tree.height(), 1);
+    EXPECT_TRUE(tree.validate_rb_properties());
+}
+
 TEST(RBTreeTest, BasicInsertionAndSearch)
 {
     RBTree<int> tree;

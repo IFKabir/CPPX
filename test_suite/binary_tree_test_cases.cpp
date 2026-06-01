@@ -8,6 +8,72 @@
 using namespace std;
 using namespace stl_ext;
 
+TEST(BinaryTreeTest, HeightEmptyTree)
+{
+    BinaryTree<int> tree;
+    EXPECT_EQ(tree.height(), 0);
+}
+
+TEST(BinaryTreeTest, HeightSingleNode)
+{
+    BinaryTree<int> tree;
+    tree.set_root(tree.make_node(42));
+    EXPECT_EQ(tree.height(), 1);
+}
+
+TEST(BinaryTreeTest, HeightRightSkewed)
+{
+    BinaryTree<int> tree;
+    tree.set_root(tree.make_node(1));
+    Node<int> *curr = tree.get_root();
+    for (int i = 2; i <= 5; ++i)
+    {
+        tree.set_right(curr, tree.make_node(i));
+        curr = curr->get_right();
+    }
+    EXPECT_EQ(tree.height(), 5);
+}
+
+TEST(BinaryTreeTest, HeightLeftSkewed)
+{
+    BinaryTree<int> tree;
+    tree.set_root(tree.make_node(1));
+    Node<int> *curr = tree.get_root();
+    for (int i = 2; i <= 7; ++i)
+    {
+        tree.set_left(curr, tree.make_node(i));
+        curr = curr->get_left();
+    }
+    EXPECT_EQ(tree.height(), 7);
+}
+
+TEST(BinaryTreeTest, HeightBalancedTree)
+{
+    BinaryTree<int> tree;
+    //        10
+    //       /  \
+    //      5    15
+    //     / \
+    //    3   7
+    tree.set_root(tree.make_node(10));
+    tree.set_left(tree.get_root(), tree.make_node(5));
+    tree.set_right(tree.get_root(), tree.make_node(15));
+    tree.set_left(tree.get_root()->get_left(), tree.make_node(3));
+    tree.set_right(tree.get_root()->get_left(), tree.make_node(7));
+    EXPECT_EQ(tree.height(), 3);
+}
+
+TEST(BinaryTreeTest, HeightAfterClear)
+{
+    BinaryTree<int> tree;
+    tree.set_root(tree.make_node(1));
+    tree.set_left(tree.get_root(), tree.make_node(2));
+    EXPECT_EQ(tree.height(), 2);
+
+    tree.clear();
+    EXPECT_EQ(tree.height(), 0);
+}
+
 TEST(BinaryTreeTest, ClearTree)
 {
     BST<int> bst;

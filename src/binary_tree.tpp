@@ -17,6 +17,30 @@ template <typename T> void BinaryTree<T>::clear()
     this->p_head = nullptr;
 }
 
+template <typename T> int BinaryTree<T>::height()
+{
+    if (!p_head)
+        return 0;
+    std::queue<const Node<T> *> q;
+    q.push(p_head);
+    int h = 0;
+    while (!q.empty())
+    {
+        int level_size = static_cast<int>(q.size());
+        for (int i = 0; i < level_size; ++i)
+        {
+            const Node<T> *curr = q.front();
+            q.pop();
+            if (curr->p_left)
+                q.push(curr->p_left);
+            if (curr->p_right)
+                q.push(curr->p_right);
+        }
+        ++h;
+    }
+    return h;
+}
+
 template <typename T> void BinaryTree<T>::destroy_subtree(Node<T> *node)
 {
     if (!node)
