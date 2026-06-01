@@ -35,6 +35,35 @@ template <typename T> bool validate_avl_property(const Node<T> *node)
     return validate_avl_property(node->get_left()) && validate_avl_property(node->get_right());
 }
 
+TEST(AVLTreeTest, ClearTree)
+{
+    AVLTree<int> tree;
+    for (int v : {10, 20, 30, 40, 50})
+        tree.insert(v);
+
+    EXPECT_EQ(tree.size(), 5);
+    tree.clear();
+
+    EXPECT_TRUE(tree.is_empty());
+    EXPECT_EQ(tree.size(), 0);
+    EXPECT_EQ(tree.get_root(), nullptr);
+
+    for (int v : {15, 5, 25})
+        tree.insert(v);
+
+    EXPECT_EQ(tree.size(), 3);
+    EXPECT_TRUE(tree.contains(15));
+    EXPECT_TRUE(validate_avl_property(tree.get_root()));
+}
+
+TEST(AVLTreeTest, ClearEmptyTree)
+{
+    AVLTree<int> tree;
+    EXPECT_NO_THROW(tree.clear());
+    EXPECT_TRUE(tree.is_empty());
+    EXPECT_EQ(tree.get_root(), nullptr);
+}
+
 TEST(AVLTreeTest, BasicInsertionAndSearch)
 {
     AVLTree<int> tree;

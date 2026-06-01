@@ -1,16 +1,10 @@
 #ifndef CPPX_H
 #define CPPX_H
 
-#include <algorithm>
 #include <cstddef>
 #include <cstdint>
-#include <fstream>
 #include <iostream>
-#include <memory>
-#include <queue>
-#include <sstream>
-#include <stack>
-#include <stdexcept>
+#include <string>
 #include <vector>
 
 namespace stl_ext
@@ -138,6 +132,7 @@ template <typename T> class BinaryTree
     Node<T> *make_node(const T &val, Node<T> *left, Node<T> *right);
     void set_left(Node<T> *parent, Node<T> *left_child);
     void set_right(Node<T> *parent, Node<T> *right_child);
+    void clear();
 };
 
 template <typename T> class BST : public BinaryTree<T>
@@ -193,7 +188,6 @@ template <typename T> class RBTree : public BST<T>
 
     void insert(const T &val) override;
     void remove(const T &val) override;
-    void clear();
 
     static bool is_red(const Node<T> *node);
     static bool is_black(const Node<T> *node);

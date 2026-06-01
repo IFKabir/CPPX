@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <random>
 #include <string>
 #include <utility>
 
@@ -6,6 +7,24 @@
 
 using namespace std;
 using namespace stl_ext;
+
+TEST(BinaryTreeTest, ClearTree)
+{
+    BST<int> bst;
+
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> distrib(1, 100);
+
+    for (int i = 0; i < 10; i++)
+    {
+        bst.insert(distrib(gen));
+    }
+    bst.clear();
+
+    EXPECT_TRUE(bst.is_empty());
+    EXPECT_EQ(bst.get_root(), nullptr);
+}
 
 TEST(BinaryTreeTest, DefaultConstructor)
 {

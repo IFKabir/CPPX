@@ -1,6 +1,9 @@
 #pragma once
 #include "cppx/cppx.h"
 
+#include <stack>
+#include <stdexcept>
+
 namespace stl_ext
 {
 
@@ -397,12 +400,6 @@ template <typename T> void RBTree<T>::fix_delete_violation(Node<T> *x, Node<T> *
 
     if (x)
         x->m_color = Color::BLACK;
-}
-
-template <typename T> void RBTree<T>::clear()
-{
-    this->destroy_subtree(this->p_head);
-    this->p_head = nullptr;
 }
 
 template <typename T> int RBTree<T>::compute_black_height(const Node<T> *node) const

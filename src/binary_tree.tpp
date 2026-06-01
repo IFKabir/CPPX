@@ -1,8 +1,21 @@
 #pragma once
 #include "cppx/cppx.h"
 
+#include <algorithm>
+#include <fstream>
+#include <queue>
+#include <sstream>
+#include <stack>
+#include <stdexcept>
+
 namespace stl_ext
 {
+
+template <typename T> void BinaryTree<T>::clear()
+{
+    this->destroy_subtree(this->p_head);
+    this->p_head = nullptr;
+}
 
 template <typename T> void BinaryTree<T>::destroy_subtree(Node<T> *node)
 {
