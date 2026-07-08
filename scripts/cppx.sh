@@ -11,6 +11,7 @@
 #    build       Configure & compile the project
 #    test        Run the full test suite via CTest
 #    bench       Run the benchmark suite
+#    coverage    Build with instrumentation and report test coverage
 #    docs        Generate Doxygen API documentation
 #    format      Run clang-format on all source files
 #    clean       Remove the build directory entirely
@@ -135,6 +136,60 @@ cmd_bench() {
         info "Results: docs/benchmark_results.csv"
         info "Chart:   docs/benchmark_chart.svg"
     fi
+    timer_end
+}
+
+cmd_coverage() {
+    section "Test Coverage Report"
+    timer_start
+
+    local COV_BUILD="${REPO_ROOT}/build_coverage"
+    local GCOVR=""
+
+    # ── Locate or install gcovr ──────────────────────────────
+    if command -v gcovr &>/dev/null; then
+        GCOVR="gcovr"
+    elif [[ -x "${REPO_ROOT}/.coverage_venv/bin/gcovr" ]]; then
+        GCOVR="${REPO_ROOT}/.coverage_venv/bin/gcovr"
+    else
+        info "gcovr not found. Creating a temporary virtualenv..."
+        python3 -m venv "${REPO_ROOT}/.coverage_venv"
+        "${REPO_ROOT}/.coverage_venv/bin/pip" install --quiet gcovr
+        GCOVR="${REPO_ROOT}/.coverage_venv/bin/gcovr"
+        ok "gcovr installed."
+    fi
+
+    # ── Configure with coverage flags ────────────────────────
+    info "Configuring coverage build..."
+    rm -rf "${COV_BUILD}"
+    cmake -S . -B "${COV_BUILD}" \
+        -DCPPX_BUILD_TESTS=ON \
+        -DCPPX_BUILD_DOCS=OFF \
+        -DCMAKE_CXX_FLAGS="--coverage -fprofile-arcs -ftest-coverage" \
+        -DCMAKE_C_FLAGS="--coverage" \
+        -DCMAKE_EXE_LINKER_FLAGS="--coverage" \
+        2>&1 | tail -3
+
+    # ── Build ────────────────────────────────────────────────
+    info "Compiling with ${JOBS} parallel jobs..."
+    cmake --build "${COV_BUILD}" --parallel "${JOBS}" 2>&1 | tail -5
+
+    # ── Run tests ────────────────────────────────────────────
+    info "Running unit tests..."
+    "${COV_BUILD}/unit_tests" --gtest_brief=1 2>&1 | tail -3
+
+    # ── Generate report ──────────────────────────────────────
+    echo ""
+    "${GCOVR}" \
+        --root "${REPO_ROOT}" \
+        --filter "${REPO_ROOT}/src/" \
+        --filter "${REPO_ROOT}/include/" \
+        --print-summary \
+        "${COV_BUILD}"
+
+    # ── Cleanup ──────────────────────────────────────────────
+    rm -rf "${COV_BUILD}"
+    ok "Coverage build cleaned up."
     timer_end
 }
 
@@ -276,6 +331,7 @@ ${BOLD}Commands:${NC}
   ${GREEN}build${NC}   [Release|Debug]     Configure & compile (default: Debug)
   ${GREEN}test${NC}    [filter]            Run tests (optional gtest filter)
   ${GREEN}bench${NC}                       Run the benchmark suite
+  ${GREEN}coverage${NC}                    Build with instrumentation & report test coverage
   ${GREEN}docs${NC}                        Generate Doxygen HTML documentation
   ${GREEN}format${NC}                      Run clang-format on all sources
   ${GREEN}clean${NC}                       Remove the build directory
@@ -292,6 +348,7 @@ ${BOLD}Examples:${NC}
   ./scripts/cppx.sh build Release     # optimized build
   ./scripts/cppx.sh test "AVL*"       # run only AVL tests
   ./scripts/cppx.sh version bump 3.3.0
+  ./scripts/cppx.sh coverage           # line/function/branch coverage
   ./scripts/cppx.sh all               # the everything button
   ./scripts/cppx.sh release --dry-run # test PPA workflow
 
@@ -309,6 +366,7 @@ case "${COMMAND}" in
     build)    cmd_build "$@" ;;
     test)     cmd_test "$@" ;;
     bench)    cmd_bench "$@" ;;
+    coverage) cmd_coverage ;;
     docs)     cmd_docs "$@" ;;
     format)   cmd_format "$@" ;;
     clean)    cmd_clean ;;

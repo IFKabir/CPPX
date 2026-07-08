@@ -80,3 +80,10 @@ cmake-build-*/
 # --- Testing & Logs ---
 *.log
 Testing/Temporary/
+
+# --- Coverage ---
+build_coverage/
+.coverage_venv/
+*.gcda
+*.gcno
+*.gcov
